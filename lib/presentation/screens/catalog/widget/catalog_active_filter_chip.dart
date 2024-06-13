@@ -6,7 +6,12 @@ class CatalogActiveFilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text("Filtr A"),
+      deleteIcon: const Icon(Icons.close),
+      onDeleted: () {},
+      label: const Padding(
+        padding: EdgeInsets.only(right: 30),
+        child: Text("Filtr A"),
+      ),
       backgroundColor: Colors.white,
     );
   }

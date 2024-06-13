@@ -1,9 +1,10 @@
-import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
-import 'package:ecommerce_web/presentation/screens/home_screen.dart';
+import 'package:ecommerce_web/config/locator.dart';
+import 'package:ecommerce_web/presentation/config/router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -13,11 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return MaterialApp(
-      theme: ThemeData(textTheme: GoogleFonts.latoTextTheme(textTheme)),
+    return MaterialApp.router(
+      routerConfig: router,
+      theme: ThemeData(
+          textTheme: GoogleFonts.latoTextTheme(textTheme), useMaterial3: true),
       title: 'Ecommerce',
       debugShowCheckedModeBanner: false,
-      home: const CatalogScreen(),
     );
   }
 }

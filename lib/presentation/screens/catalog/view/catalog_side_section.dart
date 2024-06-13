@@ -20,7 +20,8 @@ class CatalogSideSection extends StatelessWidget {
                 minimumSize: const Size.fromHeight(50),
               ),
               onPressed: () {},
-              child: Text("Filtruj", style: TextStyle(color: Colors.black)))
+              child:
+                  const Text("Filtruj", style: TextStyle(color: Colors.black)))
         ],
       ),
     );

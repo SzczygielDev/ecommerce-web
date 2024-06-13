@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GlobalAppBar extends AppBar {
@@ -18,11 +19,19 @@ class GlobalAppBar extends AppBar {
                 ),
                 Row(
                   children: [
-                    const Text("koszyk"),
+                    InkWell(
+                        onTap: () {
+                          context.go('/cart');
+                        },
+                        child: Text("koszyk")),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 100,
                     ),
-                    const Text("zaloguj się"),
+                    InkWell(
+                        onTap: () {
+                          context.go('/cart');
+                        },
+                        child: Text("zaloguj się")),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 100,
                     ),
