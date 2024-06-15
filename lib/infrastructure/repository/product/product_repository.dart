@@ -33,6 +33,12 @@ class ProductRepository extends ProductRepositoryAbstraction {
 
   @override
   Future<Product?> findById(ProductId id) async {
-    return null;
+    try {
+      final response = await dio.get("/products/${id.value}");
+
+      return ProductDto.fromJson(response.data).toModel();
+    } on Exception catch (ex) {
+      return null;
+    }
   }
 }

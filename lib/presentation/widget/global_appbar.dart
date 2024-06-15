@@ -13,9 +13,14 @@ class GlobalAppBar extends AppBar {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'ECOMMERCE',
-                  style: GoogleFonts.koulen(fontSize: 62),
+                InkWell(
+                  onTap: () {
+                    context.pushReplacement('/');
+                  },
+                  child: Text(
+                    'ECOMMERCE',
+                    style: GoogleFonts.koulen(fontSize: 62),
+                  ),
                 ),
                 Row(
                   children: [

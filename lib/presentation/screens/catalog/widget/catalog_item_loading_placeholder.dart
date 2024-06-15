@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/widget/shimmer_decorator.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -14,18 +15,15 @@ class CatalogItemLoadingPlaceholder extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Shimmer.fromColors(
-              baseColor: AppColors.shimmerGrey,
-              highlightColor: Colors.white,
-              child: Stack(
-                children: [
-                  Container(
-                    height: 600,
-                    color: AppColors.grey,
-                  ),
-                ],
-              ),
-            ),
+            ShimmerDecorator(
+                child: Stack(
+              children: [
+                Container(
+                  height: 600,
+                  color: AppColors.grey,
+                ),
+              ],
+            )),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

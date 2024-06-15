@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: router,
       theme: ThemeData(
-          textTheme: GoogleFonts.latoTextTheme(textTheme), useMaterial3: true),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 160, 250, 111)),
+          textTheme: GoogleFonts.latoTextTheme(textTheme),
+          useMaterial3: true),
       title: 'Ecommerce',
       debugShowCheckedModeBanner: false,
     );

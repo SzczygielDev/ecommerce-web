@@ -1,18 +1,18 @@
 part of 'catalog_bloc.dart';
 
-enum ProductLoadingState { idle, inProgress }
+enum ProductsLoadingState { idle, inProgress }
 
 @immutable
 class CatalogState extends Equatable {
   final List<Product> products;
-  final ProductLoadingState productsLoadingState;
+  final ProductsLoadingState productsLoadingState;
 
   const CatalogState(
       {this.products = const [],
-      this.productsLoadingState = ProductLoadingState.inProgress});
+      this.productsLoadingState = ProductsLoadingState.inProgress});
 
   CatalogState copyWith(
-      {List<Product>? products, ProductLoadingState? productsLoadingState}) {
+      {List<Product>? products, ProductsLoadingState? productsLoadingState}) {
     return CatalogState(
         products: products ?? this.products,
         productsLoadingState:

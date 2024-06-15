@@ -17,12 +17,43 @@ class GlobalFooter extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 Text(
                   'ECOMMERCE',
                   style: GoogleFonts.koulen(fontSize: 30),
                 ),
-              ],
+                const Text(
+                  'Strona główna',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const Text(
+                  'Polityka prywatności',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const Text(
+                  'Regulamin',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const Text(
+                  'Dostawy',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const Text(
+                  'O nas',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const Text(
+                  'Kontakt',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ].map(
+                (e) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: e,
+                  );
+                },
+              ).toList(),
             ),
           ),
         )

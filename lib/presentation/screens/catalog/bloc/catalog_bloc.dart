@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
-import 'package:ecommerce_web/infrastructure/repository/product/product_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -17,7 +16,7 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
 
         emit(state.copyWith(
             products: products,
-            productsLoadingState: ProductLoadingState.idle));
+            productsLoadingState: ProductsLoadingState.idle));
       },
     );
   }

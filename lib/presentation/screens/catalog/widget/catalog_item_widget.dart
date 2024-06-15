@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class CatalogItemWidget extends StatelessWidget {
   final Product product;
-  const CatalogItemWidget({super.key, required this.product});
+  final Function() onTapped;
+  const CatalogItemWidget(
+      {super.key, required this.product, required this.onTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class CatalogItemWidget extends StatelessWidget {
                       color: Colors.transparent,
                       child: InkWell(
                         splashColor: AppColors.lightGrey,
-                        onTap: () {},
+                        onTap: onTapped,
                       )),
                 ),
               ],

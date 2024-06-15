@@ -3,9 +3,11 @@ import 'package:ecommerce_web/presentation/screens/catalog/widget/catalog_active
 import 'package:ecommerce_web/presentation/screens/catalog/widget/catalog_empty_category_placeholder.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/widget/catalog_item_loading_placeholder.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/widget/catalog_item_widget.dart';
+import 'package:ecommerce_web/presentation/screens/product/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CatalogMainSection extends StatelessWidget {
   const CatalogMainSection({super.key});
@@ -36,7 +38,7 @@ class CatalogMainSection extends StatelessWidget {
           BlocBuilder<CatalogBloc, CatalogState>(
             builder: (context, state) {
               if (state.productsLoadingState ==
-                  ProductLoadingState.inProgress) {
+                  ProductsLoadingState.inProgress) {
                 return Wrap(
                   children: List.generate(
                     4,
@@ -52,7 +54,13 @@ class CatalogMainSection extends StatelessWidget {
               return Wrap(
                 children: state.products
                     .map(
-                      (e) => CatalogItemWidget(product: e),
+                      (e) => CatalogItemWidget(
+                        product: e,
+                        onTapped: () {
+                          context.goNamed(ProductScreen.routeName,
+                              pathParameters: {'productId': e.id.value});
+                        },
+                      ),
                     )
                     .toList(),
               );
