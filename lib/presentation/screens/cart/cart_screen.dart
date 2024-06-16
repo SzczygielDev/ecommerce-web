@@ -50,12 +50,14 @@ class _CartScreenState extends State<CartScreen> {
                     child: BlocBuilder<CartBloc, CartState>(
                       builder: (context, state) {
                         List<Widget> items = [];
-                        switch (state) {
-                          case CartLoadingState():
-                          case CartErrorState():
+
+                        switch (state.loadingState) {
+                          case CartLoadingState.loading:
+                          case CartLoadingState.error:
                             break;
-                          case CartLoadedState():
-                            items = state.items
+
+                          case CartLoadingState.loaded:
+                            items = state.items!
                                 .map(
                                   (e) => CartEntryWidget(
                                     item: e,
@@ -64,6 +66,7 @@ class _CartScreenState extends State<CartScreen> {
                                 .toList();
                             break;
                         }
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: items,
@@ -78,35 +81,36 @@ class _CartScreenState extends State<CartScreen> {
                     flex: 3,
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
-                        CartClientSection(),
-                        SizedBox(
+                        const CartClientSection(),
+                        const SizedBox(
                           height: 26,
                         ),
-                        CartDeliverySection(),
-                        SizedBox(
+                        const CartDeliverySection(),
+                        const SizedBox(
                           height: 26,
                         ),
-                        CartSpecialOfferSection(),
-                        SizedBox(
+                        const CartSpecialOfferSection(),
+                        const SizedBox(
                           height: 54,
                         ),
-                        CartSummarySection(),
-                        SizedBox(
+                        const CartSummarySection(),
+                        const SizedBox(
                           height: 26,
                         ),
                         BlocBuilder<CartBloc, CartState>(
                           builder: (context, state) {
-                            switch (state) {
-                              case CartLoadedState():
-                                return SubmitCartButton(
-                                  total: state.cartTotal,
-                                );
-                              case CartLoadingState():
-                              case CartErrorState():
+                            switch (state.loadingState) {
+                              case CartLoadingState.loading:
+                              case CartLoadingState.error:
                                 return const SubmitCartButton.disabled();
+
+                              case CartLoadingState.loaded:
+                                return SubmitCartButton(
+                                  total: state.cartTotal!,
+                                );
                             }
                           },
                         )

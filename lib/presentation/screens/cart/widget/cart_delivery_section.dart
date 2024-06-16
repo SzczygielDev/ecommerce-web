@@ -37,15 +37,15 @@ class _CartDeliverySectionState extends State<CartDeliverySection> {
               const Divider(),
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
-                  switch (state) {
-                    case CartLoadedState():
+                  switch (state.loadingState) {
+                    case CartLoadingState.loading:
+                    case CartLoadingState.error:
+                      return const SizedBox.shrink();
+                    case CartLoadingState.loaded:
                       return Text(
-                        state.deliveryData.value,
+                        state.deliveryData!.value,
                         style: const TextStyle(fontSize: 16),
                       );
-                    case CartLoadingState():
-                    case CartErrorState():
-                      return const SizedBox.shrink();
                   }
                 },
               )

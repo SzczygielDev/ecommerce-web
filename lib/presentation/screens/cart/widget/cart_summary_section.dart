@@ -16,16 +16,16 @@ class CartSummarySection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
             child: BlocBuilder<CartBloc, CartState>(
               builder: (context, state) {
-                switch (state) {
-                  case CartLoadingState():
-                  case CartErrorState():
+                switch (state.loadingState) {
+                  case CartLoadingState.loading:
+                  case CartLoadingState.error:
                     return const SizedBox.shrink();
 
-                  case CartLoadedState():
-                    final double cartTotal = state.cartTotal;
+                  case CartLoadingState.loaded:
+                    final double cartTotal = state.cartTotal!;
                     final double deliveryPrice = 0;
                     final double specialOfferPrice = 0;
-                    final double finalPrice = state.cartTotal;
+                    final double finalPrice = state.cartTotal!;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [

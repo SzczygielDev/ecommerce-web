@@ -33,14 +33,17 @@ class CartClientSection extends StatelessWidget {
               const Divider(),
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
-                  switch (state) {
-                    case CartLoadedState():
+                  switch (state.loadingState) {
+                    case CartLoadingState.error:
+                    case CartLoadingState.loading:
+                      return const SizedBox.shrink();
+                    case CartLoadingState.loaded:
                       final clientData = state.clientData;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${clientData.firstName} ${clientData.lastName}",
+                            "${clientData!.firstName} ${clientData.lastName}",
                             style: const TextStyle(fontSize: 16),
                           ),
                           Text(
@@ -57,9 +60,6 @@ class CartClientSection extends StatelessWidget {
                           )
                         ],
                       );
-                    case CartLoadingState():
-                    case CartErrorState():
-                      return const SizedBox.shrink();
                   }
                 },
               )

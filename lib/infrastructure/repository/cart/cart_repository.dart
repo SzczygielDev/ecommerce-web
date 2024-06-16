@@ -12,16 +12,16 @@ class CartRepository extends CartRepositoryAbstraction {
   final dio = locator.get<Dio>();
 
   @override
-  Future<bool> addProductToCart(ProductId productId, int quantity) async {
+  Future<Cart?> addProductToCart(ProductId productId, int quantity) async {
     try {
       final response = await dio.post("/carts/${AppConsts.cartId}/items",
           data: AddItemToCartRequest(
                   productId: productId.value, quantity: quantity)
               .toJson());
 
-      return true;
+      return CartDto.fromJson(response.data).toModel();
     } on Exception catch (ex) {
-      return false;
+      return null;
     }
   }
 
@@ -37,9 +37,16 @@ class CartRepository extends CartRepositoryAbstraction {
   }
 
   @override
-  Future<void> removeProductFromCart(ProductId productId) {
-    // TODO: implement removeProductFromCart
-    throw UnimplementedError();
+  Future<Cart?> removeProductFromCart(ProductId productId) async {
+    try {
+      final response = await dio.delete(
+        "/carts/${AppConsts.cartId}/items/${productId.value}",
+      );
+
+      return CartDto.fromJson(response.data).toModel();
+    } on Exception catch (ex) {
+      return null;
+    }
   }
 
   @override

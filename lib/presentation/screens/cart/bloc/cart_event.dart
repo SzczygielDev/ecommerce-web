@@ -8,3 +8,8 @@ sealed class CartEvent extends Equatable {
 }
 
 class CartOnLoadEvent extends CartEvent {}
+
+class RemoveItemFromCartEvent extends CartEvent {
+  final ProductId productId;
+  const RemoveItemFromCartEvent({required this.productId});
+}
