@@ -5,15 +5,24 @@ import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/mapper/cart_mapper.dart';
+import 'package:ecommerce_web/infrastructure/repository/cart/model/add_item_to_cart_request.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/model/cart_dto.dart';
 
 class CartRepository extends CartRepositoryAbstraction {
   final dio = locator.get<Dio>();
 
   @override
-  Future<void> addProductToCart(ProductId productId, int quantity) {
-    // TODO: implement addProductToCart
-    throw UnimplementedError();
+  Future<bool> addProductToCart(ProductId productId, int quantity) async {
+    try {
+      final response = await dio.post("/carts/${AppConsts.cartId}/items",
+          data: AddItemToCartRequest(
+                  productId: productId.value, quantity: quantity)
+              .toJson());
+
+      return true;
+    } on Exception catch (ex) {
+      return false;
+    }
   }
 
   @override

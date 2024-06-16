@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 class GenericPage extends StatelessWidget {
   final Widget child;
+  final Widget? overlay;
   final EdgeInsetsGeometry? padding;
   const GenericPage(
       {super.key,
       required this.child,
+      this.overlay,
       this.padding = const EdgeInsets.only(
         left: 50,
         right: 50,
@@ -21,27 +23,32 @@ class GenericPage extends StatelessWidget {
         appBar: GlobalAppBar(
           context: context,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: padding ?? const EdgeInsets.only(),
-                child: Container(
-                  color: AppColors.lightGrey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 30),
-                          child: child),
-                    ],
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: padding ?? const EdgeInsets.only(),
+                    child: Container(
+                      color: AppColors.lightGrey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 30),
+                              child: child),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  const GlobalFooter()
+                ],
               ),
-              const GlobalFooter()
-            ],
-          ),
+            ),
+            overlay ?? const SizedBox.shrink()
+          ],
         ));
   }
 }

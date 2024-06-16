@@ -48,6 +48,7 @@ final router = GoRouter(
             state,
             BlocProvider(
               create: (context) => ProductBloc(
+                  cartRepository: locator.get<CartRepositoryAbstraction>(),
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>())
                 ..add(ProductOnLoadEvent(ProductId(productId!))),

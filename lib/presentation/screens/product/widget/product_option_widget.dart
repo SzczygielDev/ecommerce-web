@@ -18,7 +18,7 @@ class ProductOptionWidget extends StatelessWidget {
                   child: Text("Opcja A"),
                 )
               ],
-              onChanged: (d) {}),
+              onChanged: (value) {}),
         ),
       ),
     );

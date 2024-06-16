@@ -12,3 +12,11 @@ class ProductOnLoadEvent extends ProductEvent {
 
   const ProductOnLoadEvent(this.id);
 }
+
+class ProductAddToCartEvent extends ProductEvent {
+  final int quantity;
+
+  const ProductAddToCartEvent(this.quantity);
+}
+
+class AddedToCartOverlayShowedEvent extends ProductEvent {}

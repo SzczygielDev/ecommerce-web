@@ -1,6 +1,7 @@
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/product/view/product_main_section.dart';
 import 'package:ecommerce_web/presentation/screens/product/view/product_photo_section.dart';
+import 'package:ecommerce_web/presentation/screens/product/widget/added_to_cart_overlay.dart';
 import 'package:ecommerce_web/presentation/widget/generic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return PopScope(
       onPopInvoked: (didPop) => true,
       child: GenericPage(
+          overlay: const AddedToCartOverlay(),
           padding: const EdgeInsets.only(
             left: 50,
             right: 50,
@@ -51,13 +53,13 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: [
                       BlocBuilder<ProductBloc, ProductState>(
                         builder: (context, state) {
-                          switch (state) {
-                            case ProductLoadingState():
-                            case ProductLoadingErrorState():
+                          switch (state.loadingState) {
+                            case ProductLoadingState.loading:
+                            case ProductLoadingState.error:
                               return const SizedBox.shrink();
-                            case ProductLoadedState():
+                            case ProductLoadingState.loaded:
                               return Text(
-                                state.product.description,
+                                state.product!.description,
                                 style: const TextStyle(
                                     fontSize: 18, wordSpacing: 3, height: 1.75),
                               );

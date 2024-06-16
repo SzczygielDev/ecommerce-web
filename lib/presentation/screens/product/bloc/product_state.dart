@@ -1,25 +1,27 @@
 part of 'product_bloc.dart';
 
-sealed class ProductState extends Equatable {
-  const ProductState();
+enum ProductLoadingState { loading, loaded, error }
 
-  @override
-  List<Object?> get props => [];
-}
+class ProductState extends Equatable {
+  final Product? product;
+  final bool showAddedToCartDialog;
+  final ProductLoadingState loadingState;
+  const ProductState(
+      {this.product,
+      this.showAddedToCartDialog = false,
+      this.loadingState = ProductLoadingState.loading});
 
-class ProductLoadedState extends ProductState {
-  final Product product;
-
-  const ProductLoadedState({required this.product});
-
-  ProductLoadedState copyWith({Product? product}) {
-    return ProductLoadedState(product: product ?? this.product);
+  ProductState copyWith(
+      {Product? product,
+      bool? showAddedToCartDialog,
+      ProductLoadingState? loadingState}) {
+    return ProductState(
+        product: product ?? this.product,
+        loadingState: loadingState ?? this.loadingState,
+        showAddedToCartDialog:
+            showAddedToCartDialog ?? this.showAddedToCartDialog);
   }
 
   @override
-  List<Object?> get props => [product];
+  List<Object?> get props => [product, showAddedToCartDialog, loadingState];
 }
-
-class ProductLoadingState extends ProductState {}
-
-class ProductLoadingErrorState extends ProductState {}
