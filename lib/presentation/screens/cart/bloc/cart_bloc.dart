@@ -19,6 +19,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       : super(const CartState()) {
     on<CartOnLoadEvent>(_cartOnLoad);
     on<RemoveItemFromCartEvent>(_removeItemFromCart);
+    on<CartSubmitEvent>(_submitCart);
   }
 
   Future<void> _cartOnLoad(CartOnLoadEvent event, Emitter emit) async {
@@ -99,5 +100,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       return null;
     }
     return items.nonNulls.toList();
+  }
+
+  Future<void> _submitCart(CartSubmitEvent event, Emitter emit) async {
+    await cartRepository.submitCart();
   }
 }

@@ -1,4 +1,6 @@
+import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubmitCartButton extends StatelessWidget {
   final double total;
@@ -16,7 +18,11 @@ class SubmitCartButton extends StatelessWidget {
           ),
           minimumSize: const Size.fromHeight(80),
         ),
-        onPressed: total == 0 ? null : () {},
+        onPressed: total == 0
+            ? null
+            : () {
+                context.read<CartBloc>().add(CartSubmitEvent());
+              },
         child: total == 0
             ? const Text("Zamawiam",
                 style: TextStyle(color: Colors.black, fontSize: 20))

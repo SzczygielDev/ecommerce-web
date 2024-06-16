@@ -13,3 +13,5 @@ class RemoveItemFromCartEvent extends CartEvent {
   final ProductId productId;
   const RemoveItemFromCartEvent({required this.productId});
 }
+
+class CartSubmitEvent extends CartEvent {}

@@ -50,8 +50,15 @@ class CartRepository extends CartRepositoryAbstraction {
   }
 
   @override
-  Future<void> submitCart() {
-    // TODO: implement submitCart
-    throw UnimplementedError();
+  Future<bool> submitCart() async {
+    try {
+      final response = await dio.post(
+        "/carts/${AppConsts.cartId}/submit",
+      );
+
+      return true;
+    } on Exception catch (ex) {
+      return false;
+    }
   }
 }
