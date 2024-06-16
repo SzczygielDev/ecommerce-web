@@ -1,6 +1,8 @@
 import 'package:ecommerce_web/config/locator.dart';
+import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
+import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
@@ -56,7 +58,17 @@ final router = GoRouter(
     GoRoute(
       path: '/cart',
       pageBuilder: (context, state) {
-        return buildPageWithTransition(context, state, CartScreen());
+        return buildPageWithTransition(
+            context,
+            state,
+            BlocProvider(
+              create: (context) => CartBloc(
+                  productRepository:
+                      locator.get<ProductRepositoryAbstraction>(),
+                  cartRepository: locator.get<CartRepositoryAbstraction>())
+                ..add(CartOnLoadEvent()),
+              child: CartScreen(),
+            ));
       },
     ),
   ],

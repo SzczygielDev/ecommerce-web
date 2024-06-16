@@ -1,5 +1,7 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartDeliverySection extends StatefulWidget {
   const CartDeliverySection({super.key});
@@ -13,12 +15,12 @@ class _CartDeliverySectionState extends State<CartDeliverySection> {
   Widget build(BuildContext context) {
     return Container(
         color: AppColors.grey,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -32,10 +34,20 @@ class _CartDeliverySectionState extends State<CartDeliverySection> {
                   )
                 ],
               ),
-              Divider(),
-              Text(
-                "Punkt odbioru WAW23",
-                style: TextStyle(fontSize: 16),
+              const Divider(),
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  switch (state) {
+                    case CartLoadedState():
+                      return Text(
+                        state.deliveryData.value,
+                        style: const TextStyle(fontSize: 16),
+                      );
+                    case CartLoadingState():
+                    case CartErrorState():
+                      return const SizedBox.shrink();
+                  }
+                },
               )
             ],
           ),

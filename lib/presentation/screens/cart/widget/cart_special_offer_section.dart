@@ -8,19 +8,18 @@ class CartSpecialOfferSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         color: AppColors.grey,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Kod promocyjny",
                 style: TextStyle(fontSize: 22),
               ),
-              Divider(),
-              Text(
-                "Punkt odbioru WAW23",
-                style: TextStyle(fontSize: 16),
+              const Divider(),
+              TextFormField(
+                decoration: const InputDecoration(),
               )
             ],
           ),

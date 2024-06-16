@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_client_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_delivery_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_entry_widget.dart';
@@ -7,6 +8,7 @@ import 'package:ecommerce_web/presentation/screens/cart/widget/submit_cart_butto
 import 'package:ecommerce_web/presentation/widget/generic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -18,77 +20,105 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    return GenericPage(
-      padding: const EdgeInsets.only(
-        left: 50,
-        right: 50,
-        top: 50,
-      ),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 10,
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        return GenericPage(
+          padding: const EdgeInsets.only(
+            left: 50,
+            right: 50,
+            top: 50,
           ),
-          const Row(
+          child: Column(
             children: [
-              Text(
-                "Twój koszyk",
-                style: TextStyle(fontSize: 32),
-              )
-            ],
-          ),
-          const Divider(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...List.generate(
-                      4,
-                      (index) {
-                        return const CartEntryWidget();
-                      },
-                    )
-                  ],
-                ),
-              ),
               const SizedBox(
-                width: 14,
+                height: 10,
               ),
-              const Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
+              const Row(
+                children: [
+                  Text(
+                    "Twój koszyk",
+                    style: TextStyle(fontSize: 32),
+                  )
+                ],
+              ),
+              const Divider(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        List<Widget> items = [];
+                        switch (state) {
+                          case CartLoadingState():
+                          case CartErrorState():
+                            break;
+                          case CartLoadedState():
+                            items = state.items
+                                .map(
+                                  (e) => CartEntryWidget(
+                                    item: e,
+                                  ),
+                                )
+                                .toList();
+                            break;
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: items,
+                        );
+                      },
                     ),
-                    CartClientSection(),
-                    SizedBox(
-                      height: 26,
+                  ),
+                  const SizedBox(
+                    width: 14,
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CartClientSection(),
+                        SizedBox(
+                          height: 26,
+                        ),
+                        CartDeliverySection(),
+                        SizedBox(
+                          height: 26,
+                        ),
+                        CartSpecialOfferSection(),
+                        SizedBox(
+                          height: 54,
+                        ),
+                        CartSummarySection(),
+                        SizedBox(
+                          height: 26,
+                        ),
+                        BlocBuilder<CartBloc, CartState>(
+                          builder: (context, state) {
+                            switch (state) {
+                              case CartLoadedState():
+                                return SubmitCartButton(
+                                  total: state.cartTotal,
+                                );
+                              case CartLoadingState():
+                              case CartErrorState():
+                                return const SubmitCartButton.disabled();
+                            }
+                          },
+                        )
+                      ],
                     ),
-                    CartDeliverySection(),
-                    SizedBox(
-                      height: 26,
-                    ),
-                    CartSpecialOfferSection(),
-                    SizedBox(
-                      height: 54,
-                    ),
-                    CartSummarySection(),
-                    SizedBox(
-                      height: 26,
-                    ),
-                    SubmitCartButton()
-                  ],
-                ),
+                  )
+                ],
               )
             ],
-          )
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 }

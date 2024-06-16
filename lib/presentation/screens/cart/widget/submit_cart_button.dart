@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SubmitCartButton extends StatelessWidget {
-  const SubmitCartButton({super.key});
+  final double total;
+  const SubmitCartButton({super.key, required this.total});
+
+  const SubmitCartButton.disabled({super.key}) : total = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +16,11 @@ class SubmitCartButton extends StatelessWidget {
           ),
           minimumSize: const Size.fromHeight(80),
         ),
-        onPressed: () {},
-        child: const Text("Zamawiam    150.0 ZŁ",
-            style: TextStyle(color: Colors.black, fontSize: 20)));
+        onPressed: total == 0 ? null : () {},
+        child: total == 0
+            ? const Text("Zamawiam",
+                style: TextStyle(color: Colors.black, fontSize: 20))
+            : Text("Zamawiam    ${total.toStringAsFixed(2)} ZŁ",
+                style: const TextStyle(color: Colors.black, fontSize: 20)));
   }
 }

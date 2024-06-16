@@ -1,8 +1,10 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
 import 'package:flutter/material.dart';
 
 class CartEntryWidget extends StatelessWidget {
-  const CartEntryWidget({super.key});
+  final CartItem item;
+  const CartEntryWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -18,35 +20,37 @@ class CartEntryWidget extends StatelessWidget {
                 width: 150,
                 color: AppColors.shimmerGrey,
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 22, top: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 22, top: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Produkt A",
-                      style: TextStyle(fontSize: 20),
+                      item.title,
+                      style: const TextStyle(fontSize: 20),
                     ),
                     Text(
-                      "Atrybut 1 / Atrybut 2",
-                      style: TextStyle(fontSize: 16),
+                      item.subtitle,
+                      style: const TextStyle(
+                          fontSize: 16, color: AppColors.darkGrey),
                     ),
                   ],
                 ),
               ),
               const Spacer(),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "50.0 ZŁ",
-                  style: TextStyle(fontSize: 20),
+                  "${item.price} ZŁ",
+                  style: const TextStyle(fontSize: 20),
                 ),
               ),
               SizedBox(
                 width: 110,
                 child: TextFormField(
                   textAlign: TextAlign.center,
-                  initialValue: "1",
+                  initialValue: item.quantity.toString(),
+                  readOnly: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
