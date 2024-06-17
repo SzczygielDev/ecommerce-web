@@ -34,7 +34,7 @@ class CatalogItemWidget extends StatelessWidget {
               ],
             ),
             InkWell(
-              onTap: () {},
+              onTap: onTapped,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
