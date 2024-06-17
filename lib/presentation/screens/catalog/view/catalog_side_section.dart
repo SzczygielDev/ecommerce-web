@@ -11,6 +11,7 @@ class CatalogSideSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Spacer(),
           OutlinedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,

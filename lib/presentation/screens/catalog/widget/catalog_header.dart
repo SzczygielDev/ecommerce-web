@@ -7,31 +7,34 @@ class CatalogHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          textBaseline: TextBaseline.alphabetic,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          children: [
-            Text(
-              "Polecane",
-              style: TextStyle(
-                fontSize: 32,
+        Container(
+          height: 48,
+          child: const Row(
+            textBaseline: TextBaseline.alphabetic,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            children: [
+              Text(
+                "Polecane",
+                style: TextStyle(
+                  fontSize: 32,
+                ),
               ),
-            ),
-            SizedBox(
-              width: 30,
-            ),
-            Text(
-              "Kategoria A > Kategoria B > Kategoria C",
-              style: TextStyle(
-                fontSize: 14,
+              SizedBox(
+                width: 30,
               ),
-            ),
-          ],
+              Text(
+                "Kategoria A > Kategoria B > Kategoria C",
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
-        Divider(
+        const Divider(
           color: Colors.black,
           height: 1,
         )

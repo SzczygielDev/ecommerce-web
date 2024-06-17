@@ -66,9 +66,6 @@ class CatalogMainSection extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(
-            height: 150,
-          )
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +44,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                       }
                     : null,
                 child: const Text("Dodaj do koszyka",
-                    style: TextStyle(color: Colors.black, fontSize: 20)))),
+                    style: TextStyle(color: AppColors.main, fontSize: 20)))),
         const SizedBox(
           width: 15,
         ),

@@ -47,11 +47,13 @@ class CartSummarySection extends StatelessWidget {
                           children: [
                             const Text(
                               "CAŁOŚĆ",
-                              style: TextStyle(fontSize: 24),
+                              style: TextStyle(
+                                  fontSize: 24, color: AppColors.main),
                             ),
                             Text(
                               "${finalPrice.toStringAsFixed(2)} ZŁ",
-                              style: const TextStyle(fontSize: 24),
+                              style: const TextStyle(
+                                  fontSize: 24, color: AppColors.main),
                             ),
                           ],
                         ),

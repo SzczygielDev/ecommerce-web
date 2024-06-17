@@ -20,7 +20,9 @@ class _AddedToCartOverlayState extends State<AddedToCartOverlay> {
           setState(() {
             showingAddedToCartOverlay = true;
           });
-          Future.delayed(const Duration(seconds: 5)).then(
+          Future.delayed(const Duration(seconds: 5))
+              .catchError((error) {})
+              .then(
             (value) {
               setState(() {
                 showingAddedToCartOverlay = false;
@@ -37,20 +39,20 @@ class _AddedToCartOverlayState extends State<AddedToCartOverlay> {
           child: Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 40, right: 40),
+                padding: const EdgeInsets.only(bottom: 70, right: 70),
                 child: Container(
                     decoration: BoxDecoration(
                         color: AppColors.lightGrey,
                         border: Border.all(color: Colors.black)),
                     child: const Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             "Dodano do koszyka",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 24),
                           ),
                           SizedBox(
                             width: 20,

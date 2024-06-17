@@ -19,7 +19,8 @@ class GlobalAppBar extends AppBar {
                   },
                   child: Text(
                     'ECOMMERCE',
-                    style: GoogleFonts.koulen(fontSize: 62),
+                    style:
+                        GoogleFonts.koulen(fontSize: 62, color: AppColors.main),
                   ),
                 ),
                 Row(

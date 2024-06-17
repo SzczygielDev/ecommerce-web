@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/config/locator.dart';
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: router,
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 160, 250, 111)),
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.main),
           textTheme: GoogleFonts.latoTextTheme(textTheme),
           useMaterial3: true),
       title: 'Ecommerce',

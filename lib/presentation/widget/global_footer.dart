@@ -20,7 +20,8 @@ class GlobalFooter extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'ECOMMERCE',
-                  style: GoogleFonts.koulen(fontSize: 30),
+                  style:
+                      GoogleFonts.koulen(fontSize: 30, color: AppColors.main),
                 ),
                 const Text(
                   'Strona główna',
