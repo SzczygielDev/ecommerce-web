@@ -36,4 +36,11 @@ class Order {
         "payment": payment.toJson(),
         "delivery": delivery.toJson(),
       };
+
+  bool canBeCanceled() {
+    return status == OrderStatus.created ||
+        status == OrderStatus.accepted ||
+        status == OrderStatus.inProgress ||
+        status == OrderStatus.ready;
+  }
 }

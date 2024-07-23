@@ -1,5 +1,11 @@
+import 'package:ecommerce_web/domain/delivery/delivery_status.dart';
 import 'package:ecommerce_web/domain/order/order.dart';
+import 'package:ecommerce_web/domain/order/order_status.dart';
+import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/order/widget/order_cancel_button.dart';
+import 'package:ecommerce_web/presentation/screens/order/widget/order_payment_button.dart';
+import 'package:ecommerce_web/presentation/screens/order/widget/order_refund_button.dart';
 import 'package:flutter/material.dart';
 
 class OrderItemWidget extends StatelessWidget {
@@ -23,19 +29,27 @@ class OrderItemWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Zamówienie NR.${order.id.value}",
+                        "Zamówienie nr. ${order.id.value.substring(0, 8)}",
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(
                         width: 20,
                       ),
-                      Text(order.status.displayName().toUpperCase(),
-                          style: TextStyle(fontSize: 24)),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(order.delivery.status.displayName().toUpperCase(),
-                          style: TextStyle(fontSize: 24)),
+                      Builder(
+                        builder: (context) {
+                          if (order.status == OrderStatus.sent) {
+                            return Text(
+                                order.delivery.status
+                                    .displayName()
+                                    .toUpperCase(),
+                                style: TextStyle(fontSize: 24));
+                          } else {
+                            return Text(
+                                order.status.displayName().toUpperCase(),
+                                style: TextStyle(fontSize: 24));
+                          }
+                        },
+                      )
                     ],
                   ),
                   Text(order.createdAt.toLocal().toString(),
@@ -43,21 +57,33 @@ class OrderItemWidget extends StatelessWidget {
                   SizedBox(
                     height: 40,
                   ),
-                  OutlinedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: Size(250, 40),
-                      ),
-                      onPressed: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Text("Anuluj zamówienie",
-                            style:
-                                TextStyle(color: AppColors.main, fontSize: 20)),
-                      ))
+                  Builder(
+                    builder: (context) {
+                      if (order.payment.status != PaymentStatus.paid) {
+                        return OrderPaymentButton();
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
+                  Builder(
+                    builder: (context) {
+                      if (order.canBeCanceled()) {
+                        return OrderCancelButton();
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
+                  Builder(
+                    builder: (context) {
+                      if (order.delivery.status == DeliveryStatus.delivered) {
+                        return OrderRefundButton();
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
