@@ -111,7 +111,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   Future<void> _submitCart(CartSubmitEvent event, Emitter emit) async {
-    await cartRepository.submitCart();
+    final selectedDeliveryProvider = state.selectedDeliveryProvider;
+
+    if (selectedDeliveryProvider == null) {
+      return;
+    }
+
+    await cartRepository.submitCart(selectedDeliveryProvider);
   }
 
   Future<void> _selectDeliveryProvider(
