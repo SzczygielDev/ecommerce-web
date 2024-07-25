@@ -1,4 +1,4 @@
 class AppConsts {
   static String apiUrl = "http://localhost:8080";
-  static String cartId = "a923f17e-bce1-4b8c-a063-97a9a034bcc5"; // dev only
+  static String cartId = "b376b02f-00b5-41fd-82f0-d98c95735946"; // dev only
 }

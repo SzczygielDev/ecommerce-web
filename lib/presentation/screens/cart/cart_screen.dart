@@ -109,6 +109,7 @@ class _CartScreenState extends State<CartScreen> {
 
                               case CartLoadingState.loaded:
                                 return SubmitCartButton(
+                                  enabled: state.canSubmit(),
                                   total: state.cartTotal!,
                                 );
                             }

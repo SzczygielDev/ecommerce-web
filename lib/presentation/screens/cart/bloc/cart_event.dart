@@ -15,3 +15,9 @@ class RemoveItemFromCartEvent extends CartEvent {
 }
 
 class CartSubmitEvent extends CartEvent {}
+
+class SelectDeliveryProviderEvent extends CartEvent {
+  final DeliveryProviderKey deliveryProviderKey;
+
+  const SelectDeliveryProviderEvent({required this.deliveryProviderKey});
+}

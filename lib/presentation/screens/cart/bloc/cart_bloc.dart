@@ -2,11 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
+import 'package:ecommerce_web/domain/delivery/delivery_provider_key.dart';
+import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/client_data.dart';
-import 'package:ecommerce_web/presentation/screens/cart/model/delivery_data.dart';
 import 'package:equatable/equatable.dart';
 
 part 'cart_event.dart';
@@ -15,15 +17,21 @@ part 'cart_state.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   final CartRepositoryAbstraction cartRepository;
   final ProductRepositoryAbstraction productRepository;
-  CartBloc({required this.cartRepository, required this.productRepository})
+  final DeliveryRepositoryAbstraction deliveryRepository;
+  CartBloc(
+      {required this.cartRepository,
+      required this.productRepository,
+      required this.deliveryRepository})
       : super(const CartState()) {
     on<CartOnLoadEvent>(_cartOnLoad);
     on<RemoveItemFromCartEvent>(_removeItemFromCart);
     on<CartSubmitEvent>(_submitCart);
+    on<SelectDeliveryProviderEvent>(_selectDeliveryProvider);
   }
 
   Future<void> _cartOnLoad(CartOnLoadEvent event, Emitter emit) async {
     final cart = await cartRepository.getCart();
+    final deliveryProviders = await deliveryRepository.getDeliveryProviders();
 
     if (cart == null) {
       emit(state.copyWith(loadingState: CartLoadingState.error));
@@ -45,7 +53,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             addressFirstLine: "Wiejska 4",
             addressSecondLine: "00-902 Warszawa",
             phoneNumber: "+48 123 123 123"),
-        deliveryData: DeliveryData(value: "Punkt odbioru WAW23"),
+        deliveryProviders: deliveryProviders,
         cartTotal: cart.total));
   }
 
@@ -104,5 +112,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   Future<void> _submitCart(CartSubmitEvent event, Emitter emit) async {
     await cartRepository.submitCart();
+  }
+
+  Future<void> _selectDeliveryProvider(
+      SelectDeliveryProviderEvent event, Emitter emit) async {
+    final foundProvider = state.deliveryProviders.firstWhereOrNull(
+      (provider) => provider.key == event.deliveryProviderKey,
+    );
+    emit(state.copyWith(selectedDeliveryProvider: foundProvider));
   }
 }

@@ -1,5 +1,3 @@
-import 'package:ecommerce_web/config/locator.dart';
-import 'package:ecommerce_web/infrastructure/repository/order/order_repository.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +35,6 @@ class GlobalAppBar extends AppBar {
                     ),
                     InkWell(
                         onTap: () {
-                          OrderRepository().getOrders();
                           context.go('/orders');
                         },
                         child: Text("zamówienia")),

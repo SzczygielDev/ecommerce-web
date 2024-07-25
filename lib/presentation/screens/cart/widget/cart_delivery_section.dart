@@ -1,7 +1,9 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/cart/widget/cart_delivery_provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CartDeliverySection extends StatefulWidget {
   const CartDeliverySection({super.key});
@@ -27,14 +29,12 @@ class _CartDeliverySectionState extends State<CartDeliverySection> {
                     "Dostawa",
                     style: TextStyle(fontSize: 22),
                   ),
-                  Text(
-                    "zmień",
-                    style: TextStyle(
-                        fontSize: 22, decoration: TextDecoration.underline),
-                  )
                 ],
               ),
               const Divider(),
+              const SizedBox(
+                height: 12,
+              ),
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   switch (state.loadingState) {
@@ -42,9 +42,13 @@ class _CartDeliverySectionState extends State<CartDeliverySection> {
                     case CartLoadingState.error:
                       return const SizedBox.shrink();
                     case CartLoadingState.loaded:
-                      return Text(
-                        state.deliveryData!.value,
-                        style: const TextStyle(fontSize: 16),
+                      return Column(
+                        children: state.deliveryProviders.map((provider) {
+                          final bool selected =
+                              provider == state.selectedDeliveryProvider;
+                          return CartDeliveryProviderWidget(
+                              provider: provider, selected: selected);
+                        }).toList(),
                       );
                   }
                 },
