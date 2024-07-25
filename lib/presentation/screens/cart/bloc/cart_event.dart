@@ -21,3 +21,10 @@ class SelectDeliveryProviderEvent extends CartEvent {
 
   const SelectDeliveryProviderEvent({required this.deliveryProviderKey});
 }
+
+class SelectPaymentServiceProviderEvent extends CartEvent {
+  final PaymentServiceProviderKey paymentServiceProviderKey;
+
+  const SelectPaymentServiceProviderEvent(
+      {required this.paymentServiceProviderKey});
+}

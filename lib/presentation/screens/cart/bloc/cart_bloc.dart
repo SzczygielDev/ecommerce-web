@@ -5,6 +5,9 @@ import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider_key.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
+import 'package:ecommerce_web/domain/payment/payment_service_provider_key.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
@@ -18,21 +21,25 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final CartRepositoryAbstraction cartRepository;
   final ProductRepositoryAbstraction productRepository;
   final DeliveryRepositoryAbstraction deliveryRepository;
+  final PaymentRepositoryAbstraction paymentRepository;
   CartBloc(
       {required this.cartRepository,
       required this.productRepository,
-      required this.deliveryRepository})
+      required this.deliveryRepository,
+      required this.paymentRepository})
       : super(const CartState()) {
     on<CartOnLoadEvent>(_cartOnLoad);
     on<RemoveItemFromCartEvent>(_removeItemFromCart);
     on<CartSubmitEvent>(_submitCart);
     on<SelectDeliveryProviderEvent>(_selectDeliveryProvider);
+    on<SelectPaymentServiceProviderEvent>(_selectPaymentServiceProvider);
   }
 
   Future<void> _cartOnLoad(CartOnLoadEvent event, Emitter emit) async {
     final cart = await cartRepository.getCart();
     final deliveryProviders = await deliveryRepository.getDeliveryProviders();
-
+    final paymentServiceProviders =
+        await paymentRepository.getPaymentServiceProviders();
     if (cart == null) {
       emit(state.copyWith(loadingState: CartLoadingState.error));
       return;
@@ -47,6 +54,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(state.copyWith(
         loadingState: CartLoadingState.loaded,
         items: items.nonNulls.toList(),
+        paymentProviders: paymentServiceProviders,
         clientData: ClientData(
             firstName: "Jan",
             lastName: "Nowak",
@@ -112,12 +120,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   Future<void> _submitCart(CartSubmitEvent event, Emitter emit) async {
     final selectedDeliveryProvider = state.selectedDeliveryProvider;
-
-    if (selectedDeliveryProvider == null) {
+    final selectedPaymentServiceProvider = state.selectedPaymentProvider;
+    if (selectedDeliveryProvider == null ||
+        selectedPaymentServiceProvider == null) {
       return;
     }
 
-    await cartRepository.submitCart(selectedDeliveryProvider);
+    await cartRepository.submitCart(
+        selectedDeliveryProvider, selectedPaymentServiceProvider);
   }
 
   Future<void> _selectDeliveryProvider(
@@ -126,5 +136,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       (provider) => provider.key == event.deliveryProviderKey,
     );
     emit(state.copyWith(selectedDeliveryProvider: foundProvider));
+  }
+
+  Future<void> _selectPaymentServiceProvider(
+      SelectPaymentServiceProviderEvent event, Emitter emit) async {
+    final foundProvider = state.paymentProviders.firstWhereOrNull(
+      (provider) => provider.key == event.paymentServiceProviderKey,
+    );
+    emit(state.copyWith(selectedPaymentProvider: foundProvider));
   }
 }

@@ -2,6 +2,7 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
@@ -68,6 +69,8 @@ final router = GoRouter(
             state,
             BlocProvider(
               create: (context) => CartBloc(
+                  paymentRepository:
+                      locator.get<PaymentRepositoryAbstraction>(),
                   deliveryRepository:
                       locator.get<DeliveryRepositoryAbstraction>(),
                   productRepository:

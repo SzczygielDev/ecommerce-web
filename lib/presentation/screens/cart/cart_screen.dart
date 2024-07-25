@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'widget/cart_payment_section.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
@@ -89,6 +91,10 @@ class _CartScreenState extends State<CartScreen> {
                           height: 26,
                         ),
                         const CartDeliverySection(),
+                        const SizedBox(
+                          height: 26,
+                        ),
+                        const CartPaymentSection(),
                         const SizedBox(
                           height: 26,
                         ),

@@ -9,14 +9,17 @@ class CartState extends Equatable {
   final DeliveryProvider? selectedDeliveryProvider;
   final double? cartTotal;
   final CartLoadingState loadingState;
-
+  final List<PaymentServiceProvider> paymentProviders;
+  final PaymentServiceProvider? selectedPaymentProvider;
   const CartState(
       {this.items,
       this.clientData,
       this.cartTotal,
       this.selectedDeliveryProvider,
       this.loadingState = CartLoadingState.loading,
-      this.deliveryProviders = const []});
+      this.deliveryProviders = const [],
+      this.paymentProviders = const [],
+      this.selectedPaymentProvider});
 
   CartState copyWith(
       {List<CartItem>? items,
@@ -24,7 +27,9 @@ class CartState extends Equatable {
       double? cartTotal,
       CartLoadingState? loadingState,
       List<DeliveryProvider>? deliveryProviders,
-      DeliveryProvider? selectedDeliveryProvider}) {
+      DeliveryProvider? selectedDeliveryProvider,
+      List<PaymentServiceProvider>? paymentProviders,
+      PaymentServiceProvider? selectedPaymentProvider}) {
     return CartState(
         clientData: clientData ?? this.clientData,
         loadingState: loadingState ?? this.loadingState,
@@ -32,11 +37,16 @@ class CartState extends Equatable {
         selectedDeliveryProvider:
             selectedDeliveryProvider ?? this.selectedDeliveryProvider,
         deliveryProviders: deliveryProviders ?? this.deliveryProviders,
-        items: items ?? this.items);
+        items: items ?? this.items,
+        selectedPaymentProvider:
+            selectedPaymentProvider ?? this.selectedPaymentProvider,
+        paymentProviders: paymentProviders ?? this.paymentProviders);
   }
 
   bool canSubmit() {
-    return selectedDeliveryProvider != null && (items?.isNotEmpty ?? false);
+    return selectedDeliveryProvider != null &&
+        (items?.isNotEmpty ?? false) &&
+        selectedPaymentProvider != null;
   }
 
   @override
@@ -46,6 +56,8 @@ class CartState extends Equatable {
         deliveryProviders,
         cartTotal,
         loadingState,
-        selectedDeliveryProvider
+        selectedDeliveryProvider,
+        paymentProviders,
+        selectedPaymentProvider
       ];
 }

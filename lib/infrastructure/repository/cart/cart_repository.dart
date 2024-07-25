@@ -4,6 +4,7 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
+import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/mapper/cart_mapper.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/model/add_item_to_cart_request.dart';
@@ -53,12 +54,13 @@ class CartRepository extends CartRepositoryAbstraction {
   }
 
   @override
-  Future<bool> submitCart(DeliveryProvider deliveryProvider) async {
+  Future<bool> submitCart(DeliveryProvider deliveryProvider,
+      PaymentServiceProvider paymentServiceProvider) async {
     try {
       final response = await dio.post("/carts/${AppConsts.cartId}/submit",
           data: CartSubmitRequest(
                   deliveryProvider: deliveryProvider.key.key,
-                  paymentServiceProvider: "MOCK_PSP")
+                  paymentServiceProvider: paymentServiceProvider.key.key)
               .toJson());
 
       return true;
