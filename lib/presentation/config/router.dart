@@ -1,7 +1,9 @@
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/development/development_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/payment/payment_id.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
@@ -10,6 +12,8 @@ import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/home/home_screen.dart';
+import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/mock_payment/mock_payment_screen.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
@@ -64,11 +68,14 @@ final router = GoRouter(
     GoRoute(
       path: '/cart',
       pageBuilder: (context, state) {
+        final params = state.uri.queryParameters;
+        final isPaymentRedirect = params.containsKey("paymentRedirect");
         return buildPageWithTransition(
             context,
             state,
             BlocProvider(
               create: (context) => CartBloc(
+                  orderRepository: locator.get<OrderRepositoryAbstraction>(),
                   paymentRepository:
                       locator.get<PaymentRepositoryAbstraction>(),
                   deliveryRepository:
@@ -76,7 +83,7 @@ final router = GoRouter(
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>(),
                   cartRepository: locator.get<CartRepositoryAbstraction>())
-                ..add(CartOnLoadEvent()),
+                ..add(CartOnLoadEvent(isPaymentRedirect: isPaymentRedirect)),
               child: CartScreen(),
             ));
       },
@@ -93,6 +100,24 @@ final router = GoRouter(
                 ..add(OrderOnLoadEvent()),
               child: OrderScreen(),
             ));
+      },
+    ),
+    GoRoute(
+      name: "mockPayment",
+      path: '/mockPayment/:paymentId',
+      pageBuilder: (context, state) {
+        var paymentId = state.pathParameters["paymentId"];
+
+        return buildPageWithTransition(
+            context,
+            state,
+            BlocProvider(
+                create: (context) => MockPaymentBloc(
+                    developmentRepository:
+                        locator.get<DevelopmentRepositoryAbstraction>())
+                  ..add(
+                      MockPaymentOnLoadEvent(paymentId: PaymentId(paymentId!))),
+                child: MockPaymentScreen()));
       },
     ),
   ],

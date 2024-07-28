@@ -2,6 +2,8 @@ part of 'cart_bloc.dart';
 
 enum CartLoadingState { loading, loaded, error }
 
+enum CartSubmitState { idle, inProgress, redirect, done, error }
+
 class CartState extends Equatable {
   final List<CartItem>? items;
   final ClientData? clientData;
@@ -11,6 +13,8 @@ class CartState extends Equatable {
   final CartLoadingState loadingState;
   final List<PaymentServiceProvider> paymentProviders;
   final PaymentServiceProvider? selectedPaymentProvider;
+  final CartSubmitState cartSubmitState;
+  final String? redirectUrl;
   const CartState(
       {this.items,
       this.clientData,
@@ -19,7 +23,9 @@ class CartState extends Equatable {
       this.loadingState = CartLoadingState.loading,
       this.deliveryProviders = const [],
       this.paymentProviders = const [],
-      this.selectedPaymentProvider});
+      this.selectedPaymentProvider,
+      this.cartSubmitState = CartSubmitState.idle,
+      this.redirectUrl});
 
   CartState copyWith(
       {List<CartItem>? items,
@@ -29,7 +35,9 @@ class CartState extends Equatable {
       List<DeliveryProvider>? deliveryProviders,
       DeliveryProvider? selectedDeliveryProvider,
       List<PaymentServiceProvider>? paymentProviders,
-      PaymentServiceProvider? selectedPaymentProvider}) {
+      PaymentServiceProvider? selectedPaymentProvider,
+      CartSubmitState? cartSubmitState,
+      String? redirectUrl}) {
     return CartState(
         clientData: clientData ?? this.clientData,
         loadingState: loadingState ?? this.loadingState,
@@ -40,10 +48,12 @@ class CartState extends Equatable {
         items: items ?? this.items,
         selectedPaymentProvider:
             selectedPaymentProvider ?? this.selectedPaymentProvider,
-        paymentProviders: paymentProviders ?? this.paymentProviders);
+        paymentProviders: paymentProviders ?? this.paymentProviders,
+        cartSubmitState: cartSubmitState ?? this.cartSubmitState,
+        redirectUrl: redirectUrl ?? this.redirectUrl);
   }
 
-  bool canSubmit() {
+  bool get canSubmit {
     return selectedDeliveryProvider != null &&
         (items?.isNotEmpty ?? false) &&
         selectedPaymentProvider != null;
@@ -58,6 +68,8 @@ class CartState extends Equatable {
         loadingState,
         selectedDeliveryProvider,
         paymentProviders,
-        selectedPaymentProvider
+        selectedPaymentProvider,
+        cartSubmitState,
+        redirectUrl
       ];
 }

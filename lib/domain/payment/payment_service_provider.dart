@@ -1,3 +1,5 @@
+import 'package:ecommerce_web/domain/payment/payment_service_providers.dart';
+
 import 'payment_service_provider_key.dart';
 
 class PaymentServiceProvider {
@@ -14,4 +16,7 @@ class PaymentServiceProvider {
             key: PaymentServiceProviderKey(key: json['paymentServiceProvider']),
             displayName: json['displayName'],
             logoUrl: json['logoUrl']);
+
+  PaymentServiceProviders? get mappedPSP =>
+      PaymentServiceProviders.fromString(key.key);
 }

@@ -4,34 +4,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubmitCartButton extends StatelessWidget {
-  final bool enabled;
-  final double total;
-  const SubmitCartButton(
-      {super.key, required this.total, required this.enabled});
-
-  const SubmitCartButton.disabled({super.key})
-      : total = 0,
-        enabled = false;
+  const SubmitCartButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          minimumSize: const Size.fromHeight(80),
-        ),
-        onPressed: enabled
-            ? () {
-                context.read<CartBloc>().add(CartSubmitEvent());
-              }
-            : null,
-        child: total == 0
-            ? const Text("Zamawiam",
-                style: TextStyle(color: AppColors.main, fontSize: 20))
-            : Text("Zamawiam    ${total.toStringAsFixed(2)} ZŁ",
-                style: const TextStyle(color: AppColors.main, fontSize: 20)));
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        final loaded = state.loadingState == CartLoadingState.loaded;
+        final total = state.cartTotal;
+        final submitState = state.cartSubmitState;
+        final enabled =
+            state.canSubmit && loaded && submitState == CartSubmitState.idle;
+
+        return OutlinedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              minimumSize: const Size.fromHeight(80),
+            ),
+            onPressed: enabled
+                ? () {
+                    context.read<CartBloc>().add(CartSubmitEvent());
+                  }
+                : null,
+            child: Builder(
+              builder: (context) {
+                if (submitState != CartSubmitState.idle) {
+                  return const CircularProgressIndicator();
+                }
+                if (total == null) {
+                  return const Text("Zamawiam",
+                      style: TextStyle(color: AppColors.main, fontSize: 20));
+                } else {
+                  return Text("Zamawiam    ${total.toStringAsFixed(2)} ZŁ",
+                      style:
+                          const TextStyle(color: AppColors.main, fontSize: 20));
+                }
+              },
+            ));
+      },
+    );
   }
 }

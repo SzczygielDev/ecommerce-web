@@ -1,13 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:ecommerce_web/config/app_consts.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
+import 'package:ecommerce_web/domain/cart/cart_id.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider_key.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider_key.dart';
+import 'package:ecommerce_web/domain/payment/payment_service_providers.dart';
+import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
@@ -22,12 +27,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final ProductRepositoryAbstraction productRepository;
   final DeliveryRepositoryAbstraction deliveryRepository;
   final PaymentRepositoryAbstraction paymentRepository;
-  CartBloc(
-      {required this.cartRepository,
-      required this.productRepository,
-      required this.deliveryRepository,
-      required this.paymentRepository})
-      : super(const CartState()) {
+  final OrderRepositoryAbstraction orderRepository;
+  CartBloc({
+    required this.cartRepository,
+    required this.productRepository,
+    required this.deliveryRepository,
+    required this.paymentRepository,
+    required this.orderRepository,
+  }) : super(const CartState()) {
     on<CartOnLoadEvent>(_cartOnLoad);
     on<RemoveItemFromCartEvent>(_removeItemFromCart);
     on<CartSubmitEvent>(_submitCart);
@@ -49,6 +56,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (items == null) {
       emit(state.copyWith(loadingState: CartLoadingState.error));
       return;
+    }
+
+    if (event.isPaymentRedirect) {
+      var order =
+          await orderRepository.getOrderByCartId(CartId(AppConsts.cartId));
+      PaymentStatus? paymentStatus = order?.payment.status;
+
+      var iteration = 0;
+      while (paymentStatus == PaymentStatus.unpaid &&
+          iteration <= AppConsts.paymentWaitingRetries) {
+        await Future.delayed(AppConsts.paymentWaitingDuration);
+
+        order =
+            await orderRepository.getOrderByCartId(CartId(AppConsts.cartId));
+        paymentStatus = order?.payment.status;
+
+        iteration++;
+      }
+
+      if (paymentStatus == PaymentStatus.paid) {
+        emit(state.copyWith(cartSubmitState: CartSubmitState.done));
+      } else {
+        emit(state.copyWith(cartSubmitState: CartSubmitState.error));
+      }
     }
 
     emit(state.copyWith(
@@ -119,15 +150,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   Future<void> _submitCart(CartSubmitEvent event, Emitter emit) async {
+    emit(state.copyWith(cartSubmitState: CartSubmitState.inProgress));
     final selectedDeliveryProvider = state.selectedDeliveryProvider;
     final selectedPaymentServiceProvider = state.selectedPaymentProvider;
+
     if (selectedDeliveryProvider == null ||
         selectedPaymentServiceProvider == null) {
       return;
     }
 
+    final mappedPaymentServiceProvider =
+        selectedPaymentServiceProvider.mappedPSP;
+
+    if (mappedPaymentServiceProvider == null) {
+      return;
+    }
+
     await cartRepository.submitCart(
         selectedDeliveryProvider, selectedPaymentServiceProvider);
+
+    final order =
+        await orderRepository.getOrderByCartId(CartId(AppConsts.cartId));
+    emit(state.copyWith(
+        cartSubmitState: CartSubmitState.redirect,
+        redirectUrl: order!.payment.paymentURL));
   }
 
   Future<void> _selectDeliveryProvider(

@@ -1,4 +1,7 @@
 class AppConsts {
   static String apiUrl = "http://localhost:8080";
-  static String cartId = "b376b02f-00b5-41fd-82f0-d98c95735946"; // dev only
+  static String cartId = "8ad53a36-58e5-49e1-9424-c2610b7191d6"; // dev only
+
+  static int paymentWaitingRetries = 5;
+  static Duration paymentWaitingDuration = const Duration(seconds: 5);
 }
