@@ -15,6 +15,7 @@ import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/home/home_screen.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/mock_payment_screen.dart';
+import 'package:ecommerce_web/presentation/screens/not_found/not_found_screen.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
 import 'package:ecommerce_web/presentation/screens/payment_result/bloc/payment_result_bloc.dart';
@@ -135,6 +136,12 @@ final router = GoRouter(
                 ..add(PaymentResultOnLoadEvent(orderId: OrderId(orderId!))),
               child: PaymentResultScreen(),
             ));
+      },
+    ),
+    GoRoute(
+      path: "/notFound",
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(context, state, const NotFoundScreen());
       },
     )
   ],

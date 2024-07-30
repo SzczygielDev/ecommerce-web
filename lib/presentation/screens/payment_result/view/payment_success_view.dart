@@ -25,7 +25,7 @@ class PaymentSuccessView extends StatelessWidget {
             Icon(
               Icons.done,
               size: 80,
-              color: Color.fromARGB(255, 132, 221, 153),
+              color: AppColors.green,
             ),
           ],
         ),

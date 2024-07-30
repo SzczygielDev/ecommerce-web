@@ -27,7 +27,7 @@ class PaymentErrorView extends StatelessWidget {
             Icon(
               Icons.error_outline,
               size: 80,
-              color: Color.fromARGB(255, 225, 88, 88),
+              color: AppColors.red,
             ),
           ],
         ),

@@ -25,7 +25,7 @@ class _PaymentResultScreenState extends State<PaymentResultScreen> {
                   builder: (context) {
                     switch (state.resultState) {
                       case PaymentResultLoadingState.loading:
-                        return const CircularProgressIndicator();
+                        return const Center(child: CircularProgressIndicator());
                       case PaymentResultLoadingState.success:
                         return const PaymentSuccessView();
                       case PaymentResultLoadingState.error:
