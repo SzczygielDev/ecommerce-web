@@ -2,6 +2,7 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/development/development_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/order/order_id.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_id.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
@@ -16,6 +17,8 @@ import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_paymen
 import 'package:ecommerce_web/presentation/screens/mock_payment/mock_payment_screen.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
+import 'package:ecommerce_web/presentation/screens/payment_result/bloc/payment_result_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/payment_result/payment_result_screen.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/product/product_screen.dart';
 import 'package:flutter/material.dart';
@@ -68,8 +71,6 @@ final router = GoRouter(
     GoRoute(
       path: '/cart',
       pageBuilder: (context, state) {
-        final params = state.uri.queryParameters;
-        final isPaymentRedirect = params.containsKey("paymentRedirect");
         return buildPageWithTransition(
             context,
             state,
@@ -83,7 +84,7 @@ final router = GoRouter(
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>(),
                   cartRepository: locator.get<CartRepositoryAbstraction>())
-                ..add(CartOnLoadEvent(isPaymentRedirect: isPaymentRedirect)),
+                ..add(CartOnLoadEvent()),
               child: CartScreen(),
             ));
       },
@@ -120,6 +121,22 @@ final router = GoRouter(
                 child: MockPaymentScreen()));
       },
     ),
+    GoRoute(
+      path: "/paymentResult/:orderId",
+      pageBuilder: (context, state) {
+        var orderId = state.pathParameters["orderId"];
+
+        return buildPageWithTransition(
+            context,
+            state,
+            BlocProvider(
+              create: (context) => PaymentResultBloc(
+                  orderRepository: locator.get<OrderRepositoryAbstraction>())
+                ..add(PaymentResultOnLoadEvent(orderId: OrderId(orderId!))),
+              child: PaymentResultScreen(),
+            ));
+      },
+    )
   ],
 );
 

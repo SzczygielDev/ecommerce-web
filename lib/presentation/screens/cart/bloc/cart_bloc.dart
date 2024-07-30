@@ -58,30 +58,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       return;
     }
 
-    if (event.isPaymentRedirect) {
-      var order =
-          await orderRepository.getOrderByCartId(CartId(AppConsts.cartId));
-      PaymentStatus? paymentStatus = order?.payment.status;
-
-      var iteration = 0;
-      while (paymentStatus == PaymentStatus.unpaid &&
-          iteration <= AppConsts.paymentWaitingRetries) {
-        await Future.delayed(AppConsts.paymentWaitingDuration);
-
-        order =
-            await orderRepository.getOrderByCartId(CartId(AppConsts.cartId));
-        paymentStatus = order?.payment.status;
-
-        iteration++;
-      }
-
-      if (paymentStatus == PaymentStatus.paid) {
-        emit(state.copyWith(cartSubmitState: CartSubmitState.done));
-      } else {
-        emit(state.copyWith(cartSubmitState: CartSubmitState.error));
-      }
-    }
-
     emit(state.copyWith(
         loadingState: CartLoadingState.loaded,
         items: items.nonNulls.toList(),
@@ -93,6 +69,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             addressSecondLine: "00-902 Warszawa",
             phoneNumber: "+48 123 123 123"),
         deliveryProviders: deliveryProviders,
+        cartId: cart.id,
         cartTotal: cart.total));
   }
 
@@ -169,8 +146,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     await cartRepository.submitCart(
         selectedDeliveryProvider, selectedPaymentServiceProvider);
 
-    final order =
-        await orderRepository.getOrderByCartId(CartId(AppConsts.cartId));
+    final order = await orderRepository.getOrderByCartId(state.cartId!);
     emit(state.copyWith(
         cartSubmitState: CartSubmitState.redirect,
         redirectUrl: order!.payment.paymentURL));

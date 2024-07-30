@@ -8,8 +8,7 @@ sealed class CartEvent extends Equatable {
 }
 
 class CartOnLoadEvent extends CartEvent {
-  final bool isPaymentRedirect;
-  const CartOnLoadEvent({required this.isPaymentRedirect});
+  const CartOnLoadEvent();
 }
 
 class RemoveItemFromCartEvent extends CartEvent {

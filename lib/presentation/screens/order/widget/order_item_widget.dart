@@ -8,6 +8,8 @@ import 'package:ecommerce_web/presentation/screens/order/widget/order_payment_bu
 import 'package:ecommerce_web/presentation/screens/order/widget/order_refund_button.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:html' as html;
+
 class OrderItemWidget extends StatelessWidget {
   final Order order;
   const OrderItemWidget({super.key, required this.order});
@@ -60,7 +62,12 @@ class OrderItemWidget extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       if (order.payment.status != PaymentStatus.paid) {
-                        return OrderPaymentButton();
+                        return OrderPaymentButton(
+                          onPressed: () {
+                            html.window.open(
+                                order.payment.paymentURL.toString(), '_self');
+                          },
+                        );
                       } else {
                         return SizedBox.shrink();
                       }

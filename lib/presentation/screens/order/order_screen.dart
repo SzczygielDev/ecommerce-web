@@ -2,7 +2,7 @@ import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/view/order_error_view.dart';
 import 'package:ecommerce_web/presentation/screens/order/view/order_loaded_view.dart';
 import 'package:ecommerce_web/presentation/screens/order/view/order_loading_view.dart';
-import 'package:ecommerce_web/presentation/widget/generic_page.dart';
+import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +21,7 @@ class _OrderScreenState extends State<OrderScreen> {
         return state.loadingState;
       },
       builder: (context, state) {
-        return GenericPage(
+        return ScrollableGenericPage(
           padding: const EdgeInsets.only(
             left: 150,
             right: 150,

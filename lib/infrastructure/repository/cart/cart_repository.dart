@@ -18,7 +18,7 @@ class CartRepository extends CartRepositoryAbstraction {
   @override
   Future<Cart?> addProductToCart(ProductId productId, int quantity) async {
     try {
-      final response = await dio.post("/carts/${AppConsts.cartId}/items",
+      final response = await dio.post("/carts/items",
           data: AddItemToCartRequest(
                   productId: productId.value, quantity: quantity)
               .toJson());
@@ -32,7 +32,7 @@ class CartRepository extends CartRepositoryAbstraction {
   @override
   Future<Cart?> getCart() async {
     try {
-      final response = await dio.get("/carts/${AppConsts.cartId}");
+      final response = await dio.get("/carts");
 
       return CartDto.fromJson(response.data).toModel();
     } on Exception catch (ex) {
@@ -44,7 +44,7 @@ class CartRepository extends CartRepositoryAbstraction {
   Future<Cart?> removeProductFromCart(ProductId productId) async {
     try {
       final response = await dio.delete(
-        "/carts/${AppConsts.cartId}/items/${productId.value}",
+        "/carts/items/${productId.value}",
       );
 
       return CartDto.fromJson(response.data).toModel();
@@ -57,7 +57,7 @@ class CartRepository extends CartRepositoryAbstraction {
   Future<bool> submitCart(DeliveryProvider deliveryProvider,
       PaymentServiceProvider paymentServiceProvider) async {
     try {
-      final response = await dio.post("/carts/${AppConsts.cartId}/submit",
+      final response = await dio.post("/carts/submit",
           data: CartSubmitRequest(
                   deliveryProvider: deliveryProvider.key.key,
                   paymentServiceProvider: paymentServiceProvider.key.key)

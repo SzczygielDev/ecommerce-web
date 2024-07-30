@@ -2,9 +2,10 @@ part of 'cart_bloc.dart';
 
 enum CartLoadingState { loading, loaded, error }
 
-enum CartSubmitState { idle, inProgress, redirect, done, error }
+enum CartSubmitState { idle, inProgress, redirect }
 
 class CartState extends Equatable {
+  final CartId? cartId;
   final List<CartItem>? items;
   final ClientData? clientData;
   final List<DeliveryProvider> deliveryProviders;
@@ -25,7 +26,8 @@ class CartState extends Equatable {
       this.paymentProviders = const [],
       this.selectedPaymentProvider,
       this.cartSubmitState = CartSubmitState.idle,
-      this.redirectUrl});
+      this.redirectUrl,
+      this.cartId});
 
   CartState copyWith(
       {List<CartItem>? items,
@@ -37,7 +39,8 @@ class CartState extends Equatable {
       List<PaymentServiceProvider>? paymentProviders,
       PaymentServiceProvider? selectedPaymentProvider,
       CartSubmitState? cartSubmitState,
-      String? redirectUrl}) {
+      String? redirectUrl,
+      CartId? cartId}) {
     return CartState(
         clientData: clientData ?? this.clientData,
         loadingState: loadingState ?? this.loadingState,
@@ -50,7 +53,8 @@ class CartState extends Equatable {
             selectedPaymentProvider ?? this.selectedPaymentProvider,
         paymentProviders: paymentProviders ?? this.paymentProviders,
         cartSubmitState: cartSubmitState ?? this.cartSubmitState,
-        redirectUrl: redirectUrl ?? this.redirectUrl);
+        redirectUrl: redirectUrl ?? this.redirectUrl,
+        cartId: cartId ?? this.cartId);
   }
 
   bool get canSubmit {
@@ -70,6 +74,7 @@ class CartState extends Equatable {
         paymentProviders,
         selectedPaymentProvider,
         cartSubmitState,
-        redirectUrl
+        redirectUrl,
+        cartId
       ];
 }

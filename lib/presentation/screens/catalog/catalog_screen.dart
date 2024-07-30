@@ -2,7 +2,7 @@ import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dar
 import 'package:ecommerce_web/presentation/screens/catalog/view/catalog_main_section.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/view/catalog_side_section.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/widget/catalog_header.dart';
-import 'package:ecommerce_web/presentation/widget/generic_page.dart';
+import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +17,7 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
-    return GenericPage(
+    return ScrollableGenericPage(
       padding: const EdgeInsets.only(
         left: 50,
         right: 50,

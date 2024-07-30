@@ -2,7 +2,7 @@ import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dar
 import 'package:ecommerce_web/presentation/screens/product/view/product_main_section.dart';
 import 'package:ecommerce_web/presentation/screens/product/view/product_photo_section.dart';
 import 'package:ecommerce_web/presentation/screens/product/widget/added_to_cart_overlay.dart';
-import 'package:ecommerce_web/presentation/widget/generic_page.dart';
+import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +21,7 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) => true,
-      child: GenericPage(
+      child: ScrollableGenericPage(
           overlay: const AddedToCartOverlay(),
           padding: const EdgeInsets.only(
             left: 50,
