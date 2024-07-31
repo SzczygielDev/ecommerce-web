@@ -7,6 +7,7 @@ class ScrollableGenericPage extends StatelessWidget {
   final Widget child;
   final Widget? overlay;
   final EdgeInsetsGeometry? padding;
+  final AppBar? appBar;
   const ScrollableGenericPage(
       {super.key,
       required this.child,
@@ -14,15 +15,17 @@ class ScrollableGenericPage extends StatelessWidget {
       this.padding = const EdgeInsets.only(
         left: 50,
         right: 50,
-      )});
+      ),
+      this.appBar});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: GlobalAppBar(
-        context: context,
-      ),
+      appBar: appBar ??
+          GlobalAppBar(
+            context: context,
+          ),
       body: LayoutBuilder(
         builder: (context, constraint) {
           return Stack(

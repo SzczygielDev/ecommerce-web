@@ -8,6 +8,7 @@ import 'package:ecommerce_web/domain/payment/payment_id.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
+import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
@@ -142,6 +143,13 @@ final router = GoRouter(
       path: "/notFound",
       pageBuilder: (context, state) {
         return buildPageWithTransition(context, state, const NotFoundScreen());
+      },
+    ),
+    GoRoute(
+      path: "/admin",
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(
+            context, state, const AdminDashboardScreen());
       },
     )
   ],
