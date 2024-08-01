@@ -2,6 +2,7 @@ import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/widget/global_appbar.dart';
 import 'package:ecommerce_web/presentation/widget/global_footer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ScrollableGenericPage extends StatelessWidget {
   final Widget child;
@@ -17,6 +18,33 @@ class ScrollableGenericPage extends StatelessWidget {
         right: 50,
       ),
       this.appBar});
+
+  ScrollableGenericPage.withSideMenu(
+      {super.key,
+      required Widget child,
+      required Widget sideMenu,
+      required int sideMenuFlex,
+      required int contentFlex,
+      required bool showSideMenu,
+      this.padding = const EdgeInsets.only(
+        left: 50,
+        right: 50,
+      ),
+      this.appBar})
+      : child = Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: showSideMenu ? sideMenuFlex : 0,
+                child: const SizedBox.shrink(),
+              ),
+              Expanded(
+                flex: contentFlex,
+                child: child,
+              )
+            ]),
+        overlay = sideMenu;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/admin/dashboard/widget/admin_sidemenu.dart';
+import 'package:ecommerce_web/presentation/screens/admin/dashboard/widget/admin_sidemenu_expand_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/widget/order_table_header.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/widget/order_table_item.dart';
 import 'package:ecommerce_web/presentation/widget/admin/admin_appbar.dart';
@@ -28,9 +30,31 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     super.dispose();
   }
 
+  var showSideMenu = false;
+
   @override
   Widget build(BuildContext context) {
-    return ScrollableGenericPage(
+    return ScrollableGenericPage.withSideMenu(
+        sideMenuFlex: 3,
+        contentFlex: 17,
+        showSideMenu: showSideMenu,
+        sideMenu: showSideMenu
+            ? AdminSidemenu(
+                collapsed: showSideMenu,
+                onCollapsePressed: () {
+                  setState(() {
+                    showSideMenu = !showSideMenu;
+                  });
+                },
+              )
+            : AdminSidemenuExpandButton(
+                onPressed: () {
+                  setState(() {
+                    showSideMenu = !showSideMenu;
+                  });
+                },
+              ),
+        padding: EdgeInsets.zero,
         appBar: AdminAppBar(context: context),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
