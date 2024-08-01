@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminSidemenu extends StatefulWidget {
   final Function() onCollapsePressed;
@@ -44,7 +45,9 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             child: Divider(),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              context.go("/admin");
+            },
             leading: const Icon(Icons.dashboard_outlined),
             title: const Text(
               "Panel główny",
@@ -52,7 +55,9 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              context.go("/admin/orders");
+            },
             leading: const Icon(Icons.shopping_bag_outlined),
             title: const Text(
               "Zamówienia",
@@ -60,7 +65,9 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              context.go("/admin/catalog");
+            },
             leading: const Icon(Icons.category_outlined),
             title: const Text(
               "Katalog produktów",
@@ -68,7 +75,9 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              context.go("/admin/users");
+            },
             leading: const Icon(Icons.person),
             title: const Text(
               "Użytkownicy",

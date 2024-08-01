@@ -1,9 +1,9 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
-import 'package:ecommerce_web/presentation/screens/admin/dashboard/widget/button_cell.dart';
+import 'package:ecommerce_web/presentation/screens/admin/widget/button_cell.dart';
 import 'package:flutter/material.dart';
 
-import 'checkbox_cell.dart';
-import 'default_table_cell.dart';
+import '../../widget/checkbox_cell.dart';
+import '../../widget/default_table_cell.dart';
 
 class OrderTableItem extends TableRow {
   OrderTableItem({bool dark = false})

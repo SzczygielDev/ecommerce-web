@@ -8,7 +8,10 @@ import 'package:ecommerce_web/domain/payment/payment_id.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
+import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/users/admin_user_screen.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
@@ -150,6 +153,26 @@ final router = GoRouter(
       pageBuilder: (context, state) {
         return buildPageWithTransition(
             context, state, const AdminDashboardScreen());
+      },
+    ),
+    GoRoute(
+      path: "/admin/orders",
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(
+            context, state, const AdminOrderScreen());
+      },
+    ),
+    GoRoute(
+      path: "/admin/catalog",
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(
+            context, state, const AdminCatalogScreen());
+      },
+    ),
+    GoRoute(
+      path: "/admin/users",
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(context, state, const AdminUserScreen());
       },
     )
   ],

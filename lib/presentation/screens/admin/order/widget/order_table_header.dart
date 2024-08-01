@@ -1,8 +1,8 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import 'checkbox_cell.dart';
-import 'default_table_cell.dart';
+import '../../widget/checkbox_cell.dart';
+import '../../widget/default_table_cell.dart';
 
 class OrderTableHeader extends TableRow {
   OrderTableHeader()

@@ -1,14 +1,14 @@
 import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 import 'package:flutter/material.dart';
 
-class AdminDashboardScreen extends StatefulWidget {
-  const AdminDashboardScreen({super.key});
+class AdminUserScreen extends StatefulWidget {
+  const AdminUserScreen({super.key});
 
   @override
-  State<AdminDashboardScreen> createState() => _AdminDashboardScreenState();
+  State<AdminUserScreen> createState() => _AdminUserScreenState();
 }
 
-class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
+class _AdminUserScreenState extends State<AdminUserScreen> {
   @override
   Widget build(BuildContext context) {
     return const ScrollableGenericPage(
@@ -18,7 +18,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Text("Dashboard"),
+            child: Text("Users"),
           )
         ],
       ),
