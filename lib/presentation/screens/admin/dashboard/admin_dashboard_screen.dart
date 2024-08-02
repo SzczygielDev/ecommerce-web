@@ -1,4 +1,5 @@
-import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
@@ -11,17 +12,34 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    return const ScrollableGenericPage(
-        child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Text("Dashboard"),
-          )
-        ],
-      ),
-    ));
+    return DefaultAdminScreen(
+      children: [
+        const Text(
+          "Panel",
+          style: TextStyle(fontSize: 32),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Row(
+          children: [
+            Expanded(
+                child: Container(
+              height: 700,
+              color: AppColors.darkGrey,
+            )),
+            const SizedBox(
+              width: 80,
+            ),
+            Expanded(
+              child: Container(
+                height: 700,
+                color: AppColors.darkGrey,
+              ),
+            )
+          ],
+        )
+      ],
+    );
   }
 }

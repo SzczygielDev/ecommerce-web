@@ -10,7 +10,7 @@ class DefaultTableCell extends StatelessWidget {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 27, 0, 27),
+        padding: const EdgeInsets.fromLTRB(10, 27, 10, 27),
         child: Text(
           title,
           style: TextStyle(
