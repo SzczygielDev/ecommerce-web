@@ -9,6 +9,7 @@ import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/users/admin_user_screen.dart';
@@ -166,7 +167,15 @@ final router = GoRouter(
       path: "/admin/catalog",
       pageBuilder: (context, state) {
         return buildPageWithTransition(
-            context, state, const AdminCatalogScreen());
+            context,
+            state,
+            BlocProvider(
+              create: (context) => AdminCatalogBloc(
+                  productRepository:
+                      locator.get<ProductRepositoryAbstraction>())
+                ..add(AdminCatalogOnLoadEvent()),
+              child: const AdminCatalogScreen(),
+            ));
       },
     ),
     GoRoute(

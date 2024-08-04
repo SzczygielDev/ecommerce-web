@@ -6,6 +6,8 @@ import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart
 import 'package:ecommerce_web/infrastructure/repository/product/mapper/product_mapper.dart';
 import 'package:ecommerce_web/infrastructure/repository/product/model/product_dto.dart';
 
+import 'model/product_create_request.dart';
+
 class ProductRepository extends ProductRepositoryAbstraction {
   final dio = locator.get<Dio>();
   @override
@@ -35,6 +37,21 @@ class ProductRepository extends ProductRepositoryAbstraction {
   Future<Product?> findById(ProductId id) async {
     try {
       final response = await dio.get("/products/${id.value}");
+
+      return ProductDto.fromJson(response.data).toModel();
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Product?> createProduct(
+      String title, String description, double price) async {
+    try {
+      final response = await dio.post("/products",
+          data: ProductCreateRequest(
+                  title: title, description: description, price: price)
+              .toJson());
 
       return ProductDto.fromJson(response.data).toModel();
     } on Exception catch (ex) {

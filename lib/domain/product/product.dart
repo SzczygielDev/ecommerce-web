@@ -1,12 +1,12 @@
 import 'package:ecommerce_web/domain/product/product_id.dart';
 
 class Product {
-  ProductId id;
-  String title;
-  String description;
-  double price;
+  final ProductId id;
+  final String title;
+  final String description;
+  final double price;
 
-  Product(
+  const Product(
       {required this.id,
       required this.description,
       required this.title,
