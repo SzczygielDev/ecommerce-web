@@ -133,7 +133,10 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                 ...state.products.map(
                   (e) => CatalogProductTableItem(
                       product: e,
-                      onDelete: () {},
+                      onDelete: () {
+                        context.read<AdminCatalogBloc>().add(
+                            AdminCatalogDeleteProductEvent(productId: e.id));
+                      },
                       onEdit: () {},
                       onPressed: () {
                         showDialog(

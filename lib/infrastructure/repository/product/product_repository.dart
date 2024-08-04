@@ -58,4 +58,17 @@ class ProductRepository extends ProductRepositoryAbstraction {
       return null;
     }
   }
+
+  @override
+  Future<Product?> deleteProduct(ProductId id) async {
+    try {
+      final response = await dio.delete(
+        "/products/${id.value}",
+      );
+
+      return ProductDto.fromJson(response.data).toModel();
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
 }

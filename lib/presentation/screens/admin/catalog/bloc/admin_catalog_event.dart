@@ -17,3 +17,8 @@ class AdminCatalogCreateProductEvent extends AdminCatalogEvent {
   const AdminCatalogCreateProductEvent(
       {required this.description, required this.title, required this.price});
 }
+
+class AdminCatalogDeleteProductEvent extends AdminCatalogEvent {
+  final ProductId productId;
+  const AdminCatalogDeleteProductEvent({required this.productId});
+}
