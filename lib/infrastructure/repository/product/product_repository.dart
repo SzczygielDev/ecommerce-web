@@ -7,6 +7,7 @@ import 'package:ecommerce_web/infrastructure/repository/product/mapper/product_m
 import 'package:ecommerce_web/infrastructure/repository/product/model/product_dto.dart';
 
 import 'model/product_create_request.dart';
+import 'model/product_update_request.dart';
 
 class ProductRepository extends ProductRepositoryAbstraction {
   final dio = locator.get<Dio>();
@@ -65,6 +66,22 @@ class ProductRepository extends ProductRepositoryAbstraction {
       final response = await dio.delete(
         "/products/${id.value}",
       );
+
+      return ProductDto.fromJson(response.data).toModel();
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Product?> update(ProductId id, Product product) async {
+    try {
+      final response = await dio.put("/products/${id.value}",
+          data: ProductUpdateRequest(
+                  title: product.title,
+                  description: product.description,
+                  price: product.price)
+              .toJson());
 
       return ProductDto.fromJson(response.data).toModel();
     } on Exception catch (ex) {

@@ -7,4 +7,5 @@ abstract class ProductRepositoryAbstraction {
   Future<Product?> createProduct(
       String title, String description, double price);
   Future<Product?> deleteProduct(ProductId id);
+  Future<Product?> update(ProductId id, Product product);
 }

@@ -1,6 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
-import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/catalog_new_product_dialog.dart';
+import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/catalog_edit_product_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/catalog_product_item_details_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/catalog_product_table_header.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/catalog_product_table_item.dart';
@@ -110,7 +110,7 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                               context: context,
                               builder: (ctx) => BlocProvider.value(
                                 value: context.read<AdminCatalogBloc>(),
-                                child: const CatalogNewProductDialog(),
+                                child: const CatalogEditProductDialog.create(),
                               ),
                             );
                           },
@@ -137,7 +137,17 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                         context.read<AdminCatalogBloc>().add(
                             AdminCatalogDeleteProductEvent(productId: e.id));
                       },
-                      onEdit: () {},
+                      onEdit: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => BlocProvider.value(
+                            value: context.read<AdminCatalogBloc>(),
+                            child: CatalogEditProductDialog.edit(
+                              product: e,
+                            ),
+                          ),
+                        );
+                      },
                       onPressed: () {
                         showDialog(
                           context: context,

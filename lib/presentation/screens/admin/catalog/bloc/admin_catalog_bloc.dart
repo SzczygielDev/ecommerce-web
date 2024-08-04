@@ -16,6 +16,7 @@ class AdminCatalogBloc extends Bloc<AdminCatalogEvent, AdminCatalogState> {
 
       emit(state.copyWith(products: products));
     });
+
     on<AdminCatalogCreateProductEvent>((event, emit) async {
       final result = await productRepository.createProduct(
           event.title, event.description, event.price);
@@ -25,8 +26,20 @@ class AdminCatalogBloc extends Bloc<AdminCatalogEvent, AdminCatalogState> {
         emit(state.copyWith(products: products));
       }
     });
+
     on<AdminCatalogDeleteProductEvent>((event, emit) async {
       final result = await productRepository.deleteProduct(event.productId);
+
+      if (result != null) {
+        final products = await productRepository.findAll();
+        emit(state.copyWith(products: products));
+      }
+    });
+
+    on<AdminCatalogUpdateProductEvent>((event, emit) async {
+      final updatedProduct = event.updatedProduct;
+      final result =
+          await productRepository.update(updatedProduct.id, updatedProduct);
 
       if (result != null) {
         final products = await productRepository.findAll();

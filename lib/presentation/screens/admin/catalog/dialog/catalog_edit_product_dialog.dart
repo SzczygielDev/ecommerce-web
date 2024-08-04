@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_description_input.dart';
@@ -10,20 +11,68 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CatalogNewProductDialog extends StatefulWidget {
-  const CatalogNewProductDialog({super.key});
+class CatalogEditProductDialog extends StatefulWidget {
+  final bool edit;
+  final Product? product;
+  const CatalogEditProductDialog.create({super.key})
+      : product = null,
+        edit = false;
+
+  const CatalogEditProductDialog.edit({
+    super.key,
+    required this.product,
+  }) : edit = true;
 
   @override
-  State<CatalogNewProductDialog> createState() =>
-      _CatalogNewProductDialogState();
+  State<CatalogEditProductDialog> createState() =>
+      _CatalogEditProductDialogState();
 }
 
-class _CatalogNewProductDialogState extends State<CatalogNewProductDialog> {
+class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  late TextEditingController nameController;
+  late TextEditingController priceController;
+  late TextEditingController descriptionController;
+
   Uint8List? fileBytes;
+
+  @override
+  void initState() {
+    nameController =
+        TextEditingController(text: widget.edit ? widget.product!.title : null);
+    priceController = TextEditingController(
+        text: widget.edit ? widget.product!.price.toString() : null);
+    descriptionController = TextEditingController(
+        text: widget.edit ? widget.product!.description : null);
+    super.initState();
+  }
+
+  void _create() {
+    final isValid = formKey.currentState?.validate() ?? false;
+
+    if (isValid) {
+      context.read<AdminCatalogBloc>().add(AdminCatalogCreateProductEvent(
+          title: nameController.text,
+          description: descriptionController.text,
+          price: double.parse(priceController.text)));
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _save() {
+    final isValid = formKey.currentState?.validate() ?? false;
+
+    if (isValid) {
+      context.read<AdminCatalogBloc>().add(AdminCatalogUpdateProductEvent(
+          updatedProduct: Product(
+              id: widget.product!.id,
+              title: nameController.text,
+              description: descriptionController.text,
+              price: double.parse(priceController.text))));
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdminSideDialog(
@@ -33,9 +82,9 @@ class _CatalogNewProductDialogState extends State<CatalogNewProductDialog> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Nowy produkt",
-              style: TextStyle(fontSize: 36),
+            Text(
+              widget.edit ? "Edytuj produkt" : "Nowy produkt",
+              style: const TextStyle(fontSize: 36),
             ),
             const Divider(
               thickness: 1,
@@ -85,22 +134,12 @@ class _CatalogNewProductDialogState extends State<CatalogNewProductDialog> {
                   ),
                   minimumSize: const Size.fromHeight(80),
                 ),
-                onPressed: () {
-                  final isValid = formKey.currentState?.validate() ?? false;
-
-                  if (isValid) {
-                    context.read<AdminCatalogBloc>().add(
-                        AdminCatalogCreateProductEvent(
-                            title: nameController.text,
-                            description: descriptionController.text,
-                            price: double.parse(priceController.text)));
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Utwórz",
-                      style: TextStyle(color: AppColors.main, fontSize: 20)),
+                onPressed: widget.edit ? _save : _create,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(widget.edit ? "Zapisz" : "Utwórz",
+                      style:
+                          const TextStyle(color: AppColors.main, fontSize: 20)),
                 ))
           ],
         ),
