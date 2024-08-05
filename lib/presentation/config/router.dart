@@ -171,9 +171,8 @@ final router = GoRouter(
             state,
             BlocProvider(
               create: (context) => AdminCatalogBloc(
-                  productRepository:
-                      locator.get<ProductRepositoryAbstraction>())
-                ..add(AdminCatalogOnLoadEvent()),
+                productRepository: locator.get<ProductRepositoryAbstraction>(),
+              )..add(AdminCatalogOnLoadEvent()),
               child: const AdminCatalogScreen(),
             ));
       },

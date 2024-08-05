@@ -3,8 +3,6 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
-import 'package:ecommerce_web/infrastructure/repository/product/mapper/product_mapper.dart';
-import 'package:ecommerce_web/infrastructure/repository/product/model/product_dto.dart';
 
 import 'model/product_create_request.dart';
 import 'model/product_update_request.dart';
@@ -16,15 +14,9 @@ class ProductRepository extends ProductRepositoryAbstraction {
     try {
       final response = await dio.get<List>("/products");
 
-      var dtos = (response.data ?? [])
+      var models = (response.data ?? [])
           .map(
-            (e) => ProductDto.fromJson(e),
-          )
-          .toList();
-
-      var models = dtos
-          .map(
-            (e) => e.toModel(),
+            (e) => Product.fromJson(e),
           )
           .toList();
 
@@ -39,7 +31,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
     try {
       final response = await dio.get("/products/${id.value}");
 
-      return ProductDto.fromJson(response.data).toModel();
+      return Product.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }
@@ -54,7 +46,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
                   title: title, description: description, price: price)
               .toJson());
 
-      return ProductDto.fromJson(response.data).toModel();
+      return Product.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }
@@ -67,7 +59,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
         "/products/${id.value}",
       );
 
-      return ProductDto.fromJson(response.data).toModel();
+      return Product.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }
@@ -83,7 +75,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
                   price: product.price)
               .toJson());
 
-      return ProductDto.fromJson(response.data).toModel();
+      return Product.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }

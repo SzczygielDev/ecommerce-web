@@ -1,7 +1,12 @@
+import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
+import 'package:ecommerce_web/domain/product/product_admin_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/admin/catalog/cubit/product_price_history_cubit.dart';
+import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/product_price_history.dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CatalogProductItemDetailsDialog extends StatefulWidget {
@@ -63,7 +68,17 @@ class _CatalogProductItemDetailsDialogState
                 width: 20,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) => BlocProvider.value(
+                            value: ProductPriceHistoryCubit(
+                                productAdminRepository: locator
+                                    .get<ProductAdminRepositoryAbstraction>())
+                              ..load(widget.product.id),
+                            child: const ProductPriceHistoryDialog(),
+                          ));
+                },
                 child: const Text(
                   "Historia zmian",
                   style: TextStyle(fontSize: 18, color: AppColors.main),

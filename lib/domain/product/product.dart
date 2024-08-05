@@ -11,4 +11,18 @@ class Product {
       required this.description,
       required this.title,
       required this.price});
+
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+        id: ProductId(json["productId"]),
+        title: json["title"],
+        description: json["description"],
+        price: json["price"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "productId": id.value,
+        "title": title,
+        "description": description,
+        "price": price,
+      };
 }
