@@ -22,6 +22,7 @@ class _ProductPriceHistoryDialogState extends State<ProductPriceHistoryDialog> {
               child: CircularProgressIndicator(),
             );
           case ProductPriceHistoryLoadingState.loaded:
+            final priceChanges = state.product!.priceChanges;
             return FractionallySizedBox(
               widthFactor: 0.3,
               child: Dialog(
@@ -35,11 +36,18 @@ class _ProductPriceHistoryDialogState extends State<ProductPriceHistoryDialog> {
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
-                    ...state.product!.priceChanges.map((e) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: ProductPriceHistoryItem(
-                          priceChange: e,
-                        ))),
+                    priceChanges.isEmpty
+                        ? const Text("Brak zmian ceny")
+                        : Column(
+                            children: [
+                              ...priceChanges.map((e) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: ProductPriceHistoryItem(
+                                    priceChange: e,
+                                  )))
+                            ],
+                          ),
                     const SizedBox(
                       height: 20,
                     )

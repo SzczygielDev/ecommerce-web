@@ -154,7 +154,19 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                           builder: (context) => CatalogProductItemDetailsDialog(
                             product: e,
                           ),
-                        );
+                        ).then((value) {
+                          if (value) {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => BlocProvider.value(
+                                value: context.read<AdminCatalogBloc>(),
+                                child: CatalogEditProductDialog.edit(
+                                  product: e,
+                                ),
+                              ),
+                            );
+                          }
+                        });
                       },
                       dark: state.products.indexOf(e).isOdd),
                 )

@@ -110,7 +110,9 @@ class _CatalogProductItemDetailsDialogState
                 ),
                 minimumSize: const Size.fromHeight(80),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Edytuj",
