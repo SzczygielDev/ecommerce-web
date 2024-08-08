@@ -14,4 +14,15 @@ enum PaymentStatus {
     }
     return null;
   }
+
+  String displayName() {
+    switch (this) {
+      case PaymentStatus.paid:
+        return "Opłacone";
+      case PaymentStatus.unpaid:
+        return "Nieopłacone";
+      case PaymentStatus.invalid_amount:
+        return "Niepoprawna kwota";
+    }
+  }
 }

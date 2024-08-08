@@ -12,6 +12,7 @@ import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_s
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/users/admin_user_screen.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
@@ -160,7 +161,16 @@ final router = GoRouter(
       path: "/admin/orders",
       pageBuilder: (context, state) {
         return buildPageWithTransition(
-            context, state, const AdminOrderScreen());
+            context,
+            state,
+            BlocProvider(
+              create: (context) => AdminOrderBloc(
+                  orderRepository: locator.get(),
+                  deliveryRepository: locator.get(),
+                  paymentRepository: locator.get())
+                ..add(AdminOrderOnLoadEvent()),
+              child: const AdminOrderScreen(),
+            ));
       },
     ),
     GoRoute(

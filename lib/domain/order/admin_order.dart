@@ -1,21 +1,21 @@
 import 'package:ecommerce_web/domain/delivery/delivery.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
-import 'package:ecommerce_web/domain/payment/payment.dart';
+import 'package:ecommerce_web/domain/payment/admin_payment.dart';
 
 import '../cart/cart_id.dart';
 import 'order_id.dart';
 import 'order_item.dart';
 
-class Order {
+class AdminOrder {
   final OrderId id;
   final CartId cartId;
   final OrderStatus status;
-  final Payment payment;
+  final AdminPayment payment;
   final Delivery delivery;
   final DateTime createdAt;
   final List<OrderItem> items;
 
-  const Order(
+  const AdminOrder(
       {required this.id,
       required this.cartId,
       required this.status,
@@ -24,11 +24,11 @@ class Order {
       required this.createdAt,
       required this.items});
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
+  factory AdminOrder.fromJson(Map<String, dynamic> json) => AdminOrder(
       id: OrderId(json["orderId"]),
       cartId: CartId(json["cartId"]),
       status: OrderStatus.fromString(json["status"])!,
-      payment: Payment.fromJson(json["payment"]),
+      payment: AdminPayment.fromJson(json["payment"]),
       delivery: Delivery.fromJson(json["delivery"]),
       createdAt: DateTime.parse(json["createdAt"]),
       items:
