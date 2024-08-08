@@ -9,6 +9,8 @@ import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialo
 import 'package:ecommerce_web/presentation/util/date/default_date_time_format.dart';
 import 'package:flutter/material.dart';
 
+import 'order_items_dialog.dart';
+
 class OrderDetailsDialog extends StatefulWidget {
   final OrderWrapper orderWrapper;
   const OrderDetailsDialog({super.key, required this.orderWrapper});
@@ -106,14 +108,24 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
           Expanded(
             child: Column(
               children: [
-                ...orderItems.map((orderItem) => OrderDetailsItem(
-                      item: orderItem,
+                ...orderItems.map((orderItem) => Expanded(
+                      child: OrderDetailsItem(
+                        item: orderItem,
+                      ),
                     )),
                 orderItems.length == 1
                     ? const Spacer()
                     : const SizedBox.shrink(),
                 twoOrMoreProducts
-                    ? const OrderDetailsMoreItemsButton()
+                    ? OrderDetailsMoreItemsButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => OrderItemsDialog(
+                                    items: order.items,
+                                  ));
+                        },
+                      )
                     : const SizedBox.shrink()
               ],
             ),

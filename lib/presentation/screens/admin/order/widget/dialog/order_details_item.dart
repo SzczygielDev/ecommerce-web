@@ -8,40 +8,43 @@ class OrderDetailsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                width: 100,
-                color: AppColors.darkGrey,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              color: AppColors.darkGrey,
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              item.title,
-              style: const TextStyle(fontSize: 26),
-            ),
-            const Spacer(
-              flex: 2,
-            ),
-            Text(
-              "${item.quantity}x",
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              "${item.price.toStringAsFixed(2)} ZŁ",
-              style: const TextStyle(fontSize: 26),
-            )
-          ],
-        ),
+          ),
+          Expanded(
+              flex: 3,
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    item.title,
+                    style: const TextStyle(fontSize: 26),
+                  ),
+                  const Spacer(
+                    flex: 2,
+                  ),
+                  Text(
+                    "${item.quantity}x",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "${item.price.toStringAsFixed(2)} ZŁ",
+                    style: const TextStyle(fontSize: 26),
+                  )
+                ],
+              ))
+        ],
       ),
     );
   }
