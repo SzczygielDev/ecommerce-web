@@ -1,11 +1,16 @@
+import 'package:ecommerce_web/domain/command/commands.dart';
+import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_details_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
+import 'package:ecommerce_web/presentation/widget/command/command_overlay.dart';
+import 'package:ecommerce_web/presentation/widget/command/processing_commnad_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_header.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
 
 class AdminOrderScreen extends StatefulWidget {
   const AdminOrderScreen({super.key});
@@ -35,6 +40,29 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
     return BlocBuilder<AdminOrderBloc, AdminOrderState>(
       builder: (context, state) {
         return DefaultAdminScreen(
+          overlay: CommandOverlay(
+            children: [
+              ...state.processingCommands.map(
+                (command) {
+                  String message = "";
+                  switch (command) {
+                    case AcceptOrderCommand():
+                      message =
+                          "Akceptowanie zamówienia ${command.orderId.value}";
+                      break;
+                  }
+
+                  CommandResult? result = state.commandResults.firstWhereOrNull(
+                    (element) => element.id.value == command.id.value,
+                  );
+                  return ProcessingCommandItem(
+                    message: message,
+                    result: result,
+                  );
+                },
+              )
+            ],
+          ),
           children: [
             const Text(
               "Zamówienia",
@@ -107,9 +135,12 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) {
-                            return OrderDetailsDialog(
-                              orderWrapper: order,
+                          builder: (ctx) {
+                            return BlocProvider.value(
+                              value: context.read<AdminOrderBloc>(),
+                              child: OrderDetailsDialog(
+                                orderWrapper: order,
+                              ),
                             );
                           },
                         );

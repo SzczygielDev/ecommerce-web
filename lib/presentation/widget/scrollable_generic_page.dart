@@ -30,7 +30,8 @@ class ScrollableGenericPage extends StatelessWidget {
         left: 50,
         right: 50,
       ),
-      this.appBar})
+      this.appBar,
+      Widget? overlay})
       : child = Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,9 @@ class ScrollableGenericPage extends StatelessWidget {
                 child: child,
               )
             ]),
-        overlay = sideMenu;
+        overlay = Stack(
+          children: [sideMenu, overlay != null ? overlay : SizedBox.shrink()],
+        );
 
   @override
   Widget build(BuildContext context) {

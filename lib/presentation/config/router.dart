@@ -165,6 +165,7 @@ final router = GoRouter(
             state,
             BlocProvider(
               create: (context) => AdminOrderBloc(
+                  adminOrderRepository: locator.get(),
                   orderRepository: locator.get(),
                   deliveryRepository: locator.get(),
                   paymentRepository: locator.get())

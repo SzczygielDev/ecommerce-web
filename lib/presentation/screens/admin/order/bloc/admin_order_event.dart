@@ -8,3 +8,15 @@ sealed class AdminOrderEvent extends Equatable {
 }
 
 class AdminOrderOnLoadEvent extends AdminOrderEvent {}
+
+class AcceptOrderEvent extends AdminOrderEvent {
+  final OrderId orderId;
+
+  const AcceptOrderEvent({required this.orderId});
+}
+
+class OrderCommandResultEvent extends AdminOrderEvent {
+  final CommandResult commandResult;
+
+  const OrderCommandResultEvent({required this.commandResult});
+}

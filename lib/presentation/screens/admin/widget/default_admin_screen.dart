@@ -5,8 +5,9 @@ import 'package:ecommerce_web/presentation/widget/admin/admin_appbar.dart';
 import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 
 class DefaultAdminScreen extends StatefulWidget {
+  final Widget? overlay;
   final List<Widget> children;
-  const DefaultAdminScreen({super.key, required this.children});
+  const DefaultAdminScreen({super.key, required this.children, this.overlay});
 
   @override
   State<DefaultAdminScreen> createState() => _DefaultAdminScreenState();
@@ -18,6 +19,7 @@ class _DefaultAdminScreenState extends State<DefaultAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return ScrollableGenericPage.withSideMenu(
+        overlay: widget.overlay,
         sideMenuFlex: 3,
         contentFlex: 17,
         showSideMenu: showSideMenu,

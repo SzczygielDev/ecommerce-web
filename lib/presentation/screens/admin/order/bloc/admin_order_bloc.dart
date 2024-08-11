@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce_web/domain/command/commands.dart';
+import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/order/admin_payment_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/order/order_id.dart';
+import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_wrapper.dart';
@@ -11,16 +17,25 @@ part 'admin_order_event.dart';
 part 'admin_order_state.dart';
 
 class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
-  final AdminOrderRepositoryAbstraction orderRepository;
+  final OrderRepositoryAbstraction orderRepository;
+  final AdminOrderRepositoryAbstraction adminOrderRepository;
   final PaymentRepositoryAbstraction paymentRepository;
   final DeliveryRepositoryAbstraction deliveryRepository;
+  late final StreamSubscription<CommandResult> orderCommandResults;
+
   AdminOrderBloc(
-      {required this.orderRepository,
+      {required this.adminOrderRepository,
       required this.paymentRepository,
-      required this.deliveryRepository})
+      required this.deliveryRepository,
+      required this.orderRepository})
       : super(const AdminOrderState()) {
+    orderCommandResults = orderRepository.orderCommandResults.listen(
+      onError: (e) => print(e),
+      (commandResult) =>
+          add(OrderCommandResultEvent(commandResult: commandResult)),
+    );
     on<AdminOrderOnLoadEvent>((event, emit) async {
-      final orders = await orderRepository.getOrders();
+      final orders = await adminOrderRepository.getOrders();
       final paymentProviders =
           await paymentRepository.getPaymentServiceProviders();
       final deliveryProviders = await deliveryRepository.getDeliveryProviders();
@@ -42,6 +57,22 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
           orders: mappedOrders,
           deliveryProviders: deliveryProviders,
           paymentServiceProviders: paymentProviders));
+    });
+
+    on<AcceptOrderEvent>((event, emit) async {
+      final command = await orderRepository.acceptOrder(event.orderId);
+
+      if (command != null) {
+        emit(state.copyWith(
+            processingCommands: [...state.processingCommands, command]));
+      }
+    });
+
+    on<OrderCommandResultEvent>((event, emit) async {
+      emit(state.copyWith(
+          commandResults: [...state.commandResults, event.commandResult]));
+
+      add(AdminOrderOnLoadEvent());
     });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/order/order_item.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_wrapper.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_item.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_more_items_button.dart';
@@ -8,6 +9,7 @@ import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/ord
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
 import 'package:ecommerce_web/presentation/util/date/default_date_time_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'order_items_dialog.dart';
 
@@ -20,6 +22,8 @@ class OrderDetailsDialog extends StatefulWidget {
 }
 
 class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
+  bool buttonsLocked = false;
+
   @override
   Widget build(BuildContext context) {
     final orderWrapper = widget.orderWrapper;
@@ -159,7 +163,7 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Suma", style: TextStyle(fontSize: 26)),
-              Text("${order.payment.amount} ZŁ",
+              Text("${order.payment.amount.toStringAsFixed(2)} ZŁ",
                   style: const TextStyle(fontSize: 26))
             ],
           ),
@@ -203,7 +207,17 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                 ),
                 minimumSize: const Size.fromHeight(80),
               ),
-              onPressed: () {},
+              onPressed: buttonsLocked
+                  ? null
+                  : () {
+                      setState(() {
+                        buttonsLocked = true;
+                      });
+                      context
+                          .read<AdminOrderBloc>()
+                          .add(AcceptOrderEvent(orderId: order.id));
+                      Navigator.of(context).pop();
+                    },
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Zaakceptuj",
@@ -220,7 +234,14 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                 ),
                 minimumSize: const Size.fromHeight(80),
               ),
-              onPressed: () {},
+              onPressed: buttonsLocked
+                  ? null
+                  : () {
+                      setState(() {
+                        buttonsLocked = true;
+                      });
+                      Navigator.of(context).pop();
+                    },
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Odrzuć",
