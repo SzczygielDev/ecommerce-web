@@ -10,10 +10,11 @@ import 'package:ecommerce_web/domain/command/util/command_result_status.dart';
 import 'package:ecommerce_web/domain/order/order.dart';
 import 'package:ecommerce_web/domain/order/order_id.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
+import 'package:ecommerce_web/infrastructure/repository/order/model/order_complete_packing_request.dart';
 import 'package:uuid/uuid.dart';
 
 class OrderRepository extends OrderRepositoryAbstraction {
-  final Set<Command> processingCommands = {};
+  final Set<OrderCommand> processingCommands = {};
   final dio = locator.get<Dio>();
 
   @override
@@ -94,35 +95,149 @@ class OrderRepository extends OrderRepositoryAbstraction {
     List<CommandResult> results = [];
     List<Command> commandsToDelete = [];
     for (var command in processingCommands) {
-      CommandResult? value;
-      switch (command) {
-        case AcceptOrderCommand():
-          value = await _getAcceptOrderCommandResult(command);
-          break;
-      }
+      CommandResult? value = await _getOrderCommandResult(command);
 
       if (value != null) {
+        results.add(value);
         if (value.status != CommandResultStatus.running) {
           commandsToDelete.add(command);
-          results.add(value);
         }
       }
     }
 
-    for (var command in commandsToDelete) {
-      processingCommands.remove(command);
-    }
+    processingCommands.removeAll(commandsToDelete);
 
     return results;
   }
 
-  Future<CommandResult?> _getAcceptOrderCommandResult(
-      AcceptOrderCommand command) async {
+  Future<CommandResult?> _getOrderCommandResult(OrderCommand command) async {
     try {
+      String? commandType;
+      switch (command) {
+        case AcceptOrderCommand():
+          commandType = "/accept-commands/";
+          break;
+        case BeginPackingOrderCommand():
+          commandType = "/beginPacking-commands/";
+          break;
+        case CancelOrderCommand():
+          commandType = "/cancel-commands/";
+          break;
+        case CompletePackingOrderCommand():
+          commandType = "/completePacking-commands/";
+          break;
+        case RejectOrderCommand():
+          commandType = "/reject-commands/";
+          break;
+        case ReturnOrderCommand():
+          commandType = "/return-commands/";
+          break;
+      }
+
       final response = await dio.get(
-          "/orders/${command.orderId.value}/accept-commands/${command.id.value}");
+          "/orders/${command.orderId.value}/$commandType/${command.id.value}");
 
       return CommandResult.fromJson(response.data);
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<BeginPackingOrderCommand?> beginPackingOrder(OrderId id) async {
+    try {
+      var uuid = Uuid();
+      CommandId commandId = CommandId(uuid.v4());
+      final command =
+          BeginPackingOrderCommand(commandId: commandId, orderId: id);
+
+      final response = dio.put(
+        "/orders/${id.value}/beginPacking-commands/${commandId.value}",
+      );
+
+      processingCommands.add(command);
+      return command;
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<CancelOrderCommand?> cancelOrder(OrderId id) async {
+    try {
+      var uuid = Uuid();
+      CommandId commandId = CommandId(uuid.v4());
+      final command = CancelOrderCommand(commandId: commandId, orderId: id);
+
+      final response = dio.put(
+        "/orders/${id.value}/cancel-commands/${commandId.value}",
+      );
+
+      processingCommands.add(command);
+      return command;
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<CompletePackingOrderCommand?> completePackingOrder(
+    OrderId id,
+    double width,
+    double height,
+    double length,
+    double weight,
+  ) async {
+    try {
+      var uuid = Uuid();
+      CommandId commandId = CommandId(uuid.v4());
+      final command =
+          CompletePackingOrderCommand(commandId: commandId, orderId: id);
+
+      final response = dio.put(
+          "/orders/${id.value}/completePacking-commands/${commandId.value}",
+          data: OrderCompletePackingRequest(
+                  width: width, length: length, height: height, weight: weight)
+              .toJson());
+
+      processingCommands.add(command);
+      return command;
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<RejectOrderCommand?> rejectOrder(OrderId id) async {
+    try {
+      var uuid = Uuid();
+      CommandId commandId = CommandId(uuid.v4());
+      final command = RejectOrderCommand(commandId: commandId, orderId: id);
+
+      final response = dio.put(
+        "/orders/${id.value}/reject-commands/${commandId.value}",
+      );
+
+      processingCommands.add(command);
+      return command;
+    } on Exception catch (ex) {
+      return null;
+    }
+  }
+
+  @override
+  Future<ReturnOrderCommand?> returnOrder(OrderId id) async {
+    try {
+      var uuid = Uuid();
+      CommandId commandId = CommandId(uuid.v4());
+      final command = ReturnOrderCommand(commandId: commandId, orderId: id);
+
+      final response = dio.put(
+        "/orders/${id.value}/return-commands/${commandId.value}",
+      );
+
+      processingCommands.add(command);
+      return command;
     } on Exception catch (ex) {
       return null;
     }

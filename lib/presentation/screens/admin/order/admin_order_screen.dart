@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/command/commands.dart';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
+import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_details_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
@@ -22,10 +23,22 @@ class AdminOrderScreen extends StatefulWidget {
 class _AdminOrderScreenState extends State<AdminOrderScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int tabIndex = 0;
+  OrderStatus get orderStatusFilter => statusTabs[tabIndex - 1];
+
+  List<OrderStatus> statusTabs = [
+    OrderStatus.created,
+    OrderStatus.accepted,
+    OrderStatus.inProgress,
+    OrderStatus.ready,
+    OrderStatus.sent,
+    OrderStatus.rejected,
+    OrderStatus.canceled,
+  ];
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 8, vsync: this);
     super.initState();
   }
 
@@ -50,6 +63,25 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                       message =
                           "Akceptowanie zamówienia ${command.orderId.value}";
                       break;
+                    case BeginPackingOrderCommand():
+                      message =
+                          "Przyjmowanie do pakowania ${command.orderId.value}";
+                      break;
+                    case CancelOrderCommand():
+                      message =
+                          "Anulowanie zamówienia ${command.orderId.value}";
+                      break;
+                    case CompletePackingOrderCommand():
+                      message =
+                          "Kończenie pakowania zamówienia ${command.orderId.value}";
+                      break;
+                    case RejectOrderCommand():
+                      message =
+                          "Odrzucanie zamówienia ${command.orderId.value}";
+                      break;
+                    case ReturnOrderCommand():
+                      message = "Zwrot zamówienia ${command.orderId.value}";
+                      break;
                   }
 
                   CommandResult? result = state.commandResults.firstWhereOrNull(
@@ -72,27 +104,34 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
               height: 16,
             ),
             FractionallySizedBox(
-              widthFactor: 0.2,
+              widthFactor: 0.5,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TabBar(
+                  onTap: (value) => setState(() {
+                    tabIndex = value;
+                  }),
                   padding: EdgeInsets.zero,
                   labelPadding: EdgeInsets.zero,
                   indicatorPadding: EdgeInsets.zero,
                   indicatorSize: TabBarIndicatorSize.tab,
                   controller: _tabController,
-                  tabs: const [
-                    Tab(
+                  tabs: [
+                    const Tab(
                         child: Text(
-                      "Oczekujące",
+                      "Wszystkie",
                       style: TextStyle(fontSize: 18),
                     )),
-                    Tab(
-                        child: Text("Zaakceptowane",
-                            style: TextStyle(fontSize: 18))),
+                    ...statusTabs.map(
+                      (status) => Tab(
+                          child: Text(
+                        status.displayName(),
+                        style: const TextStyle(fontSize: 18),
+                      )),
+                    ),
                   ],
                 ),
               ),
@@ -127,27 +166,40 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                 0: IntrinsicColumnWidth(),
               },
               children: [
-                OrderTableHeader(),
-                ...state.orders.map(
-                  (order) => OrderTableItem(
-                      orderWrapper: order,
-                      dark: state.orders.indexOf(order).isOdd,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) {
-                            return BlocProvider.value(
-                              value: context.read<AdminOrderBloc>(),
-                              child: OrderDetailsDialog(
-                                orderWrapper: order,
-                              ),
-                            );
-                          },
-                        );
-                      }),
+                OrderTableHeader(withStatus: tabIndex == 0),
+                ...state.orders.where(
+                  (orderWrapper) {
+                    if (tabIndex == 0) {
+                      return true;
+                    } else if (orderWrapper.order.status == orderStatusFilter) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                ).map(
+                  (order) {
+                    return OrderTableItem(
+                        withStatus: tabIndex == 0,
+                        orderWrapper: order,
+                        dark: state.orders.indexOf(order).isOdd,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return BlocProvider.value(
+                                value: context.read<AdminOrderBloc>(),
+                                child: OrderDetailsDialog(
+                                  orderWrapper: order,
+                                ),
+                              );
+                            },
+                          );
+                        });
+                  },
                 )
               ],
-            ),
+            )
           ],
         );
       },

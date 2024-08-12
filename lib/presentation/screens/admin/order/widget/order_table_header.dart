@@ -5,7 +5,7 @@ import '../../widget/checkbox_cell.dart';
 import '../../widget/default_table_cell.dart';
 
 class OrderTableHeader extends TableRow {
-  OrderTableHeader()
+  OrderTableHeader({bool withStatus = false})
       : super(
             decoration: const BoxDecoration(
                 color: AppColors.grey,
@@ -14,7 +14,7 @@ class OrderTableHeader extends TableRow {
                   color: Colors.black,
                   width: 1.0,
                 ))),
-            children: [
+            children: <Widget?>[
               const CheckboxCell(),
               const DefaultTableCell(
                 title: "Numer",
@@ -24,6 +24,12 @@ class OrderTableHeader extends TableRow {
                 title: "Kwota",
                 bold: true,
               ),
+              withStatus
+                  ? const DefaultTableCell(
+                      title: "Status",
+                      bold: true,
+                    )
+                  : null,
               const DefaultTableCell(
                 title: "Status płatności",
                 bold: true,
@@ -37,5 +43,5 @@ class OrderTableHeader extends TableRow {
                 bold: true,
               ),
               const SizedBox.shrink()
-            ]);
+            ].nonNulls.toList());
 }

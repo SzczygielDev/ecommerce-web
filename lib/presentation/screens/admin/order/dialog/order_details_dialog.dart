@@ -1,7 +1,11 @@
 import 'package:ecommerce_web/domain/order/order_item.dart';
+import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_dimensions_dialog.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/model/order_dimensions_dialog_result.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_wrapper.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_item.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_more_items_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_payment_transaction_widget.dart';
@@ -199,54 +203,109 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
           const SizedBox(
             height: 40,
           ),
-          OutlinedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                minimumSize: const Size.fromHeight(80),
-              ),
-              onPressed: buttonsLocked
-                  ? null
-                  : () {
-                      setState(() {
-                        buttonsLocked = true;
-                      });
-                      context
-                          .read<AdminOrderBloc>()
-                          .add(AcceptOrderEvent(orderId: order.id));
-                      Navigator.of(context).pop();
-                    },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Zaakceptuj",
-                    style: TextStyle(color: AppColors.main, fontSize: 20)),
-              )),
-          const SizedBox(
-            height: 15,
+          Builder(
+            builder: (context) {
+              switch (order.status) {
+                case OrderStatus.created:
+                  return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      OrderDetailsButton(
+                        title: "Zaakceptuj",
+                        onPressed: buttonsLocked
+                            ? null
+                            : () {
+                                setState(() {
+                                  buttonsLocked = true;
+                                });
+                                context
+                                    .read<AdminOrderBloc>()
+                                    .add(AcceptOrderEvent(orderId: order.id));
+                                Navigator.of(context).pop();
+                              },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      OrderDetailsButton(
+                        title: "Odrzuć",
+                        onPressed: buttonsLocked
+                            ? null
+                            : () {
+                                context
+                                    .read<AdminOrderBloc>()
+                                    .add(RejectOrderEvent(orderId: order.id));
+                                setState(() {
+                                  buttonsLocked = true;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                      ),
+                    ],
+                  );
+                case OrderStatus.accepted:
+                  return OrderDetailsButton(
+                    title: "Rozpocznij pakowanie",
+                    onPressed: buttonsLocked
+                        ? null
+                        : () {
+                            context
+                                .read<AdminOrderBloc>()
+                                .add(BeginPackingOrderEvent(orderId: order.id));
+                            setState(() {
+                              buttonsLocked = true;
+                            });
+                            Navigator.of(context).pop();
+                          },
+                  );
+                case OrderStatus.rejected:
+                  return const SizedBox.shrink();
+                case OrderStatus.inProgress:
+                  return OrderDetailsButton(
+                    title: "Zakończ pakowanie ",
+                    onPressed: buttonsLocked
+                        ? null
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const OrderDimensionsDialog(),
+                            ).then(
+                              (value) {
+                                if (value is OrderDimensionsDialogResult) {
+                                  context.read<AdminOrderBloc>().add(
+                                      CompletePackingOrderEvent(
+                                          height: value.height,
+                                          length: value.length,
+                                          weight: value.weight,
+                                          width: value.weight,
+                                          orderId: order.id));
+                                  setState(() {
+                                    buttonsLocked = true;
+                                  });
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            );
+                          },
+                  );
+                case OrderStatus.ready:
+                  return const Center(
+                      child: Text(
+                    "Oczekuje na odbiór przez kuriera",
+                    style: TextStyle(fontSize: 24),
+                  ));
+                case OrderStatus.sent:
+                  return const Center(
+                      child: Text(
+                    "Paczka została odebrana przez kuriera",
+                    style: TextStyle(fontSize: 24),
+                  ));
+                case OrderStatus.canceled:
+                  return const SizedBox.shrink();
+              }
+            },
           ),
-          OutlinedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                minimumSize: const Size.fromHeight(80),
-              ),
-              onPressed: buttonsLocked
-                  ? null
-                  : () {
-                      setState(() {
-                        buttonsLocked = true;
-                      });
-                      Navigator.of(context).pop();
-                    },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Odrzuć",
-                    style: TextStyle(color: AppColors.main, fontSize: 20)),
-              ))
         ],
       ),
     );

@@ -8,13 +8,42 @@ sealed class Command {
 }
 
 sealed class OrderCommand extends Command {
-  const OrderCommand({required super.id});
+  final OrderId orderId;
+  const OrderCommand({required super.id, required this.orderId});
 }
 
 class AcceptOrderCommand extends OrderCommand {
-  final OrderId orderId;
-
   const AcceptOrderCommand(
-      {required CommandId commandId, required this.orderId})
+      {required CommandId commandId, required super.orderId})
+      : super(id: commandId);
+}
+
+class BeginPackingOrderCommand extends OrderCommand {
+  const BeginPackingOrderCommand(
+      {required CommandId commandId, required super.orderId})
+      : super(id: commandId);
+}
+
+class CancelOrderCommand extends OrderCommand {
+  const CancelOrderCommand(
+      {required CommandId commandId, required super.orderId})
+      : super(id: commandId);
+}
+
+class CompletePackingOrderCommand extends OrderCommand {
+  const CompletePackingOrderCommand(
+      {required CommandId commandId, required super.orderId})
+      : super(id: commandId);
+}
+
+class RejectOrderCommand extends OrderCommand {
+  const RejectOrderCommand(
+      {required CommandId commandId, required super.orderId})
+      : super(id: commandId);
+}
+
+class ReturnOrderCommand extends OrderCommand {
+  const ReturnOrderCommand(
+      {required CommandId commandId, required super.orderId})
       : super(id: commandId);
 }

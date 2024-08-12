@@ -34,7 +34,7 @@ enum OrderStatus {
       case OrderStatus.accepted:
         return "Przyjęte do realizacji";
       case OrderStatus.rejected:
-        return "Odrzocone";
+        return "Odrzucone";
       case OrderStatus.inProgress:
         return "W przygotowaniu";
       case OrderStatus.ready:

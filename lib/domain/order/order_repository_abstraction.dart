@@ -10,5 +10,17 @@ abstract class OrderRepositoryAbstraction {
   Future<List<Order>> getOrders();
 
   Future<AcceptOrderCommand?> acceptOrder(OrderId id);
+  Future<BeginPackingOrderCommand?> beginPackingOrder(OrderId id);
+  Future<CancelOrderCommand?> cancelOrder(OrderId id);
+  Future<CompletePackingOrderCommand?> completePackingOrder(
+    OrderId id,
+    double width,
+    double height,
+    double length,
+    double weight,
+  );
+  Future<RejectOrderCommand?> rejectOrder(OrderId id);
+  Future<ReturnOrderCommand?> returnOrder(OrderId id);
+
   Stream<CommandResult> get orderCommandResults;
 }

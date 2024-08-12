@@ -12,13 +12,14 @@ import '../../widget/default_table_cell.dart';
 class OrderTableItem extends TableRow {
   OrderTableItem(
       {bool dark = false,
+      bool withStatus = false,
       required OrderWrapper orderWrapper,
       required Function() onPressed})
       : super(
             decoration: BoxDecoration(
               color: dark ? AppColors.grey : null,
             ),
-            children: [
+            children: <Widget?>[
               const CheckboxCell(),
               DefaultTableCell(
                 title: "NR. ${orderWrapper.order.id.value}",
@@ -27,6 +28,11 @@ class OrderTableItem extends TableRow {
                 title:
                     "${orderWrapper.order.payment.amount.toStringAsFixed(2)} ZŁ",
               ),
+              withStatus
+                  ? DefaultTableCell(
+                      title: orderWrapper.order.status.displayName(),
+                    )
+                  : null,
               WidgetTableCell(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -56,5 +62,5 @@ class OrderTableItem extends TableRow {
                 title: 'Szczegóły',
                 onPressed: onPressed,
               )
-            ]);
+            ].nonNulls.toList());
 }

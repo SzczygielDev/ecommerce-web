@@ -74,5 +74,56 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
 
       add(AdminOrderOnLoadEvent());
     });
+
+    on<BeginPackingOrderEvent>((event, emit) async {
+      final command = await orderRepository.beginPackingOrder(event.orderId);
+
+      if (command != null) {
+        emit(state.copyWith(
+            processingCommands: [...state.processingCommands, command]));
+      }
+    });
+
+    on<CancelOrderEvent>((event, emit) async {
+      final command = await orderRepository.cancelOrder(event.orderId);
+
+      if (command != null) {
+        emit(state.copyWith(
+            processingCommands: [...state.processingCommands, command]));
+      }
+    });
+
+    on<CompletePackingOrderEvent>((event, emit) async {
+      final command = await orderRepository.completePackingOrder(
+        event.orderId,
+        event.width,
+        event.height,
+        event.length,
+        event.weight,
+      );
+
+      if (command != null) {
+        emit(state.copyWith(
+            processingCommands: [...state.processingCommands, command]));
+      }
+    });
+
+    on<RejectOrderEvent>((event, emit) async {
+      final command = await orderRepository.rejectOrder(event.orderId);
+
+      if (command != null) {
+        emit(state.copyWith(
+            processingCommands: [...state.processingCommands, command]));
+      }
+    });
+
+    on<ReturnOrderEvent>((event, emit) async {
+      final command = await orderRepository.returnOrder(event.orderId);
+
+      if (command != null) {
+        emit(state.copyWith(
+            processingCommands: [...state.processingCommands, command]));
+      }
+    });
   }
 }
