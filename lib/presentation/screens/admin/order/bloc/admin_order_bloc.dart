@@ -125,5 +125,11 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
             processingCommands: [...state.processingCommands, command]));
       }
     });
+
+    on<RefreshDataEvent>(
+      (event, emit) {
+        add(AdminOrderOnLoadEvent());
+      },
+    );
   }
 }

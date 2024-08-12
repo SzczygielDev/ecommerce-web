@@ -8,3 +8,14 @@ sealed class OrderEvent extends Equatable {
 }
 
 class OrderOnLoadEvent extends OrderEvent {}
+
+class CancelOrderEvent extends OrderEvent {
+  final OrderId orderId;
+  const CancelOrderEvent({required this.orderId});
+}
+
+class OrderCommandResultEvent extends OrderEvent {
+  final CommandResult commandResult;
+
+  const OrderCommandResultEvent({required this.commandResult});
+}

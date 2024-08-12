@@ -58,3 +58,5 @@ class ReturnOrderEvent extends AdminOrderEvent {
 
   const ReturnOrderEvent({required this.orderId});
 }
+
+class RefreshDataEvent extends AdminOrderEvent {}

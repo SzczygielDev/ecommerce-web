@@ -24,21 +24,10 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int tabIndex = 0;
-  OrderStatus get orderStatusFilter => statusTabs[tabIndex - 1];
-
-  List<OrderStatus> statusTabs = [
-    OrderStatus.created,
-    OrderStatus.accepted,
-    OrderStatus.inProgress,
-    OrderStatus.ready,
-    OrderStatus.sent,
-    OrderStatus.rejected,
-    OrderStatus.canceled,
-  ];
 
   @override
   void initState() {
-    _tabController = TabController(length: 8, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }
 
@@ -103,38 +92,75 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
             const SizedBox(
               height: 16,
             ),
-            FractionallySizedBox(
-              widthFactor: 0.5,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: TabBar(
-                  onTap: (value) => setState(() {
-                    tabIndex = value;
-                  }),
-                  padding: EdgeInsets.zero,
-                  labelPadding: EdgeInsets.zero,
-                  indicatorPadding: EdgeInsets.zero,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  controller: _tabController,
-                  tabs: [
-                    const Tab(
-                        child: Text(
-                      "Wszystkie",
-                      style: TextStyle(fontSize: 18),
-                    )),
-                    ...statusTabs.map(
-                      (status) => Tab(
-                          child: Text(
-                        status.displayName(),
-                        style: const TextStyle(fontSize: 18),
-                      )),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                  ],
+                    child: TabBar(
+                      onTap: (value) => setState(() {
+                        tabIndex = value;
+                      }),
+                      padding: EdgeInsets.zero,
+                      labelPadding: EdgeInsets.zero,
+                      indicatorPadding: EdgeInsets.zero,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      controller: _tabController,
+                      tabs: [
+                        const Tab(
+                            child: Text(
+                          "Wszystkie",
+                          style: TextStyle(fontSize: 18),
+                        )),
+                        Tab(
+                            child: Text(
+                          OrderStatus.created.displayName(),
+                          style: const TextStyle(fontSize: 18),
+                        )),
+                        Tab(
+                            child: Text(
+                          OrderStatus.accepted.displayName(),
+                          style: const TextStyle(fontSize: 18),
+                        )),
+                        Tab(
+                            child: Text(
+                          OrderStatus.inProgress.displayName(),
+                          style: const TextStyle(fontSize: 18),
+                        )),
+                        const Tab(
+                            child: Text(
+                          "Wysyłka",
+                          style: TextStyle(fontSize: 18),
+                        )),
+                        const Tab(
+                            child: Text(
+                          "Odrzucone",
+                          style: TextStyle(fontSize: 18),
+                        ))
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            context
+                                .read<AdminOrderBloc>()
+                                .add(RefreshDataEvent());
+                          },
+                          icon: const Icon(Icons.refresh_outlined)),
+                    ],
+                  ),
+                )
+              ],
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
@@ -166,21 +192,36 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                 0: IntrinsicColumnWidth(),
               },
               children: [
-                OrderTableHeader(withStatus: tabIndex == 0),
+                OrderTableHeader(
+                    withStatus:
+                        tabIndex == 0 || tabIndex == 4 || tabIndex == 5),
                 ...state.orders.where(
                   (orderWrapper) {
-                    if (tabIndex == 0) {
-                      return true;
-                    } else if (orderWrapper.order.status == orderStatusFilter) {
-                      return true;
-                    } else {
-                      return false;
+                    final status = orderWrapper.order.status;
+
+                    switch (tabIndex) {
+                      case 0:
+                        return true;
+                      case 1:
+                        return status == OrderStatus.created;
+                      case 2:
+                        return status == OrderStatus.accepted;
+                      case 3:
+                        return status == OrderStatus.inProgress;
+                      case 4:
+                        return status == OrderStatus.ready ||
+                            status == OrderStatus.sent;
+                      case 5:
+                        return status == OrderStatus.canceled ||
+                            status == OrderStatus.rejected;
                     }
+                    return false;
                   },
                 ).map(
                   (order) {
                     return OrderTableItem(
-                        withStatus: tabIndex == 0,
+                        withStatus:
+                            tabIndex == 0 || tabIndex == 4 || tabIndex == 5,
                         orderWrapper: order,
                         dark: state.orders.indexOf(order).isOdd,
                         onPressed: () {

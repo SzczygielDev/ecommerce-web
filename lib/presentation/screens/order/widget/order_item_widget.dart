@@ -3,12 +3,15 @@ import 'package:ecommerce_web/domain/order/order.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_cancel_button.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_payment_button.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_refund_button.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:html' as html;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderItemWidget extends StatelessWidget {
   final Order order;
@@ -76,7 +79,13 @@ class OrderItemWidget extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       if (order.canBeCanceled()) {
-                        return OrderCancelButton();
+                        return OrderCancelButton(
+                          onPressed: () {
+                            context
+                                .read<OrderBloc>()
+                                .add(CancelOrderEvent(orderId: order.id));
+                          },
+                        );
                       } else {
                         return SizedBox.shrink();
                       }
