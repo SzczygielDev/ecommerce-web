@@ -5,7 +5,10 @@ import '../../widget/checkbox_cell.dart';
 import '../../widget/default_table_cell.dart';
 
 class OrderTableHeader extends TableRow {
-  OrderTableHeader({bool withStatus = false})
+  OrderTableHeader(
+      {bool withStatus = false,
+      required Function(bool value) selectAllCallback,
+      required bool areAllCellsSelected})
       : super(
             decoration: const BoxDecoration(
                 color: AppColors.grey,
@@ -15,7 +18,10 @@ class OrderTableHeader extends TableRow {
                   width: 1.0,
                 ))),
             children: <Widget?>[
-              const CheckboxCell(),
+              CheckboxCell(
+                value: areAllCellsSelected,
+                callback: selectAllCallback,
+              ),
               const DefaultTableCell(
                 title: "Numer",
                 bold: true,

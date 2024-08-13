@@ -18,7 +18,11 @@ class CatalogProductTableItem extends TableRow {
               color: dark ? AppColors.grey : null,
             ),
             children: [
-              const CheckboxCell(),
+              CheckboxCell(
+                value:
+                    false, // TODO - implement table operations for admin product screen
+                callback: (value) {},
+              ),
               Container(
                 height: 160,
                 width: 160,

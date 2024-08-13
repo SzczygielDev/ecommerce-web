@@ -1,15 +1,19 @@
 import 'package:ecommerce_web/domain/command/commands.dart';
+import 'package:ecommerce_web/domain/command/util/batch_command.dart';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_details_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
 import 'package:ecommerce_web/presentation/widget/command/command_overlay.dart';
-import 'package:ecommerce_web/presentation/widget/command/processing_commnad_item.dart';
+import 'package:ecommerce_web/presentation/widget/command/processing_batch_command_item.dart';
+import 'package:ecommerce_web/presentation/widget/command/processing_command_item.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_header.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_item.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
 
@@ -41,6 +45,45 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
   Widget build(BuildContext context) {
     return BlocBuilder<AdminOrderBloc, AdminOrderState>(
       builder: (context, state) {
+        final filteredOrdersForTab = state.orders.where(
+          (orderWrapper) {
+            final status = orderWrapper.order.status;
+
+            switch (tabIndex) {
+              case 0:
+                return true;
+              case 1:
+                return status == OrderStatus.created;
+              case 2:
+                return status == OrderStatus.accepted;
+              case 3:
+                return status == OrderStatus.inProgress;
+              case 4:
+                return status == OrderStatus.ready ||
+                    status == OrderStatus.sent;
+              case 5:
+                return status == OrderStatus.canceled ||
+                    status == OrderStatus.rejected;
+            }
+            return false;
+          },
+        );
+
+        final selectedOrders = filteredOrdersForTab
+            .where((orderWrapper) => orderWrapper.selected)
+            .toList();
+
+        OrderStatus? orderOnlySelectedWithStatus;
+
+        final selectedOrdersStatuses = selectedOrders
+            .groupSetsBy((orderWrapper) => orderWrapper.order.status)
+            .keys
+            .toList();
+
+        if (selectedOrdersStatuses.length == 1) {
+          orderOnlySelectedWithStatus = selectedOrdersStatuses.first;
+        }
+
         return DefaultAdminScreen(
           overlay: CommandOverlay(
             children: [
@@ -81,7 +124,11 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                     result: result,
                   );
                 },
-              )
+              ),
+              ...state.batchCommands.map((batchCommand) {
+                return ProcessBatchCommandItem(
+                    results: state.commandResults, command: batchCommand);
+              })
             ],
           ),
           children: [
@@ -101,9 +148,14 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: TabBar(
-                      onTap: (value) => setState(() {
-                        tabIndex = value;
-                      }),
+                      onTap: (value) {
+                        setState(() {
+                          tabIndex = value;
+                        });
+                        context
+                            .read<AdminOrderBloc>()
+                            .add(UnselectAllOrdersEvent());
+                      },
                       padding: EdgeInsets.zero,
                       labelPadding: EdgeInsets.zero,
                       indicatorPadding: EdgeInsets.zero,
@@ -173,19 +225,95 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
               ),
             ),
             FractionallySizedBox(
-              widthFactor: 0.2,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                    hintText: "Wyszukaj",
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.main, width: 1.0),
+                widthFactor: 0.6,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                            hintText: "Wyszukaj",
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColors.main, width: 1.0),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.darkGrey, width: 1.0),
+                            )),
+                      ),
                     ),
-                    border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.darkGrey, width: 1.0),
-                    )),
-              ),
-            ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Builder(
+                          builder: (ctx) {
+                            switch (orderOnlySelectedWithStatus) {
+                              case null:
+                              case OrderStatus.ready:
+                              case OrderStatus.sent:
+                              case OrderStatus.canceled:
+                              case OrderStatus.rejected:
+                                return const SizedBox.shrink();
+                              case OrderStatus.created:
+                                return Row(
+                                  children: [
+                                    GenericButton(
+                                        onPressed: () {
+                                          context.read<AdminOrderBloc>().add(
+                                              AcceptOrdersBatchEvent(
+                                                  orderIds: selectedOrders
+                                                      .map((e) => e.id)
+                                                      .toList()));
+                                        },
+                                        title: "Zaakceptuj"),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    GenericButton(
+                                        onPressed: () {
+                                          context.read<AdminOrderBloc>().add(
+                                              RejectOrdersBatchEvent(
+                                                  orderIds: selectedOrders
+                                                      .map((e) => e.id)
+                                                      .toList()));
+                                        },
+                                        title: "Odrzuć")
+                                  ],
+                                );
+                              case OrderStatus.accepted:
+                                return Row(
+                                  children: [
+                                    GenericButton(
+                                        onPressed: () {
+                                          context.read<AdminOrderBloc>().add(
+                                              BeginPackingOrdersBatchEvent(
+                                                  orderIds: selectedOrders
+                                                      .map((e) => e.id)
+                                                      .toList()));
+                                        },
+                                        title: "Rozpocznij pakowanie"),
+                                    const Expanded(child: SizedBox.shrink())
+                                  ],
+                                );
+                              case OrderStatus.inProgress:
+                                return const SizedBox.shrink();
+                              /* TODO - in the future
+                                return Row(
+                                  children: [
+                                    GenericButton(
+                                        onPressed: () {},
+                                        title: "Zakończ pakowanie"),
+                                    Expanded(child: SizedBox.shrink())
+                                  ],
+                                );
+                              */
+                            }
+                          },
+                        ))
+                  ],
+                )),
             const SizedBox(height: 40),
             Table(
               columnWidths: const <int, TableColumnWidth>{
@@ -193,33 +321,29 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
               },
               children: [
                 OrderTableHeader(
+                    areAllCellsSelected: filteredOrdersForTab.firstWhereOrNull(
+                                (orderWrapper) =>
+                                    orderWrapper.selected == false) ==
+                            null &&
+                        filteredOrdersForTab.isNotEmpty,
+                    selectAllCallback: (value) {
+                      context.read<AdminOrderBloc>().add(
+                          ChangeSelectionMutipleOrdersEvent(
+                              value: value,
+                              ids: filteredOrdersForTab
+                                  .map((e) => e.id)
+                                  .toList()));
+                    },
                     withStatus:
                         tabIndex == 0 || tabIndex == 4 || tabIndex == 5),
-                ...state.orders.where(
-                  (orderWrapper) {
-                    final status = orderWrapper.order.status;
-
-                    switch (tabIndex) {
-                      case 0:
-                        return true;
-                      case 1:
-                        return status == OrderStatus.created;
-                      case 2:
-                        return status == OrderStatus.accepted;
-                      case 3:
-                        return status == OrderStatus.inProgress;
-                      case 4:
-                        return status == OrderStatus.ready ||
-                            status == OrderStatus.sent;
-                      case 5:
-                        return status == OrderStatus.canceled ||
-                            status == OrderStatus.rejected;
-                    }
-                    return false;
-                  },
-                ).map(
+                ...filteredOrdersForTab.map(
                   (order) {
                     return OrderTableItem(
+                        onSelected: (value) {
+                          context.read<AdminOrderBloc>().add(
+                              ChangeSelectionSingleOrderEvent(
+                                  value: value, id: order.id));
+                        },
                         withStatus:
                             tabIndex == 0 || tabIndex == 4 || tabIndex == 5,
                         orderWrapper: order,

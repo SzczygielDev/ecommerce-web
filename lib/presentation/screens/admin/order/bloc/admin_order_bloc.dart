@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_web/domain/command/commands.dart';
+import 'package:ecommerce_web/domain/command/util/batch_command.dart';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
@@ -42,6 +44,8 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
 
       final mappedOrders = orders
           .map((order) => OrderWrapper(
+              id: order.id,
+              selected: false,
               order: order,
               paymentServiceProvider: paymentProviders.firstWhere(
                   (paymentProvider) =>
@@ -131,5 +135,89 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
         add(AdminOrderOnLoadEvent());
       },
     );
+    on<ChangeSelectionMutipleOrdersEvent>(
+      (event, emit) {
+        final ordersToSelect = state.orders.map((orderWrapper) {
+          if (event.ids.contains(orderWrapper.id)) {
+            return orderWrapper.copyWith(selected: event.value);
+          }
+          return orderWrapper;
+        }).toList();
+
+        emit(state.copyWith(orders: ordersToSelect));
+      },
+    );
+
+    on<ChangeSelectionSingleOrderEvent>(
+      (event, emit) {
+        final ordersToSelect = state.orders.map((orderWrapper) {
+          if (event.id.value == orderWrapper.id.value) {
+            return orderWrapper.copyWith(selected: event.value);
+          }
+          return orderWrapper;
+        }).toList();
+
+        emit(state.copyWith(orders: ordersToSelect));
+      },
+    );
+
+    on<UnselectAllOrdersEvent>(
+      (event, emit) {
+        final ordersToSelect = state.orders.map((orderWrapper) {
+          return orderWrapper.copyWith(selected: false);
+        }).toList();
+
+        emit(state.copyWith(orders: ordersToSelect));
+      },
+    );
+
+    on<AcceptOrdersBatchEvent>((event, emit) async {
+      final batchCommand = await _batchCommandForOperation(
+          (orderId) => orderRepository.acceptOrder(orderId), event.orderIds);
+
+      emit(state
+          .copyWith(batchCommands: [...state.batchCommands, batchCommand]));
+    });
+
+    on<RejectOrdersBatchEvent>((event, emit) async {
+      final batchCommand = await _batchCommandForOperation(
+          (orderId) => orderRepository.rejectOrder(orderId), event.orderIds);
+
+      emit(state
+          .copyWith(batchCommands: [...state.batchCommands, batchCommand]));
+    });
+
+    on<BeginPackingOrdersBatchEvent>((event, emit) async {
+      final batchCommand = await _batchCommandForOperation(
+          (orderId) => orderRepository.beginPackingOrder(orderId),
+          event.orderIds);
+
+      emit(state
+          .copyWith(batchCommands: [...state.batchCommands, batchCommand]));
+    });
+  }
+  /* 
+    TODO - All batch commands should use batch endpoint for atomic operation - improve in future
+  */
+  Future<BatchCommand<OrderCommand>>
+      _batchCommandForOperation<T extends OrderCommand>(
+          Future<T?> Function(OrderId orderId) operationToExecute,
+          List<OrderId> orderIds) async {
+    List<T> commands = [];
+    List<OrderId> failedIds = [];
+
+    for (var orderId in orderIds) {
+      final command = await operationToExecute(orderId);
+
+      if (command == null) {
+        failedIds.add(orderId);
+      } else {
+        commands.add(command);
+      }
+    }
+
+    return BatchCommand<OrderCommand>(
+        commands: commands,
+        failedIds: failedIds.map((id) => id.value).toList());
   }
 }

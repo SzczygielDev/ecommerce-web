@@ -14,7 +14,11 @@ class CatalogProductTableHeader extends TableRow {
                   width: 1.0,
                 ))),
             children: [
-              const CheckboxCell(),
+              CheckboxCell(
+                value:
+                    false, // TODO - implement table operations for admin product screen
+                callback: (value) {},
+              ),
               const SizedBox(
                 width: 160,
               ),

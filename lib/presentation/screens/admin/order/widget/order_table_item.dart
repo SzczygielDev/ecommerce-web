@@ -14,15 +14,19 @@ class OrderTableItem extends TableRow {
       {bool dark = false,
       bool withStatus = false,
       required OrderWrapper orderWrapper,
-      required Function() onPressed})
+      required Function() onPressed,
+      required Function(bool value) onSelected})
       : super(
             decoration: BoxDecoration(
               color: dark ? AppColors.grey : null,
             ),
             children: <Widget?>[
-              const CheckboxCell(),
+              CheckboxCell(
+                value: orderWrapper.selected,
+                callback: onSelected,
+              ),
               DefaultTableCell(
-                title: "NR. ${orderWrapper.order.id.value}",
+                title: "NR. ${orderWrapper.order.id.value.toUpperCase()}",
               ),
               DefaultTableCell(
                 title:

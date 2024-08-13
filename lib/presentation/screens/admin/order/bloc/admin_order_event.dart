@@ -60,3 +60,37 @@ class ReturnOrderEvent extends AdminOrderEvent {
 }
 
 class RefreshDataEvent extends AdminOrderEvent {}
+
+class ChangeSelectionMutipleOrdersEvent extends AdminOrderEvent {
+  final List<OrderId> ids;
+  final bool value;
+  const ChangeSelectionMutipleOrdersEvent(
+      {required this.ids, required this.value});
+}
+
+class ChangeSelectionSingleOrderEvent extends AdminOrderEvent {
+  final OrderId id;
+  final bool value;
+  const ChangeSelectionSingleOrderEvent(
+      {required this.id, required this.value});
+}
+
+class UnselectAllOrdersEvent extends AdminOrderEvent {}
+
+class AcceptOrdersBatchEvent extends AdminOrderEvent {
+  final List<OrderId> orderIds;
+
+  const AcceptOrdersBatchEvent({required this.orderIds});
+}
+
+class RejectOrdersBatchEvent extends AdminOrderEvent {
+  final List<OrderId> orderIds;
+
+  const RejectOrdersBatchEvent({required this.orderIds});
+}
+
+class BeginPackingOrdersBatchEvent extends AdminOrderEvent {
+  final List<OrderId> orderIds;
+
+  const BeginPackingOrdersBatchEvent({required this.orderIds});
+}
