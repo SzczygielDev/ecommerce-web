@@ -2,6 +2,7 @@ import 'package:ecommerce_web/domain/command/commands.dart';
 import 'package:ecommerce_web/domain/command/util/batch_command.dart';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
+import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_details_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
@@ -297,27 +298,41 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                   ],
                                 );
                               case OrderStatus.accepted:
-                                return Row(
-                                  children: [
-                                    GenericButton(
-                                        onPressed: () {
-                                          if (selectedOrders.length == 1) {
-                                            context.read<AdminOrderBloc>().add(
-                                                BeginPackingOrderEvent(
-                                                    orderId: selectedOrders
-                                                        .first.id));
-                                          } else {
-                                            context.read<AdminOrderBloc>().add(
-                                                BeginPackingOrdersBatchEvent(
-                                                    orderIds: selectedOrders
-                                                        .map((e) => e.id)
-                                                        .toList()));
-                                          }
-                                        },
-                                        title: "Rozpocznij pakowanie"),
-                                    const Expanded(child: SizedBox.shrink())
-                                  ],
-                                );
+                                return selectedOrders
+                                        .where((orderWrapper) =>
+                                            orderWrapper.order.payment.status !=
+                                            PaymentStatus.paid)
+                                        .isNotEmpty
+                                    ? SizedBox.shrink()
+                                    : Row(
+                                        children: [
+                                          GenericButton(
+                                              onPressed: () {
+                                                if (selectedOrders.length ==
+                                                    1) {
+                                                  context
+                                                      .read<AdminOrderBloc>()
+                                                      .add(
+                                                          BeginPackingOrderEvent(
+                                                              orderId:
+                                                                  selectedOrders
+                                                                      .first
+                                                                      .id));
+                                                } else {
+                                                  context.read<AdminOrderBloc>().add(
+                                                      BeginPackingOrdersBatchEvent(
+                                                          orderIds:
+                                                              selectedOrders
+                                                                  .map((e) =>
+                                                                      e.id)
+                                                                  .toList()));
+                                                }
+                                              },
+                                              title: "Rozpocznij pakowanie"),
+                                          const Expanded(
+                                              child: SizedBox.shrink())
+                                        ],
+                                      );
                               case OrderStatus.inProgress:
                                 return const SizedBox.shrink();
                               /* TODO - in the future

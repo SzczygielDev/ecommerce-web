@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/order/order_item.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
+import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_dimensions_dialog.dart';
@@ -246,7 +247,8 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                 case OrderStatus.accepted:
                   return OrderDetailsButton(
                     title: "Rozpocznij pakowanie",
-                    onPressed: buttonsLocked
+                    onPressed: buttonsLocked ||
+                            order.payment.status != PaymentStatus.paid
                         ? null
                         : () {
                             context
@@ -262,7 +264,7 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                   return const SizedBox.shrink();
                 case OrderStatus.inProgress:
                   return OrderDetailsButton(
-                    title: "Zakończ pakowanie ",
+                    title: "Zakończ pakowanie",
                     onPressed: buttonsLocked
                         ? null
                         : () {

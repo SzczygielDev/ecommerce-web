@@ -51,6 +51,12 @@ class _ProcessBatchCommandItemState extends State<ProcessBatchCommandItem> {
   }
 
   @override
+  void dispose() {
+    fadeTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final batchCommand = widget.command;
 
