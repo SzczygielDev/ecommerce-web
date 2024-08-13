@@ -261,11 +261,18 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                   children: [
                                     GenericButton(
                                         onPressed: () {
-                                          context.read<AdminOrderBloc>().add(
-                                              AcceptOrdersBatchEvent(
-                                                  orderIds: selectedOrders
-                                                      .map((e) => e.id)
-                                                      .toList()));
+                                          if (selectedOrders.length == 1) {
+                                            context.read<AdminOrderBloc>().add(
+                                                AcceptOrderEvent(
+                                                    orderId: selectedOrders
+                                                        .first.id));
+                                          } else {
+                                            context.read<AdminOrderBloc>().add(
+                                                AcceptOrdersBatchEvent(
+                                                    orderIds: selectedOrders
+                                                        .map((e) => e.id)
+                                                        .toList()));
+                                          }
                                         },
                                         title: "Zaakceptuj"),
                                     const SizedBox(
@@ -273,11 +280,18 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                     ),
                                     GenericButton(
                                         onPressed: () {
-                                          context.read<AdminOrderBloc>().add(
-                                              RejectOrdersBatchEvent(
-                                                  orderIds: selectedOrders
-                                                      .map((e) => e.id)
-                                                      .toList()));
+                                          if (selectedOrders.length == 1) {
+                                            context.read<AdminOrderBloc>().add(
+                                                RejectOrderEvent(
+                                                    orderId: selectedOrders
+                                                        .first.id));
+                                          } else {
+                                            context.read<AdminOrderBloc>().add(
+                                                RejectOrdersBatchEvent(
+                                                    orderIds: selectedOrders
+                                                        .map((e) => e.id)
+                                                        .toList()));
+                                          }
                                         },
                                         title: "Odrzuć")
                                   ],
@@ -287,11 +301,18 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                   children: [
                                     GenericButton(
                                         onPressed: () {
-                                          context.read<AdminOrderBloc>().add(
-                                              BeginPackingOrdersBatchEvent(
-                                                  orderIds: selectedOrders
-                                                      .map((e) => e.id)
-                                                      .toList()));
+                                          if (selectedOrders.length == 1) {
+                                            context.read<AdminOrderBloc>().add(
+                                                BeginPackingOrderEvent(
+                                                    orderId: selectedOrders
+                                                        .first.id));
+                                          } else {
+                                            context.read<AdminOrderBloc>().add(
+                                                BeginPackingOrdersBatchEvent(
+                                                    orderIds: selectedOrders
+                                                        .map((e) => e.id)
+                                                        .toList()));
+                                          }
                                         },
                                         title: "Rozpocznij pakowanie"),
                                     const Expanded(child: SizedBox.shrink())
