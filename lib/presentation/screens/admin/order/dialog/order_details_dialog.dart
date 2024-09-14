@@ -2,6 +2,7 @@ import 'package:ecommerce_web/domain/order/order_item.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_dimensions_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_dimensions_dialog_result.dart';
@@ -48,7 +49,7 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
         children: [
           Text(
             "Zamówienie NR. ${order.id.value.substring(0, 8)}",
-            style: const TextStyle(fontSize: 36),
+            style: AppTypography.xlarge2,
           ),
           const SizedBox(
             height: 30,
@@ -58,11 +59,11 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             children: [
               Text(
                 order.status.displayName(),
-                style: const TextStyle(fontSize: 32),
+                style: AppTypography.xlarge1,
               ),
               Text(
                 DefaultDateTimeFormat().format(order.createdAt),
-                style: const TextStyle(fontSize: 18),
+                style: AppTypography.small2,
               ),
             ],
           ),
@@ -78,41 +79,42 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             children: [
               const Text(
                 "Zamawiajacy",
-                style: TextStyle(fontSize: 26),
+                style: AppTypography.medium3,
               ),
               const SizedBox(
                 width: 20,
               ),
               InkWell(
                 onTap: () {},
-                child: const Text(
+                child: Text(
                   "szczegóły",
-                  style: TextStyle(fontSize: 18, color: AppColors.main),
+                  style: AppTypography.small2
+                      .merge(const TextStyle(color: AppColors.main)),
                 ),
               )
             ],
           ),
           const Text(
             "Jan Nowak (jan.nowak@example.com)",
-            style: TextStyle(fontSize: 24),
+            style: AppTypography.medium3,
           ),
           const SizedBox(
             height: 30,
           ),
           const Text(
             "Dostawa",
-            style: TextStyle(fontSize: 26),
+            style: AppTypography.medium3,
           ),
           Text(
             orderWrapper.deliveryProvider.displayName,
-            style: const TextStyle(fontSize: 24),
+            style: AppTypography.medium3,
           ),
           const SizedBox(
             height: 30,
           ),
           const Text(
             "Produkty",
-            style: TextStyle(fontSize: 26),
+            style: AppTypography.medium3,
           ),
           Expanded(
             child: Column(
@@ -143,21 +145,21 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             alignment: Alignment.centerRight,
             child: Text(
               "Koszyk ${order.payment.amount.toStringAsFixed(2)} ZŁ",
-              style: const TextStyle(fontSize: 26),
+              style: AppTypography.medium3,
             ),
           ),
           const Align(
             alignment: Alignment.centerRight,
             child: Text(
               "Dostawa 0.0 ZŁ",
-              style: TextStyle(fontSize: 26),
+              style: AppTypography.medium3,
             ),
           ),
           /*const Align(
             alignment: Alignment.centerRight,
             child: Text(
               "Kod promocyjny -70.0 ZŁ",
-              style: TextStyle(fontSize: 26),
+              style: AppTypography.medium3,
             ),
           ),*/
           const Divider(
@@ -167,9 +169,9 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Suma", style: TextStyle(fontSize: 26)),
+              const Text("Suma", style: AppTypography.medium3),
               Text("${order.payment.amount.toStringAsFixed(2)} ZŁ",
-                  style: const TextStyle(fontSize: 26))
+                  style: AppTypography.medium3)
             ],
           ),
           const SizedBox(
@@ -177,20 +179,20 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
           ),
           const Text(
             "Płatność",
-            style: TextStyle(fontSize: 26),
+            style: AppTypography.medium3,
           ),
           Row(
             children: [
               Text(
                 orderWrapper.paymentServiceProvider.displayName,
-                style: const TextStyle(fontSize: 24),
+                style: AppTypography.medium3,
               ),
               const SizedBox(
                 width: 40,
               ),
               Text(
                 order.payment.status.displayName(),
-                style: const TextStyle(fontSize: 24),
+                style: AppTypography.medium3,
               ),
               OrderPaymentStatusIndicator(
                 status: order.payment.status,
@@ -295,13 +297,13 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                   return const Center(
                       child: Text(
                     "Oczekuje na odbiór przez kuriera",
-                    style: TextStyle(fontSize: 24),
+                    style: AppTypography.medium3,
                   ));
                 case OrderStatus.sent:
                   return const Center(
                       child: Text(
                     "Paczka została odebrana przez kuriera",
-                    style: TextStyle(fontSize: 24),
+                    style: AppTypography.medium3,
                   ));
                 case OrderStatus.canceled:
                   return const SizedBox.shrink();

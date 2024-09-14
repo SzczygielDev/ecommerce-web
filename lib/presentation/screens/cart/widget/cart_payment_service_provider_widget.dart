@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,8 +32,8 @@ class CartPaymentServiceProviderWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Text(
             provider.displayName,
-            style: TextStyle(
-                fontSize: 16, fontWeight: selected ? FontWeight.bold : null),
+            style: AppTypography.small1.merge(
+                TextStyle(fontWeight: selected ? FontWeight.bold : null)),
           ),
         ),
         trailing: SvgPicture.network(
@@ -41,6 +42,5 @@ class CartPaymentServiceProviderWidget extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

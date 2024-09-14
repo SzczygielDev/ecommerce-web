@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,29 +32,29 @@ class CartSummarySection extends StatelessWidget {
                       children: [
                         Text(
                           "Koszyk: ${cartTotal.toStringAsFixed(2)} ZŁ",
-                          style: const TextStyle(fontSize: 16),
+                          style: AppTypography.small1,
                         ),
                         Text(
                           "Dostawa ${deliveryPrice.toStringAsFixed(2)} ZŁ",
-                          style: const TextStyle(fontSize: 16),
+                          style: AppTypography.small1,
                         ),
                         Text(
                           "Kod promocyjny ${specialOfferPrice.toStringAsFixed(2)} ZŁ",
-                          style: const TextStyle(fontSize: 16),
+                          style: AppTypography.small1,
                         ),
                         const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               "CAŁOŚĆ",
-                              style: TextStyle(
-                                  fontSize: 24, color: AppColors.main),
+                              style: AppTypography.medium3.merge(
+                                  const TextStyle(color: AppColors.main)),
                             ),
                             Text(
                               "${finalPrice.toStringAsFixed(2)} ZŁ",
-                              style: const TextStyle(
-                                  fontSize: 24, color: AppColors.main),
+                              style: AppTypography.medium3.merge(
+                                  const TextStyle(color: AppColors.main)),
                             ),
                           ],
                         ),

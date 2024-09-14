@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/util/form/formatter/decimal_formatter.dart';
 import 'package:ecommerce_web/presentation/util/form/validators/decimal_validator.dart';
 import 'package:ecommerce_web/presentation/util/form/validators/not_empty_validator.dart';
@@ -37,7 +38,7 @@ class _OrderDimensionInputState extends State<OrderDimensionInput> {
 
         return null;
       },
-      style: const TextStyle(fontSize: 22),
+      style: AppTypography.medium2,
       decoration: InputDecoration(
           hintText: widget.title, suffixText: widget.suffixText),
     );

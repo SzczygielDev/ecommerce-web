@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/product/view/product_main_section.dart';
 import 'package:ecommerce_web/presentation/screens/product/view/product_photo_section.dart';
@@ -20,7 +21,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) => true,
+      onPopInvokedWithResult: (didPop, _) => true,
       child: ScrollableGenericPage(
           overlay: const AddedToCartOverlay(),
           padding: const EdgeInsets.only(
@@ -60,8 +61,11 @@ class _ProductScreenState extends State<ProductScreen> {
                             case ProductLoadingState.loaded:
                               return Text(
                                 state.product!.description,
-                                style: const TextStyle(
-                                    fontSize: 18, wordSpacing: 3, height: 1.75),
+                                style:
+                                    AppTypography.small2.merge(const TextStyle(
+                                  wordSpacing: 3,
+                                  height: 1.75,
+                                )),
                               );
                           }
                         },

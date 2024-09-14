@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/command/util/command_result_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class ProcessingCommandItem extends StatefulWidget {
@@ -69,7 +70,7 @@ class _ProcessingCommandItemState extends State<ProcessingCommandItem> {
                         children: [
                           Text(
                             widget.message,
-                            style: const TextStyle(fontSize: 24),
+                            style: AppTypography.medium3,
                           ),
                           const SizedBox(
                             width: 40,

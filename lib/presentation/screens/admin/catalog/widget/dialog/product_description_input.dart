@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/util/form/validators/not_empty_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +18,9 @@ class _ProductDescriptionInputState extends State<ProductDescriptionInput> {
       controller: widget.controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => NotEmptyValidator.validate(value),
-      style: const TextStyle(fontSize: 24),
+      style: AppTypography.medium3,
       decoration: const InputDecoration(
-          hintText: "Opis", hintStyle: TextStyle(fontSize: 24)),
+          hintText: "Opis", hintStyle: AppTypography.medium3),
       maxLines: 10,
     );
   }

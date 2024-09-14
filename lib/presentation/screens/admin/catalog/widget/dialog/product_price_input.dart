@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/util/form/formatter/decimal_formatter.dart';
 import 'package:ecommerce_web/presentation/util/form/validators/decimal_validator.dart';
 import 'package:ecommerce_web/presentation/util/form/validators/not_empty_validator.dart';
@@ -31,11 +32,9 @@ class _ProductPriceInputState extends State<ProductPriceInput> {
 
         return null;
       },
-      style: const TextStyle(fontSize: 24),
+      style: AppTypography.medium3,
       decoration: const InputDecoration(
-          suffixText: "ZŁ",
-          hintText: "Cena",
-          hintStyle: TextStyle(fontSize: 24)),
+          suffixText: "ZŁ", hintText: "Cena", hintStyle: AppTypography.medium3),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/catalog_edit_product_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/catalog_product_item_details_dialog.dart';
@@ -40,7 +41,7 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
           children: [
             const Text(
               "Katalog produktów",
-              style: TextStyle(fontSize: 32),
+              style: AppTypography.xlarge1,
             ),
             const SizedBox(
               height: 16,
@@ -62,11 +63,9 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                     Tab(
                         child: Text(
                       "Lista produktów",
-                      style: TextStyle(fontSize: 18),
+                      style: AppTypography.small2,
                     )),
-                    Tab(
-                        child:
-                            Text("Kategorie", style: TextStyle(fontSize: 18))),
+                    Tab(child: Text("Kategorie", style: AppTypography.small2)),
                   ],
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class GenericButton extends StatefulWidget {
@@ -26,7 +27,8 @@ class _GenericButtonState extends State<GenericButton> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(widget.title,
-              style: const TextStyle(color: AppColors.main, fontSize: 20)),
+              style: AppTypography.medium1
+                  .merge(const TextStyle(color: AppColors.main))),
         ));
   }
 }

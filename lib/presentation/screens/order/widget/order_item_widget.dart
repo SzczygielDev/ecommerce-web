@@ -3,6 +3,7 @@ import 'package:ecommerce_web/domain/order/order.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_cancel_button.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_payment_button.dart';
@@ -35,7 +36,7 @@ class OrderItemWidget extends StatelessWidget {
                     children: [
                       Text(
                         "Zamówienie nr. ${order.id.value.substring(0, 8)}",
-                        style: TextStyle(fontSize: 24),
+                        style: AppTypography.medium3,
                       ),
                       SizedBox(
                         width: 20,
@@ -47,18 +48,18 @@ class OrderItemWidget extends StatelessWidget {
                                 order.delivery.status
                                     .displayName()
                                     .toUpperCase(),
-                                style: TextStyle(fontSize: 24));
+                                style: AppTypography.medium3);
                           } else {
                             return Text(
                                 order.status.displayName().toUpperCase(),
-                                style: TextStyle(fontSize: 24));
+                                style: AppTypography.medium3);
                           }
                         },
                       )
                     ],
                   ),
                   Text(order.createdAt.toLocal().toString(),
-                      style: TextStyle(fontSize: 20)),
+                      style: AppTypography.medium1),
                   SizedBox(
                     height: 40,
                   ),
@@ -112,7 +113,7 @@ class OrderItemWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Text(
                           "SUMA\t${order.payment.amount.toStringAsFixed(2)} ZŁ",
-                          style: TextStyle(fontSize: 24)),
+                          style: AppTypography.medium3),
                     ),
                     Container(
                       height: 200,

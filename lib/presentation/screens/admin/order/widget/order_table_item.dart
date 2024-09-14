@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_wrapper.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_payment_status_indicator.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/button_cell.dart';
@@ -43,9 +44,7 @@ class OrderTableItem extends TableRow {
                   children: [
                     Text(
                       orderWrapper.order.payment.status.displayName(),
-                      style: const TextStyle(
-                        fontSize: 20,
-                      ),
+                      style: AppTypography.medium1,
                     ),
                     const SizedBox(
                       width: 10,

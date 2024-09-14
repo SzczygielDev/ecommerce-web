@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/cubit/product_price_history_cubit.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_price_history_item.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _ProductPriceHistoryDialogState extends State<ProductPriceHistoryDialog> {
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
                         "Historia zmian ceny",
-                        style: TextStyle(fontSize: 24),
+                        style: AppTypography.medium3,
                       ),
                     ),
                     priceChanges.isEmpty
@@ -62,7 +63,7 @@ class _ProductPriceHistoryDialogState extends State<ProductPriceHistoryDialog> {
                 child: Text(
                   "Wystąpił błąd",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24),
+                  style: AppTypography.medium3,
                 ),
               ),
             );

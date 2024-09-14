@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/client_data.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +17,17 @@ class CartClientSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Twoje dane",
-                    style: TextStyle(fontSize: 22),
+                    style: AppTypography.medium2,
                   ),
                   Text(
                     "zmień",
-                    style: TextStyle(
-                        fontSize: 22, decoration: TextDecoration.underline),
+                    style: AppTypography.medium2.merge(
+                        const TextStyle(decoration: TextDecoration.underline)),
                   )
                 ],
               ),
@@ -44,19 +45,19 @@ class CartClientSection extends StatelessWidget {
                         children: [
                           Text(
                             "${clientData!.firstName} ${clientData.lastName}",
-                            style: const TextStyle(fontSize: 16),
+                            style: AppTypography.small1,
                           ),
                           Text(
                             clientData.addressFirstLine,
-                            style: const TextStyle(fontSize: 16),
+                            style: AppTypography.small1,
                           ),
                           Text(
                             clientData.addressSecondLine,
-                            style: const TextStyle(fontSize: 16),
+                            style: AppTypography.small1,
                           ),
                           Text(
                             clientData.phoneNumber,
-                            style: const TextStyle(fontSize: 16),
+                            style: AppTypography.small1,
                           )
                         ],
                       );

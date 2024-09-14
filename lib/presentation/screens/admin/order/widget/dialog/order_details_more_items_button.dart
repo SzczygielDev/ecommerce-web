@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsMoreItemsButton extends StatelessWidget {
@@ -9,14 +10,15 @@ class OrderDetailsMoreItemsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
               "Pokaż więcej",
-              style: TextStyle(fontSize: 22, color: AppColors.main),
+              style: AppTypography.medium2
+                  .merge(const TextStyle(color: AppColors.main)),
             ),
           ),
         ],

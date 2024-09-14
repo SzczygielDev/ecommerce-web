@@ -3,6 +3,7 @@ import 'package:ecommerce_web/domain/command/util/batch_command.dart';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/domain/payment/payment_status.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_details_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
@@ -135,7 +136,7 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
           children: [
             const Text(
               "Zamówienia",
-              style: TextStyle(fontSize: 32),
+              style: AppTypography.xlarge1,
             ),
             const SizedBox(
               height: 16,
@@ -166,32 +167,32 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                         const Tab(
                             child: Text(
                           "Wszystkie",
-                          style: TextStyle(fontSize: 18),
+                          style: AppTypography.small2,
                         )),
                         Tab(
                             child: Text(
                           OrderStatus.created.displayName(),
-                          style: const TextStyle(fontSize: 18),
+                          style: AppTypography.small2,
                         )),
                         Tab(
                             child: Text(
                           OrderStatus.accepted.displayName(),
-                          style: const TextStyle(fontSize: 18),
+                          style: AppTypography.small2,
                         )),
                         Tab(
                             child: Text(
                           OrderStatus.inProgress.displayName(),
-                          style: const TextStyle(fontSize: 18),
+                          style: AppTypography.small2,
                         )),
                         const Tab(
                             child: Text(
                           "Wysyłka",
-                          style: TextStyle(fontSize: 18),
+                          style: AppTypography.small2,
                         )),
                         const Tab(
                             child: Text(
                           "Odrzucone",
-                          style: TextStyle(fontSize: 18),
+                          style: AppTypography.small2,
                         ))
                       ],
                     ),

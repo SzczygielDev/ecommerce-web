@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class OrderRefundButton extends StatelessWidget {
@@ -17,8 +18,9 @@ class OrderRefundButton extends StatelessWidget {
         onPressed: () {},
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: const Text("Zwróć zamówienie",
-              style: TextStyle(color: AppColors.main, fontSize: 20)),
+          child: Text("Zwróć zamówienie",
+              style: AppTypography.medium1
+                  .merge(const TextStyle(color: AppColors.main))),
         ));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -28,11 +29,11 @@ class _ProductImageSelectorState extends State<ProductImageSelector> {
             const Icon(Icons.image),
             const Text(
               "Przeciągnij i upuść zdjęcie",
-              style: TextStyle(fontSize: 24),
+              style: AppTypography.medium3,
             ),
             const Text(
               "lub",
-              style: TextStyle(fontSize: 24),
+              style: AppTypography.medium3,
             ),
             OutlinedButton(
                 onPressed: () {

@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class InkWellCell extends StatelessWidget {
@@ -19,8 +20,8 @@ class InkWellCell extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(10, 27, 10, 27),
           child: Text(
             title,
-            style: TextStyle(
-                fontSize: 20, fontWeight: bold ? FontWeight.bold : null),
+            style: AppTypography.medium1
+                .merge(TextStyle(fontWeight: bold ? FontWeight.bold : null)),
           ),
         ),
       ),

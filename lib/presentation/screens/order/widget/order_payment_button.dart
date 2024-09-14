@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class OrderPaymentButton extends StatelessWidget {
@@ -13,13 +14,14 @@ class OrderPaymentButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          minimumSize: Size(250, 40),
+          minimumSize: const Size(250, 40),
         ),
         onPressed: onPressed,
-        child: const Padding(
-          padding: EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Text("Zapłać",
-              style: TextStyle(color: AppColors.main, fontSize: 20)),
+              style: AppTypography.medium1
+                  .merge(const TextStyle(color: AppColors.main))),
         ));
   }
 }

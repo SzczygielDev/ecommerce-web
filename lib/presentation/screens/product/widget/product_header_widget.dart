@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
               case ProductLoadingState.loaded:
                 return Text(
                   state.product!.title,
-                  style: const TextStyle(fontSize: 36),
+                  style: AppTypography.xlarge2,
                 );
             }
           },

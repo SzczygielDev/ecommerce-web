@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class CatalogHeader extends StatelessWidget {
@@ -13,20 +14,13 @@ class CatalogHeader extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             crossAxisAlignment: CrossAxisAlignment.baseline,
             children: [
-              Text(
-                "Polecane",
-                style: TextStyle(
-                  fontSize: 32,
-                ),
-              ),
+              Text("Polecane", style: AppTypography.xlarge1),
               SizedBox(
                 width: 30,
               ),
               Text(
                 "Kategoria A > Kategoria B > Kategoria C",
-                style: TextStyle(
-                  fontSize: 14,
-                ),
+                style: AppTypography.xsmall2,
               ),
             ],
           ),

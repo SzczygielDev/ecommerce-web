@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -36,11 +37,11 @@ class PaymentErrorView extends StatelessWidget {
         ),
         const Text(
           "Wystąpił problem podczas płatności, spróbuj ponownie. W przypadku dodatkowych problemów, skontaktuj się z nami poprzez infolinię, dzwoniąc pod numer +48 123456789, lub mailowo, opisując w wiadomości problem pod adres kontakt@example.com.",
-          style: TextStyle(fontSize: 32),
+          style: AppTypography.xlarge1,
         ),
         const Text(
           "Zespół ECOMMERCE",
-          style: TextStyle(fontSize: 32),
+          style: AppTypography.xlarge1,
         ),
         const SizedBox(
           height: 50,
@@ -58,7 +59,7 @@ class PaymentErrorView extends StatelessWidget {
                   },
                   child: const Text(
                     "Anuluj",
-                    style: TextStyle(fontSize: 30),
+                    style: AppTypography.large2,
                   )),
             ),
             const SizedBox(
@@ -73,9 +74,10 @@ class PaymentErrorView extends StatelessWidget {
                   onPressed: () {
                     html.window.open(paymentUrl, '_self');
                   },
-                  child: const Text(
+                  child: Text(
                     "Spróbuj ponownie",
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    style: AppTypography.large2
+                        .merge(const TextStyle(color: Colors.white)),
                   )),
             ),
           ],

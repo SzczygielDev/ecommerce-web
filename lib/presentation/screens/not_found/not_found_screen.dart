@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/widget/generic_page.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +29,9 @@ class _NotFoundScreenState extends State<NotFoundScreen> {
               height: 40,
             ),
             Text(
-                "Zasób, którego szukasz, nie istnieje lub został przeniesiony pod inny adres.",
-                style: TextStyle(fontSize: 32))
+              "Zasób, którego szukasz, nie istnieje lub został przeniesiony pod inny adres.",
+              style: AppTypography.xlarge1,
+            )
           ],
         ),
       ),

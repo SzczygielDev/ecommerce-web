@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_delivery_provider_widget.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _CartDeliverySectionState extends State<CartDeliverySection> {
                 children: [
                   Text(
                     "Dostawa",
-                    style: TextStyle(fontSize: 22),
+                    style: AppTypography.medium2,
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_description_input.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_image_selector.dart';
@@ -84,7 +85,7 @@ class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
           children: [
             Text(
               widget.edit ? "Edytuj produkt" : "Nowy produkt",
-              style: const TextStyle(fontSize: 36),
+              style: AppTypography.xlarge2,
             ),
             const Divider(
               thickness: 1,
@@ -137,9 +138,12 @@ class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
                 onPressed: widget.edit ? _save : _create,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(widget.edit ? "Zapisz" : "Utwórz",
-                      style:
-                          const TextStyle(color: AppColors.main, fontSize: 20)),
+                  child: Text(
+                    widget.edit ? "Zapisz" : "Utwórz",
+                    style: AppTypography.medium1.merge(const TextStyle(
+                      color: AppColors.main,
+                    )),
+                  ),
                 ))
           ],
         ),

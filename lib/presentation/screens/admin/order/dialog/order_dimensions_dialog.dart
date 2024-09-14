@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_dimensions_dialog_result.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_dimension_input.dart';
@@ -31,7 +32,7 @@ class _OrderDimensionsDialogState extends State<OrderDimensionsDialog> {
                 children: [
                   const Text(
                     "Podaj wymiary paczki",
-                    style: TextStyle(fontSize: 30),
+                    style: AppTypography.large2,
                   ),
                   const SizedBox(
                     height: 30,

@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/view/order_error_view.dart';
 import 'package:ecommerce_web/presentation/screens/order/view/order_loaded_view.dart';
@@ -32,7 +33,7 @@ class _OrderScreenState extends State<OrderScreen> {
             children: [
               const Text(
                 "Twoje zamówienia",
-                style: TextStyle(fontSize: 32),
+                style: AppTypography.xlarge1,
               ),
               const Divider(),
               const SizedBox(

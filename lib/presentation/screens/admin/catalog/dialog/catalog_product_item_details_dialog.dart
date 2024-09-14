@@ -2,6 +2,7 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/domain/product/product_admin_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/cubit/product_price_history_cubit.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/product_price_history.dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
@@ -29,7 +30,7 @@ class _CatalogProductItemDetailsDialogState
         children: [
           const Text(
             "Szczegóły produktu",
-            style: TextStyle(fontSize: 36),
+            style: AppTypography.xlarge2,
           ),
           const Divider(
             thickness: 1,
@@ -42,7 +43,7 @@ class _CatalogProductItemDetailsDialogState
             children: [
               Text(
                 widget.product.title,
-                style: const TextStyle(fontSize: 32),
+                style: AppTypography.xlarge1,
               ),
               const SizedBox(
                 width: 20,
@@ -51,9 +52,10 @@ class _CatalogProductItemDetailsDialogState
                 onTap: () {
                   context.go('/products/${widget.product.id.value}');
                 },
-                child: const Text(
+                child: Text(
                   "Strona produktu",
-                  style: TextStyle(fontSize: 18, color: AppColors.main),
+                  style: AppTypography.small2
+                      .merge(const TextStyle(color: AppColors.main)),
                 ),
               )
             ],
@@ -62,7 +64,7 @@ class _CatalogProductItemDetailsDialogState
             children: [
               Text(
                 "${widget.product.price.toStringAsFixed(2)} ZŁ",
-                style: const TextStyle(fontSize: 28),
+                style: AppTypography.large1,
               ),
               const SizedBox(
                 width: 20,
@@ -79,9 +81,10 @@ class _CatalogProductItemDetailsDialogState
                             child: const ProductPriceHistoryDialog(),
                           ));
                 },
-                child: const Text(
+                child: Text(
                   "Historia zmian",
-                  style: TextStyle(fontSize: 18, color: AppColors.main),
+                  style: AppTypography.small2
+                      .merge(const TextStyle(color: AppColors.main)),
                 ),
               )
             ],
@@ -99,7 +102,7 @@ class _CatalogProductItemDetailsDialogState
           ),
           Text(
             widget.product.description,
-            style: const TextStyle(fontSize: 24),
+            style: AppTypography.medium3,
           ),
           const Spacer(),
           OutlinedButton(
@@ -113,10 +116,11 @@ class _CatalogProductItemDetailsDialogState
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Edytuj",
-                    style: TextStyle(color: AppColors.main, fontSize: 20)),
+                    style: AppTypography.medium1
+                        .merge(const TextStyle(color: AppColors.main))),
               ))
         ],
       ),

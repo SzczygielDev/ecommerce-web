@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -47,12 +48,12 @@ class PaymentSuccessView extends StatelessWidget {
                     decorationColor: AppColors.main)),
             const TextSpan(text: ". Dziękujemy za zakupy w naszym sklepie.")
           ]),
-          style: const TextStyle(fontSize: 32),
+          style: AppTypography.xlarge1,
           textAlign: TextAlign.center,
         ),
         const Text(
           "Zespół ECOMMERCE",
-          style: TextStyle(fontSize: 32),
+          style: AppTypography.xlarge1,
         ),
         const SizedBox(
           height: 50,
@@ -70,7 +71,7 @@ class PaymentSuccessView extends StatelessWidget {
                   },
                   child: const Text(
                     "Kontynuuj zakupy",
-                    style: TextStyle(fontSize: 30),
+                    style: AppTypography.large2,
                   )),
             ),
             const SizedBox(
@@ -85,9 +86,10 @@ class PaymentSuccessView extends StatelessWidget {
                   onPressed: () {
                     context.go('/orders');
                   },
-                  child: const Text(
+                  child: Text(
                     "Przejdź do zamówień",
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    style: AppTypography.large2
+                        .merge(const TextStyle(color: Colors.white)),
                   )),
             ),
           ],

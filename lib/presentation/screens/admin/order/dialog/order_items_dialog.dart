@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/domain/order/order_item.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_item.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class _OrderItemsDialogState extends State<OrderItemsDialog> {
               children: [
                 const Text(
                   "Lista produktów",
-                  style: TextStyle(fontSize: 32),
+                  style: AppTypography.xlarge1,
                 ),
                 const SizedBox(
                   height: 30,

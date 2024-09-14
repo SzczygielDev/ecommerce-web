@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       children: [
         const Text(
           "Panel",
-          style: TextStyle(fontSize: 32),
+          style: AppTypography.xlarge1,
         ),
         const SizedBox(
           height: 16,

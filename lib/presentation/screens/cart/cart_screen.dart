@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_client_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_delivery_section.dart';
@@ -43,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   Text(
                     "Twój koszyk",
-                    style: TextStyle(fontSize: 32),
+                    style: AppTypography.xlarge1,
                   )
                 ],
               ),

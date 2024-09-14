@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,7 +37,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
               ),
               const Text(
                 "Menu",
-                style: TextStyle(fontSize: 24),
+                style: AppTypography.medium3,
               )
             ],
           ),
@@ -51,7 +52,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             leading: const Icon(Icons.dashboard_outlined),
             title: const Text(
               "Panel główny",
-              style: TextStyle(fontSize: 24),
+              style: AppTypography.medium3,
             ),
           ),
           ListTile(
@@ -61,7 +62,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             leading: const Icon(Icons.shopping_bag_outlined),
             title: const Text(
               "Zamówienia",
-              style: TextStyle(fontSize: 24),
+              style: AppTypography.medium3,
             ),
           ),
           ListTile(
@@ -71,7 +72,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             leading: const Icon(Icons.category_outlined),
             title: const Text(
               "Katalog produktów",
-              style: TextStyle(fontSize: 24),
+              style: AppTypography.medium3,
             ),
           ),
           ListTile(
@@ -81,7 +82,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
             leading: const Icon(Icons.person),
             title: const Text(
               "Użytkownicy",
-              style: TextStyle(fontSize: 24),
+              style: AppTypography.medium3,
             ),
           ),
         ],

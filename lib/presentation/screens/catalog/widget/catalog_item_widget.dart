@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class CatalogItemWidget extends StatelessWidget {
@@ -40,11 +41,11 @@ class CatalogItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     product.title,
-                    style: const TextStyle(fontSize: 20),
+                    style: AppTypography.medium1,
                   ),
                   Text(
                     "${product.price} PLN",
-                    style: const TextStyle(fontSize: 20),
+                    style: AppTypography.medium1,
                   )
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,18 +51,18 @@ class _MockPaymentScreenState extends State<MockPaymentScreen> {
                   children: [
                     Text(
                       "Transakcja ${payment.id}",
-                      style: const TextStyle(fontSize: 32),
+                      style: AppTypography.xlarge1,
                     ),
                     Text(
                       "Do zapłaty: ${payment.amount.toStringAsFixed(2)}",
-                      style: const TextStyle(fontSize: 24),
+                      style: AppTypography.medium3,
                     ),
                     Text(
                       "Zapłacono: ${payment.amountPaid.toStringAsFixed(2)}",
-                      style: const TextStyle(fontSize: 24),
+                      style: AppTypography.medium3,
                     ),
                     TextFormField(
-                      style: const TextStyle(fontSize: 24),
+                      style: AppTypography.medium3,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (double.tryParse(value ?? "") == null) {
@@ -104,9 +105,11 @@ class _MockPaymentScreenState extends State<MockPaymentScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: _inProgress
                               ? const CircularProgressIndicator()
-                              : const Text("Zapłać",
-                                  style: TextStyle(
-                                      color: AppColors.main, fontSize: 20)),
+                              : Text(
+                                  "Zapłać",
+                                  style: AppTypography.medium1.merge(
+                                      const TextStyle(color: AppColors.main)),
+                                ),
                         ))
                   ],
                 ),
