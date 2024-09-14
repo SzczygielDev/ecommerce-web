@@ -1,14 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce_web/config/app_consts.dart';
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
-import 'package:ecommerce_web/infrastructure/repository/cart/mapper/cart_mapper.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/model/add_item_to_cart_request.dart';
-import 'package:ecommerce_web/infrastructure/repository/cart/model/cart_dto.dart';
 
 import 'model/cart_submit_request.dart';
 
@@ -23,7 +20,7 @@ class CartRepository extends CartRepositoryAbstraction {
                   productId: productId.value, quantity: quantity)
               .toJson());
 
-      return CartDto.fromJson(response.data).toModel();
+      return Cart.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }
@@ -34,7 +31,7 @@ class CartRepository extends CartRepositoryAbstraction {
     try {
       final response = await dio.get("/carts");
 
-      return CartDto.fromJson(response.data).toModel();
+      return Cart.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }
@@ -47,7 +44,7 @@ class CartRepository extends CartRepositoryAbstraction {
         "/carts/items/${productId.value}",
       );
 
-      return CartDto.fromJson(response.data).toModel();
+      return Cart.fromJson(response.data);
     } on Exception catch (ex) {
       return null;
     }
