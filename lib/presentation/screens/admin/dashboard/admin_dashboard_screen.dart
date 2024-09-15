@@ -4,6 +4,7 @@ import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_sc
 import 'package:flutter/material.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
+  static const route = "/admin";
   const AdminDashboardScreen({super.key});
 
   @override

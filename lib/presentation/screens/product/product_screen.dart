@@ -11,6 +11,11 @@ class ProductScreen extends StatefulWidget {
   static const routeName = "products";
   static const productIdPathParam = "productId";
   static const route = "/$routeName/:$productIdPathParam";
+
+  static String routeForProduct(String productId) {
+    return "/$routeName/:$productId";
+  }
+
   const ProductScreen({super.key});
 
   @override

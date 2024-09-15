@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminCatalogScreen extends StatefulWidget {
+  static const route = "/admin/catalog";
   const AdminCatalogScreen({super.key});
 
   @override

@@ -13,6 +13,7 @@ import 'dart:html' as html;
 import 'widget/cart_payment_section.dart';
 
 class CartScreen extends StatefulWidget {
+  static const route = "/cart";
   const CartScreen({super.key});
 
   @override

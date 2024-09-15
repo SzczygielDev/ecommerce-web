@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
 
 class AdminOrderScreen extends StatefulWidget {
+  static const route = "/admin/orders";
   const AdminOrderScreen({super.key});
 
   @override

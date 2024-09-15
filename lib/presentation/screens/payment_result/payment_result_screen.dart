@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PaymentResultScreen extends StatefulWidget {
+  static const routeName = "paymentResult";
+  static const orderIdPathParam = "orderId";
+  static const route = "/$routeName/:$orderIdPathParam";
   const PaymentResultScreen({super.key});
 
   @override

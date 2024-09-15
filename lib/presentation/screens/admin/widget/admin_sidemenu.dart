@@ -1,5 +1,9 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
+import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/users/admin_user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -47,7 +51,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
           ),
           ListTile(
             onTap: () {
-              context.go("/admin");
+              context.go(AdminDashboardScreen.route);
             },
             leading: const Icon(Icons.dashboard_outlined),
             title: const Text(
@@ -57,7 +61,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
           ),
           ListTile(
             onTap: () {
-              context.go("/admin/orders");
+              context.go(AdminOrderScreen.route);
             },
             leading: const Icon(Icons.shopping_bag_outlined),
             title: const Text(
@@ -67,7 +71,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
           ),
           ListTile(
             onTap: () {
-              context.go("/admin/catalog");
+              context.go(AdminCatalogScreen.route);
             },
             leading: const Icon(Icons.category_outlined),
             title: const Text(
@@ -77,7 +81,7 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
           ),
           ListTile(
             onTap: () {
-              context.go("/admin/users");
+              context.go(AdminUserScreen.route);
             },
             leading: const Icon(Icons.person),
             title: const Text(

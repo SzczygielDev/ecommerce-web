@@ -3,6 +3,7 @@ import 'package:ecommerce_web/presentation/widget/generic_page.dart';
 import 'package:flutter/material.dart';
 
 class NotFoundScreen extends StatefulWidget {
+  static const route = "/notFound";
   const NotFoundScreen({super.key});
 
   @override

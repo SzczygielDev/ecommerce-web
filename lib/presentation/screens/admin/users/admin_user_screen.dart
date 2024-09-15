@@ -2,6 +2,7 @@ import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 import 'package:flutter/material.dart';
 
 class AdminUserScreen extends StatefulWidget {
+  static const route = "/admin/users";
   const AdminUserScreen({super.key});
 
   @override

@@ -9,6 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:html' as html;
 
 class MockPaymentScreen extends StatefulWidget {
+  static const routeName = "mockPayment";
+  static const paymentIdPathParam = "paymentId";
+  static const route = "/$routeName/:$paymentIdPathParam";
+
   const MockPaymentScreen({super.key});
 
   @override

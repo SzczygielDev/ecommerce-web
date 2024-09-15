@@ -6,6 +6,7 @@ import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/cubit/product_price_history_cubit.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/product_price_history.dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
+import 'package:ecommerce_web/presentation/screens/product/product_screen.dart';
 import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,7 +52,8 @@ class _CatalogProductItemDetailsDialogState
               ),
               InkWell(
                 onTap: () {
-                  context.go('/products/${widget.product.id.value}');
+                  context.go(
+                      ProductScreen.routeForProduct(widget.product.id.value));
                 },
                 child: Text(
                   "Strona produktu",

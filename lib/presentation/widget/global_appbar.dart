@@ -1,4 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
+import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +29,7 @@ class GlobalAppBar extends AppBar {
                   children: [
                     InkWell(
                         onTap: () {
-                          context.go('/cart');
+                          context.go(CartScreen.route);
                         },
                         child: Text("koszyk")),
                     SizedBox(
@@ -35,7 +37,7 @@ class GlobalAppBar extends AppBar {
                     ),
                     InkWell(
                         onTap: () {
-                          context.go('/orders');
+                          context.go(OrderScreen.route);
                         },
                         child: Text("zamówienia")),
                     SizedBox(

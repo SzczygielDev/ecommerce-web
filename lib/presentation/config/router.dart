@@ -18,7 +18,6 @@ import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
-import 'package:ecommerce_web/presentation/screens/home/home_screen.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/mock_payment_screen.dart';
 import 'package:ecommerce_web/presentation/screens/not_found/not_found_screen.dart';
@@ -71,12 +70,12 @@ final router = GoRouter(
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>())
                 ..add(ProductOnLoadEvent(ProductId(productId!))),
-              child: ProductScreen(),
+              child: const ProductScreen(),
             ));
       },
     ),
     GoRoute(
-      path: '/cart',
+      path: CartScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(
             context,
@@ -91,13 +90,13 @@ final router = GoRouter(
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>(),
                   cartRepository: locator.get<CartRepositoryAbstraction>())
-                ..add(CartOnLoadEvent()),
-              child: CartScreen(),
+                ..add(const CartOnLoadEvent()),
+              child: const CartScreen(),
             ));
       },
     ),
     GoRoute(
-      path: '/orders',
+      path: OrderScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(
             context,
@@ -106,15 +105,16 @@ final router = GoRouter(
               create: (context) => OrderBloc(
                   orderRepository: locator.get<OrderRepositoryAbstraction>())
                 ..add(OrderOnLoadEvent()),
-              child: OrderScreen(),
+              child: const OrderScreen(),
             ));
       },
     ),
     GoRoute(
-      name: "mockPayment",
-      path: '/mockPayment/:paymentId',
+      name: MockPaymentScreen.routeName,
+      path: MockPaymentScreen.route,
       pageBuilder: (context, state) {
-        var paymentId = state.pathParameters["paymentId"];
+        var paymentId =
+            state.pathParameters[MockPaymentScreen.paymentIdPathParam];
 
         return buildPageWithTransition(
             context,
@@ -125,13 +125,14 @@ final router = GoRouter(
                         locator.get<DevelopmentRepositoryAbstraction>())
                   ..add(
                       MockPaymentOnLoadEvent(paymentId: PaymentId(paymentId!))),
-                child: MockPaymentScreen()));
+                child: const MockPaymentScreen()));
       },
     ),
     GoRoute(
-      path: "/paymentResult/:orderId",
+      path: PaymentResultScreen.route,
       pageBuilder: (context, state) {
-        var orderId = state.pathParameters["orderId"];
+        var orderId =
+            state.pathParameters[PaymentResultScreen.orderIdPathParam];
 
         return buildPageWithTransition(
             context,
@@ -140,25 +141,25 @@ final router = GoRouter(
               create: (context) => PaymentResultBloc(
                   orderRepository: locator.get<OrderRepositoryAbstraction>())
                 ..add(PaymentResultOnLoadEvent(orderId: OrderId(orderId!))),
-              child: PaymentResultScreen(),
+              child: const PaymentResultScreen(),
             ));
       },
     ),
     GoRoute(
-      path: "/notFound",
+      path: NotFoundScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(context, state, const NotFoundScreen());
       },
     ),
     GoRoute(
-      path: "/admin",
+      path: AdminDashboardScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(
             context, state, const AdminDashboardScreen());
       },
     ),
     GoRoute(
-      path: "/admin/orders",
+      path: AdminOrderScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(
             context,
@@ -175,7 +176,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/admin/catalog",
+      path: AdminCatalogScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(
             context,
@@ -189,7 +190,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/admin/users",
+      path: AdminUserScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(context, state, const AdminUserScreen());
       },
