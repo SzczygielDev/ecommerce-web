@@ -262,6 +262,7 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                 return Row(
                                   children: [
                                     GenericButton(
+                                        size: const Size(250, 40),
                                         onPressed: () {
                                           if (selectedOrders.length == 1) {
                                             context.read<AdminOrderBloc>().add(
@@ -281,6 +282,7 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                       width: 15,
                                     ),
                                     GenericButton(
+                                        size: const Size(250, 40),
                                         onPressed: () {
                                           if (selectedOrders.length == 1) {
                                             context.read<AdminOrderBloc>().add(
@@ -308,6 +310,7 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                     : Row(
                                         children: [
                                           GenericButton(
+                                              size: const Size(250, 40),
                                               onPressed: () {
                                                 if (selectedOrders.length ==
                                                     1) {
@@ -340,6 +343,7 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                 return Row(
                                   children: [
                                     GenericButton(
+                                        size: const Size(250, 40),
                                         onPressed: () {},
                                         title: "Zakończ pakowanie"),
                                     Expanded(child: SizedBox.shrink())

@@ -6,6 +6,7 @@ import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/cubit/product_price_history_cubit.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/product_price_history.dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -105,23 +106,13 @@ class _CatalogProductItemDetailsDialogState
             style: AppTypography.medium3,
           ),
           const Spacer(),
-          OutlinedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                minimumSize: const Size.fromHeight(80),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Edytuj",
-                    style: AppTypography.medium1
-                        .merge(const TextStyle(color: AppColors.main))),
-              ))
+          GenericButton(
+            size: const Size.fromHeight(80),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            title: "Edytuj",
+          ),
         ],
       ),
     );

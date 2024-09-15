@@ -1,7 +1,7 @@
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_dimensions_dialog_result.dart';
-import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_dimension_input.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 
 class OrderDimensionsDialog extends StatefulWidget {
@@ -60,7 +60,8 @@ class _OrderDimensionsDialogState extends State<OrderDimensionsDialog> {
                   const SizedBox(
                     height: 30,
                   ),
-                  OrderDetailsButton(
+                  GenericButton(
+                    size: const Size.fromHeight(80),
                     title: "Zatwierdź",
                     onPressed: () {
                       if (formKey.currentState?.validate() ?? false) {
@@ -75,7 +76,8 @@ class _OrderDimensionsDialogState extends State<OrderDimensionsDialog> {
                   const SizedBox(
                     height: 12,
                   ),
-                  OrderDetailsButton(
+                  GenericButton(
+                    size: const Size.fromHeight(80),
                     title: "Anuluj",
                     onPressed: () {
                       Navigator.of(context).pop();

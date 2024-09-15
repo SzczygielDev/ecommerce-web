@@ -8,6 +8,7 @@ import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/p
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_name_input.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_price_input.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -127,24 +128,11 @@ class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
               controller: descriptionController,
             ),
             const Spacer(),
-            OutlinedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: const Size.fromHeight(80),
-                ),
-                onPressed: widget.edit ? _save : _create,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.edit ? "Zapisz" : "Utwórz",
-                    style: AppTypography.medium1.merge(const TextStyle(
-                      color: AppColors.main,
-                    )),
-                  ),
-                ))
+            GenericButton(
+              onPressed: widget.edit ? _save : _create,
+              title: widget.edit ? "Zapisz" : "Utwórz",
+              size: const Size.fromHeight(80),
+            ),
           ],
         ),
       ),

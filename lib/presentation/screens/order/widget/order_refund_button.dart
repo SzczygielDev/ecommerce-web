@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 
 class OrderRefundButton extends StatelessWidget {
@@ -7,20 +8,10 @@ class OrderRefundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          minimumSize: Size(250, 40),
-        ),
-        onPressed: () {},
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("Zwróć zamówienie",
-              style: AppTypography.medium1
-                  .merge(const TextStyle(color: AppColors.main))),
-        ));
+    return GenericButton(
+      onPressed: () {},
+      title: "Zwróć zamówienie",
+      size: const Size(250, 40),
+    );
   }
 }

@@ -7,13 +7,13 @@ import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_dimensions_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_dimensions_dialog_result.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_wrapper.dart';
-import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_item.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_more_items_button.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_details_payment_transaction_widget.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/dialog/order_payment_status_indicator.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
 import 'package:ecommerce_web/presentation/util/date/default_date_time_format.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -213,7 +213,8 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                   return Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      OrderDetailsButton(
+                      GenericButton(
+                        size: const Size.fromHeight(80),
                         title: "Zaakceptuj",
                         onPressed: buttonsLocked
                             ? null
@@ -230,7 +231,8 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                       const SizedBox(
                         height: 15,
                       ),
-                      OrderDetailsButton(
+                      GenericButton(
+                        size: const Size.fromHeight(80),
                         title: "Odrzuć",
                         onPressed: buttonsLocked
                             ? null
@@ -247,7 +249,8 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                     ],
                   );
                 case OrderStatus.accepted:
-                  return OrderDetailsButton(
+                  return GenericButton(
+                    size: const Size.fromHeight(80),
                     title: "Rozpocznij pakowanie",
                     onPressed: buttonsLocked ||
                             order.payment.status != PaymentStatus.paid
@@ -265,7 +268,8 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
                 case OrderStatus.rejected:
                   return const SizedBox.shrink();
                 case OrderStatus.inProgress:
-                  return OrderDetailsButton(
+                  return GenericButton(
+                    size: const Size.fromHeight(80),
                     title: "Zakończ pakowanie",
                     onPressed: buttonsLocked
                         ? null

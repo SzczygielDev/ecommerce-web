@@ -1,6 +1,7 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,22 +32,14 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
       children: [
         Expanded(
             flex: 8,
-            child: OutlinedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
+            child: GenericButton(
                 onPressed: canAddToCart
                     ? () {
                         context.read<ProductBloc>().add(ProductAddToCartEvent(
                             int.parse(productQuantityController.text)));
                       }
                     : null,
-                child: Text("Dodaj do koszyka",
-                    style: AppTypography.medium1
-                        .merge(const TextStyle(color: AppColors.main))))),
+                title: "Dodaj do koszyka")),
         const SizedBox(
           width: 15,
         ),

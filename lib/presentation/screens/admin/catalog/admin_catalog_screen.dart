@@ -104,6 +104,7 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                   ),
                   Expanded(
                       child: GenericButton(
+                          size: const Size(250, 40),
                           onPressed: () {
                             showDialog(
                               context: context,

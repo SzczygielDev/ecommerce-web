@@ -1,5 +1,4 @@
-import 'package:ecommerce_web/presentation/config/app_colors.dart';
-import 'package:ecommerce_web/presentation/config/app_typography.dart';
+import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 
 class ButtonCell extends StatelessWidget {
@@ -13,23 +12,11 @@ class ButtonCell extends StatelessWidget {
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: OutlinedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              minimumSize: const Size(250, 40),
-            ),
-            onPressed: onPressed,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                title,
-                style: AppTypography.medium1
-                    .merge(const TextStyle(color: AppColors.main)),
-              ),
-            )),
+        child: GenericButton(
+          onPressed: onPressed,
+          title: title,
+          size: const Size(250, 40),
+        ),
       ),
     );
   }
