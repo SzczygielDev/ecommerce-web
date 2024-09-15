@@ -42,6 +42,5 @@ class CartDeliveryProviderWidget extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

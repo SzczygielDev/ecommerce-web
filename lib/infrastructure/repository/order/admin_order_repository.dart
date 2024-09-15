@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/order/admin_order.dart';
 import 'package:ecommerce_web/domain/order/admin_payment_repository_abstraction.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
-class AdminOrderRepository extends AdminOrderRepositoryAbstraction {
+class AdminOrderRepository extends RepositoryBase
+    implements AdminOrderRepositoryAbstraction {
   final dio = locator.get<Dio>();
 
   @override
@@ -19,6 +21,7 @@ class AdminOrderRepository extends AdminOrderRepositoryAbstraction {
 
       return models;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return [];
     }
   }

@@ -17,6 +17,7 @@ import 'package:ecommerce_web/infrastructure/repository/payment/payment_reposito
 import 'package:ecommerce_web/infrastructure/repository/product/product_admin_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/product/product_repository.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 
 final locator = GetIt.instance;
 
@@ -51,5 +52,8 @@ void setupLocator() {
 
   locator.registerLazySingleton<AdminOrderRepositoryAbstraction>(
     () => AdminOrderRepository(),
+  );
+  locator.registerLazySingleton<Logger>(
+    () => Logger(),
   );
 }

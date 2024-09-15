@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:ecommerce_web/config/app_consts.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_id.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
@@ -11,8 +10,6 @@ import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider_key.dart';
-import 'package:ecommerce_web/domain/payment/payment_service_providers.dart';
-import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';

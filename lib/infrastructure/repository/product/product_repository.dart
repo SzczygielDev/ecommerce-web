@@ -3,11 +3,13 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
 import 'model/product_create_request.dart';
 import 'model/product_update_request.dart';
 
-class ProductRepository extends ProductRepositoryAbstraction {
+class ProductRepository extends RepositoryBase
+    implements ProductRepositoryAbstraction {
   final dio = locator.get<Dio>();
   @override
   Future<List<Product>> findAll() async {
@@ -22,6 +24,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
 
       return models;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return [];
     }
   }
@@ -33,6 +36,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
 
       return Product.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -48,6 +52,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
 
       return Product.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -61,6 +66,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
 
       return Product.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -77,6 +83,7 @@ class ProductRepository extends ProductRepositoryAbstraction {
 
       return Product.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }

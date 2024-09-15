@@ -1,5 +1,4 @@
 import 'package:ecommerce_web/domain/product/product.dart';
-import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_description_input.dart';

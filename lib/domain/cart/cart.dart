@@ -26,7 +26,7 @@ class Cart {
   Map<String, dynamic> toJson() => {
         "cartId": id.value,
         "status": status.toString(),
-        "products": List<dynamic>.from((products ?? []).map((x) => x.toJson())),
+        "products": List<dynamic>.from((products).map((x) => x.toJson())),
         "total": total,
       };
 }

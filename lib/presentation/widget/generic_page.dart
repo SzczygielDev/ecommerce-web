@@ -22,6 +22,5 @@ class _GenericPageState extends State<GenericPage> {
         children: [Expanded(child: widget.child), const GlobalFooter()],
       ),
     );
-    ;
   }
 }

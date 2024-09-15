@@ -6,10 +6,12 @@ import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/model/add_item_to_cart_request.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
 import 'model/cart_submit_request.dart';
 
-class CartRepository extends CartRepositoryAbstraction {
+class CartRepository extends RepositoryBase
+    implements CartRepositoryAbstraction {
   final dio = locator.get<Dio>();
 
   @override
@@ -22,6 +24,7 @@ class CartRepository extends CartRepositoryAbstraction {
 
       return Cart.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -33,6 +36,7 @@ class CartRepository extends CartRepositoryAbstraction {
 
       return Cart.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -46,6 +50,7 @@ class CartRepository extends CartRepositoryAbstraction {
 
       return Cart.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -54,7 +59,7 @@ class CartRepository extends CartRepositoryAbstraction {
   Future<bool> submitCart(DeliveryProvider deliveryProvider,
       PaymentServiceProvider paymentServiceProvider) async {
     try {
-      final response = await dio.post("/carts/submit",
+      await dio.post("/carts/submit",
           data: CartSubmitRequest(
                   deliveryProvider: deliveryProvider.key.key,
                   paymentServiceProvider: paymentServiceProvider.key.key)
@@ -62,6 +67,7 @@ class CartRepository extends CartRepositoryAbstraction {
 
       return true;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return false;
     }
   }

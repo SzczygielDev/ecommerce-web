@@ -1,11 +1,11 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
-class DeliveryRepository extends DeliveryRepositoryAbstraction {
+class DeliveryRepository extends RepositoryBase
+    implements DeliveryRepositoryAbstraction {
   final dio = locator.get<Dio>();
   @override
   Future<List<DeliveryProvider>> getDeliveryProviders() async {
@@ -20,6 +20,7 @@ class DeliveryRepository extends DeliveryRepositoryAbstraction {
 
       return models;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return [];
     }
   }

@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
-class PaymentRepository extends PaymentRepositoryAbstraction {
+class PaymentRepository extends RepositoryBase
+    implements PaymentRepositoryAbstraction {
   final dio = locator.get<Dio>();
   @override
   Future<List<PaymentServiceProvider>> getPaymentServiceProviders() async {
@@ -18,6 +20,7 @@ class PaymentRepository extends PaymentRepositoryAbstraction {
 
       return models;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return [];
     }
   }

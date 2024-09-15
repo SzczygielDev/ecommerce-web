@@ -1,4 +1,3 @@
-import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:ecommerce_web/presentation/widget/generic_button.dart';

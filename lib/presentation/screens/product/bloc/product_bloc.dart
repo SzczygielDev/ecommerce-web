@@ -26,8 +26,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     });
 
     on<ProductAddToCartEvent>((event, emit) async {
-      final result = await cartRepository.addProductToCart(
-          state.product!.id, event.quantity);
+      await cartRepository.addProductToCart(state.product!.id, event.quantity);
       emit(state.copyWith(showAddedToCartDialog: true));
     });
 

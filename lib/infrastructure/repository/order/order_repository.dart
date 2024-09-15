@@ -10,10 +10,12 @@ import 'package:ecommerce_web/domain/command/util/command_result_status.dart';
 import 'package:ecommerce_web/domain/order/order.dart';
 import 'package:ecommerce_web/domain/order/order_id.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 import 'package:ecommerce_web/infrastructure/repository/order/model/order_complete_packing_request.dart';
 import 'package:uuid/uuid.dart';
 
-class OrderRepository extends OrderRepositoryAbstraction {
+class OrderRepository extends RepositoryBase
+    implements OrderRepositoryAbstraction {
   final Set<OrderCommand> processingCommands = {};
   final dio = locator.get<Dio>();
 
@@ -30,6 +32,7 @@ class OrderRepository extends OrderRepositoryAbstraction {
 
       return models;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return [];
     }
   }
@@ -42,6 +45,7 @@ class OrderRepository extends OrderRepositoryAbstraction {
 
       return Order.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -54,6 +58,7 @@ class OrderRepository extends OrderRepositoryAbstraction {
 
       return Order.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -65,13 +70,14 @@ class OrderRepository extends OrderRepositoryAbstraction {
       CommandId commandId = CommandId(uuid.v4());
       final command = AcceptOrderCommand(commandId: commandId, orderId: id);
 
-      final response = dio.put(
+      dio.put(
         "/orders/${id.value}/accept-commands/${commandId.value}",
       );
 
       processingCommands.add(command);
       return command;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -139,6 +145,7 @@ class OrderRepository extends OrderRepositoryAbstraction {
 
       return CommandResult.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -151,13 +158,14 @@ class OrderRepository extends OrderRepositoryAbstraction {
       final command =
           BeginPackingOrderCommand(commandId: commandId, orderId: id);
 
-      final response = dio.put(
+      dio.put(
         "/orders/${id.value}/beginPacking-commands/${commandId.value}",
       );
 
       processingCommands.add(command);
       return command;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -169,13 +177,14 @@ class OrderRepository extends OrderRepositoryAbstraction {
       CommandId commandId = CommandId(uuid.v4());
       final command = CancelOrderCommand(commandId: commandId, orderId: id);
 
-      final response = dio.put(
+      dio.put(
         "/orders/${id.value}/cancel-commands/${commandId.value}",
       );
 
       processingCommands.add(command);
       return command;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -194,8 +203,7 @@ class OrderRepository extends OrderRepositoryAbstraction {
       final command =
           CompletePackingOrderCommand(commandId: commandId, orderId: id);
 
-      final response = dio.put(
-          "/orders/${id.value}/completePacking-commands/${commandId.value}",
+      dio.put("/orders/${id.value}/completePacking-commands/${commandId.value}",
           data: OrderCompletePackingRequest(
                   width: width, length: length, height: height, weight: weight)
               .toJson());
@@ -203,6 +211,7 @@ class OrderRepository extends OrderRepositoryAbstraction {
       processingCommands.add(command);
       return command;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -214,13 +223,14 @@ class OrderRepository extends OrderRepositoryAbstraction {
       CommandId commandId = CommandId(uuid.v4());
       final command = RejectOrderCommand(commandId: commandId, orderId: id);
 
-      final response = dio.put(
+      dio.put(
         "/orders/${id.value}/reject-commands/${commandId.value}",
       );
 
       processingCommands.add(command);
       return command;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -232,13 +242,14 @@ class OrderRepository extends OrderRepositoryAbstraction {
       CommandId commandId = CommandId(uuid.v4());
       final command = ReturnOrderCommand(commandId: commandId, orderId: id);
 
-      final response = dio.put(
+      dio.put(
         "/orders/${id.value}/return-commands/${commandId.value}",
       );
 
       processingCommands.add(command);
       return command;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }

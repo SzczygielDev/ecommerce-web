@@ -3,8 +3,10 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/product/admin_product.dart';
 import 'package:ecommerce_web/domain/product/product_admin_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
-class ProductAdminRepository extends ProductAdminRepositoryAbstraction {
+class ProductAdminRepository extends RepositoryBase
+    implements ProductAdminRepositoryAbstraction {
   final dio = locator.get<Dio>();
   @override
   Future<List<AdminProduct>> findAll() async {
@@ -19,6 +21,7 @@ class ProductAdminRepository extends ProductAdminRepositoryAbstraction {
 
       return models;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return [];
     }
   }
@@ -30,6 +33,7 @@ class ProductAdminRepository extends ProductAdminRepositoryAbstraction {
 
       return AdminProduct.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }

@@ -1,5 +1,4 @@
 import 'package:ecommerce_web/domain/command/commands.dart';
-import 'package:ecommerce_web/domain/command/util/batch_command.dart';
 import 'package:ecommerce_web/domain/command/util/command_result.dart';
 import 'package:ecommerce_web/domain/order/order_status.dart';
 import 'package:ecommerce_web/domain/payment/payment_status.dart';

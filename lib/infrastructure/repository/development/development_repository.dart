@@ -3,8 +3,10 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/development/development_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/development/mock_payment.dart';
 import 'package:ecommerce_web/domain/payment/payment_id.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
-class DevelopmentRepository extends DevelopmentRepositoryAbstraction {
+class DevelopmentRepository extends RepositoryBase
+    implements DevelopmentRepositoryAbstraction {
   final dio = locator.get<Dio>();
 
   @override
@@ -16,6 +18,7 @@ class DevelopmentRepository extends DevelopmentRepositoryAbstraction {
 
       return MockPayment.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -28,6 +31,7 @@ class DevelopmentRepository extends DevelopmentRepositoryAbstraction {
 
       return MockPayment.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
