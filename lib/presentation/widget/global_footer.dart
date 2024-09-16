@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,32 +21,32 @@ class GlobalFooter extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'ECOMMERCE',
-                  style:
-                      GoogleFonts.koulen(fontSize: 30, color: AppColors.main),
+                  style: AppTypography.large2
+                      .merge(GoogleFonts.koulen(color: AppColors.main)),
                 ),
                 const Text(
                   'Strona główna',
-                  style: TextStyle(fontSize: 16),
+                  style: AppTypography.small1,
                 ),
                 const Text(
                   'Polityka prywatności',
-                  style: TextStyle(fontSize: 16),
+                  style: AppTypography.small1,
                 ),
                 const Text(
                   'Regulamin',
-                  style: TextStyle(fontSize: 16),
+                  style: AppTypography.small1,
                 ),
                 const Text(
                   'Dostawy',
-                  style: TextStyle(fontSize: 16),
+                  style: AppTypography.small1,
                 ),
                 const Text(
                   'O nas',
-                  style: TextStyle(fontSize: 16),
+                  style: AppTypography.small1,
                 ),
                 const Text(
                   'Kontakt',
-                  style: TextStyle(fontSize: 16),
+                  style: AppTypography.small1,
                 ),
               ].map(
                 (e) {

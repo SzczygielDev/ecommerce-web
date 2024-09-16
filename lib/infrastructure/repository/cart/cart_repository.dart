@@ -1,26 +1,30 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce_web/config/app_consts.dart';
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
+import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
-import 'package:ecommerce_web/infrastructure/repository/cart/mapper/cart_mapper.dart';
 import 'package:ecommerce_web/infrastructure/repository/cart/model/add_item_to_cart_request.dart';
-import 'package:ecommerce_web/infrastructure/repository/cart/model/cart_dto.dart';
+import 'package:ecommerce_web/infrastructure/repository/common/repository_base.dart';
 
-class CartRepository extends CartRepositoryAbstraction {
+import 'model/cart_submit_request.dart';
+
+class CartRepository extends RepositoryBase
+    implements CartRepositoryAbstraction {
   final dio = locator.get<Dio>();
 
   @override
   Future<Cart?> addProductToCart(ProductId productId, int quantity) async {
     try {
-      final response = await dio.post("/carts/${AppConsts.cartId}/items",
+      final response = await dio.post("/carts/items",
           data: AddItemToCartRequest(
                   productId: productId.value, quantity: quantity)
               .toJson());
 
-      return CartDto.fromJson(response.data).toModel();
+      return Cart.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -28,10 +32,11 @@ class CartRepository extends CartRepositoryAbstraction {
   @override
   Future<Cart?> getCart() async {
     try {
-      final response = await dio.get("/carts/${AppConsts.cartId}");
+      final response = await dio.get("/carts");
 
-      return CartDto.fromJson(response.data).toModel();
+      return Cart.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
@@ -40,24 +45,29 @@ class CartRepository extends CartRepositoryAbstraction {
   Future<Cart?> removeProductFromCart(ProductId productId) async {
     try {
       final response = await dio.delete(
-        "/carts/${AppConsts.cartId}/items/${productId.value}",
+        "/carts/items/${productId.value}",
       );
 
-      return CartDto.fromJson(response.data).toModel();
+      return Cart.fromJson(response.data);
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return null;
     }
   }
 
   @override
-  Future<bool> submitCart() async {
+  Future<bool> submitCart(DeliveryProvider deliveryProvider,
+      PaymentServiceProvider paymentServiceProvider) async {
     try {
-      final response = await dio.post(
-        "/carts/${AppConsts.cartId}/submit",
-      );
+      await dio.post("/carts/submit",
+          data: CartSubmitRequest(
+                  deliveryProvider: deliveryProvider.key.key,
+                  paymentServiceProvider: paymentServiceProvider.key.key)
+              .toJson());
 
       return true;
     } on Exception catch (ex) {
+      defaultErrorHandler(ex);
       return false;
     }
   }

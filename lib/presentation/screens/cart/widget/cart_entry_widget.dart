@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +28,11 @@ class CartEntryWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      item.title,
-                      style: const TextStyle(fontSize: 20),
-                    ),
+                    Text(item.title, style: AppTypography.medium1),
                     Text(
                       item.subtitle,
-                      style: const TextStyle(
-                          fontSize: 16, color: AppColors.darkGrey),
+                      style: AppTypography.small1
+                          .merge(const TextStyle(color: AppColors.darkGrey)),
                     ),
                   ],
                 ),
@@ -42,10 +40,7 @@ class CartEntryWidget extends StatelessWidget {
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "${item.price} ZŁ",
-                  style: const TextStyle(fontSize: 20),
-                ),
+                child: Text("${item.price} ZŁ", style: AppTypography.medium1),
               ),
               SizedBox(
                 width: 110,

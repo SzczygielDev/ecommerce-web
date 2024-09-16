@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_client_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_delivery_section.dart';
@@ -5,12 +6,14 @@ import 'package:ecommerce_web/presentation/screens/cart/widget/cart_entry_widget
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_special_offer_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_summary_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/submit_cart_button.dart';
-import 'package:ecommerce_web/presentation/widget/generic_page.dart';
+import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:html' as html;
+import 'widget/cart_payment_section.dart';
 
 class CartScreen extends StatefulWidget {
+  static const route = "/cart";
   const CartScreen({super.key});
 
   @override
@@ -20,9 +23,14 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartBloc, CartState>(
+    return BlocConsumer<CartBloc, CartState>(
+      listener: (context, state) {
+        if (state.cartSubmitState == CartSubmitState.redirect) {
+          html.window.open(state.redirectUrl.toString(), '_self');
+        }
+      },
       builder: (context, state) {
-        return GenericPage(
+        return ScrollableGenericPage(
           padding: const EdgeInsets.only(
             left: 50,
             right: 50,
@@ -37,7 +45,7 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   Text(
                     "Twój koszyk",
-                    style: TextStyle(fontSize: 32),
+                    style: AppTypography.xlarge1,
                   )
                 ],
               ),
@@ -77,43 +85,34 @@ class _CartScreenState extends State<CartScreen> {
                   const SizedBox(
                     width: 14,
                   ),
-                  Expanded(
+                  const Expanded(
                     flex: 3,
                     child: Column(
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
-                        const CartClientSection(),
-                        const SizedBox(
+                        CartClientSection(),
+                        SizedBox(
                           height: 26,
                         ),
-                        const CartDeliverySection(),
-                        const SizedBox(
+                        CartDeliverySection(),
+                        SizedBox(
                           height: 26,
                         ),
-                        const CartSpecialOfferSection(),
-                        const SizedBox(
+                        CartPaymentSection(),
+                        SizedBox(
+                          height: 26,
+                        ),
+                        CartSpecialOfferSection(),
+                        SizedBox(
                           height: 54,
                         ),
-                        const CartSummarySection(),
-                        const SizedBox(
+                        CartSummarySection(),
+                        SizedBox(
                           height: 26,
                         ),
-                        BlocBuilder<CartBloc, CartState>(
-                          builder: (context, state) {
-                            switch (state.loadingState) {
-                              case CartLoadingState.loading:
-                              case CartLoadingState.error:
-                                return const SubmitCartButton.disabled();
-
-                              case CartLoadingState.loaded:
-                                return SubmitCartButton(
-                                  total: state.cartTotal!,
-                                );
-                            }
-                          },
-                        )
+                        SubmitCartButton()
                       ],
                     ),
                   )

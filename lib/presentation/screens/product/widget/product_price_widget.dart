@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +29,8 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
             );
           case ProductLoadingState.loaded:
             return Text(
-              "${state.product!.price} PLN",
-              style: const TextStyle(fontSize: 32),
+              "${state.product!.price} ZŁ",
+              style: AppTypography.xlarge1,
             );
         }
       },

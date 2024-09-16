@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class CartSpecialOfferSection extends StatelessWidget {
@@ -15,7 +16,7 @@ class CartSpecialOfferSection extends StatelessWidget {
             children: [
               const Text(
                 "Kod promocyjny",
-                style: TextStyle(fontSize: 22),
+                style: AppTypography.medium2,
               ),
               const Divider(),
               TextFormField(

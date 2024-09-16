@@ -1,7 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/widget/shimmer_decorator.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 class CatalogItemLoadingPlaceholder extends StatelessWidget {
   const CatalogItemLoadingPlaceholder({super.key});
