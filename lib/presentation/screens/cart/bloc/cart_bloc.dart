@@ -15,6 +15,7 @@ import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/client_data.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -25,13 +26,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final DeliveryRepositoryAbstraction deliveryRepository;
   final PaymentRepositoryAbstraction paymentRepository;
   final OrderRepositoryAbstraction orderRepository;
-  CartBloc({
-    required this.cartRepository,
-    required this.productRepository,
-    required this.deliveryRepository,
-    required this.paymentRepository,
-    required this.orderRepository,
-  }) : super(const CartState()) {
+  final Logger logger;
+  CartBloc(
+      {required this.cartRepository,
+      required this.productRepository,
+      required this.deliveryRepository,
+      required this.paymentRepository,
+      required this.orderRepository,
+      required this.logger})
+      : super(const CartState()) {
     on<CartOnLoadEvent>(_cartOnLoad);
     on<RemoveItemFromCartEvent>(_removeItemFromCart);
     on<CartSubmitEvent>(_submitCart);
@@ -45,12 +48,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     final paymentServiceProviders =
         await paymentRepository.getPaymentServiceProviders();
     if (cart == null) {
+      logger.e("Failed to fetch cart for current user");
       emit(state.copyWith(loadingState: CartLoadingState.error));
       return;
     }
 
     final items = await _getItemsForCart(cart);
     if (items == null) {
+      logger.e("Cannot build cart items");
       emit(state.copyWith(loadingState: CartLoadingState.error));
       return;
     }
@@ -75,11 +80,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     final cart = await cartRepository.removeProductFromCart(event.productId);
 
     if (cart == null) {
-      //error
+      logger.e(
+          "Failed to fetch cart after removing product with id='${event.productId.value}'");
       return;
     }
     final items = await _getItemsForCart(cart);
     if (items == null) {
+      logger.e("Cannot build cart items while removing item from cart");
       emit(state.copyWith(loadingState: CartLoadingState.error));
       return;
     }
@@ -93,7 +100,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       return productRepository.findById(productId);
     }).toList());
 
+    final ids = cart.products.map((e) => e.productId.value).toSet();
+    final fetchIds = products.nonNulls.map((e) => e.id.value).toSet();
+    final failedIds =
+        ids.where((element) => !fetchIds.contains(element)).toList();
+
     if (products.contains(null)) {
+      logger.e("Failed to fetch products with ids='$failedIds'");
       return null;
     }
     var foundProducts = products.nonNulls.toList();
@@ -105,6 +118,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         );
 
         if (productForEntry == null) {
+          logger.e(
+              "Failed to create CartItem for product id='${e.productId.value}'");
           return null;
         }
 
@@ -130,6 +145,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     if (selectedDeliveryProvider == null ||
         selectedPaymentServiceProvider == null) {
+      logger.e(
+          "Invalid state, submit executed without psp or delivery provider, selectedDeliveryProvider='$selectedDeliveryProvider' selectedPaymentServiceProvider='$selectedPaymentServiceProvider'");
       return;
     }
 
@@ -137,6 +154,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         selectedPaymentServiceProvider.mappedPSP;
 
     if (mappedPaymentServiceProvider == null) {
+      logger.e(
+          "Failed to map psp for selectedPaymentServiceProvider='${selectedPaymentServiceProvider.key.key}'");
       return;
     }
 

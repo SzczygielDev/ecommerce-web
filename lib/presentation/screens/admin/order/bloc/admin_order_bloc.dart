@@ -13,6 +13,7 @@ import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart
 import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/model/order_wrapper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 
 part 'admin_order_event.dart';
 part 'admin_order_state.dart';
@@ -23,15 +24,16 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
   final PaymentRepositoryAbstraction paymentRepository;
   final DeliveryRepositoryAbstraction deliveryRepository;
   late final StreamSubscription<CommandResult> orderCommandResults;
-
+  final Logger logger;
   AdminOrderBloc(
       {required this.adminOrderRepository,
       required this.paymentRepository,
       required this.deliveryRepository,
-      required this.orderRepository})
+      required this.orderRepository,
+      required this.logger})
       : super(const AdminOrderState()) {
     orderCommandResults = orderRepository.orderCommandResults.listen(
-      onError: (e) => print(e),
+      onError: (e) => logger.e(e),
       (commandResult) =>
           add(OrderCommandResultEvent(commandResult: commandResult)),
     );

@@ -17,7 +17,7 @@ class GlobalAppBar extends AppBar {
               children: [
                 InkWell(
                   onTap: () {
-                    context.pushReplacement('/');
+                    context.go('/');
                   },
                   child: Text(
                     'ECOMMERCE',

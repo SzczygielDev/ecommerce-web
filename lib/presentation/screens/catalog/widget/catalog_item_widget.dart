@@ -44,7 +44,7 @@ class CatalogItemWidget extends StatelessWidget {
                     style: AppTypography.medium1,
                   ),
                   Text(
-                    "${product.price} PLN",
+                    "${product.price} ZŁ",
                     style: AppTypography.medium1,
                   )
                 ],

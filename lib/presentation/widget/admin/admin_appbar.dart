@@ -1,5 +1,7 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AdminAppBar extends AppBar {
@@ -13,7 +15,9 @@ class AdminAppBar extends AppBar {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    context.go(AdminDashboardScreen.route);
+                  },
                   child: Text.rich(
                     const TextSpan(children: [
                       TextSpan(

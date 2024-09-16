@@ -30,8 +30,11 @@ import 'package:ecommerce_web/presentation/screens/product/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
 final router = GoRouter(
+  errorPageBuilder: (context, state) =>
+      buildPageWithTransition(context, state, const NotFoundScreen()),
   routes: [
     /*
     For now we will use CatalogScreen as main screen. 
@@ -68,7 +71,8 @@ final router = GoRouter(
               create: (context) => ProductBloc(
                   cartRepository: locator.get<CartRepositoryAbstraction>(),
                   productRepository:
-                      locator.get<ProductRepositoryAbstraction>())
+                      locator.get<ProductRepositoryAbstraction>(),
+                  logger: locator.get<Logger>())
                 ..add(ProductOnLoadEvent(ProductId(productId!))),
               child: const ProductScreen(),
             ));
@@ -89,7 +93,8 @@ final router = GoRouter(
                       locator.get<DeliveryRepositoryAbstraction>(),
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>(),
-                  cartRepository: locator.get<CartRepositoryAbstraction>())
+                  cartRepository: locator.get<CartRepositoryAbstraction>(),
+                  logger: locator.get<Logger>())
                 ..add(const CartOnLoadEvent()),
               child: const CartScreen(),
             ));
@@ -103,7 +108,8 @@ final router = GoRouter(
             state,
             BlocProvider(
               create: (context) => OrderBloc(
-                  orderRepository: locator.get<OrderRepositoryAbstraction>())
+                  orderRepository: locator.get<OrderRepositoryAbstraction>(),
+                  logger: locator.get<Logger>())
                 ..add(OrderOnLoadEvent()),
               child: const OrderScreen(),
             ));
@@ -146,12 +152,6 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: NotFoundScreen.route,
-      pageBuilder: (context, state) {
-        return buildPageWithTransition(context, state, const NotFoundScreen());
-      },
-    ),
-    GoRoute(
       path: AdminDashboardScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(
@@ -169,7 +169,8 @@ final router = GoRouter(
                   adminOrderRepository: locator.get(),
                   orderRepository: locator.get(),
                   deliveryRepository: locator.get(),
-                  paymentRepository: locator.get())
+                  paymentRepository: locator.get(),
+                  logger: locator.get<Logger>())
                 ..add(AdminOrderOnLoadEvent()),
               child: const AdminOrderScreen(),
             ));

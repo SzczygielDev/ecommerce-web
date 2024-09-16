@@ -6,6 +6,7 @@ import 'package:ecommerce_web/domain/order/order.dart';
 import 'package:ecommerce_web/domain/order/order_id.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 
 part 'order_event.dart';
 part 'order_state.dart';
@@ -13,9 +14,11 @@ part 'order_state.dart';
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   final OrderRepositoryAbstraction orderRepository;
   late final StreamSubscription<CommandResult> orderCommandResults;
-  OrderBloc({required this.orderRepository}) : super(const OrderState()) {
+  final Logger logger;
+  OrderBloc({required this.orderRepository, required this.logger})
+      : super(const OrderState()) {
     orderCommandResults = orderRepository.orderCommandResults.listen(
-      onError: (e) => print(e),
+      onError: (e) => logger.e(e),
       (commandResult) =>
           add(OrderCommandResultEvent(commandResult: commandResult)),
     );

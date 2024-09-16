@@ -1,6 +1,6 @@
-import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/mock_payment/widget/mock_payment_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,6 @@ class _MockPaymentScreenState extends State<MockPaymentScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController controller =
       TextEditingController.fromValue(const TextEditingValue(text: "100.0"));
-  var _inProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,39 +80,10 @@ class _MockPaymentScreenState extends State<MockPaymentScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    OutlinedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          minimumSize: const Size.fromHeight(40),
-                        ),
-                        onPressed: _inProgress
-                            ? null
-                            : () {
-                                final valid =
-                                    formKey.currentState?.validate() ?? false;
-                                if (valid) {
-                                  setState(() {
-                                    _inProgress = true;
-                                  });
-                                  context.read<MockPaymentBloc>().add(
-                                      MockPaymentSubmitEvent(
-                                          value:
-                                              double.parse(controller.text)));
-                                }
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: _inProgress
-                              ? const CircularProgressIndicator()
-                              : Text(
-                                  "Zapłać",
-                                  style: AppTypography.medium1.merge(
-                                      const TextStyle(color: AppColors.main)),
-                                ),
-                        ))
+                    MockPaymentButton(
+                      formKey: formKey,
+                      controller: controller,
+                    )
                   ],
                 ),
               ),

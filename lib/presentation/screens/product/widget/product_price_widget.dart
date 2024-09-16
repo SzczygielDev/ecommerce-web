@@ -29,7 +29,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
             );
           case ProductLoadingState.loaded:
             return Text(
-              "${state.product!.price} PLN",
+              "${state.product!.price} ZŁ",
               style: AppTypography.xlarge1,
             );
         }

@@ -5,13 +5,17 @@ import 'package:ecommerce_web/domain/payment/payment_status.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/dialog/order_details_dialog.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/button/order_table_accept_button.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/button/order_table_begin_packing_button.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/button/order_table_reject_button.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_refresh_button.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_search_input.dart';
+import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_tab_bar.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_admin_screen.dart';
 import 'package:ecommerce_web/presentation/widget/command/command_overlay.dart';
 import 'package:ecommerce_web/presentation/widget/command/processing_batch_command_item.dart';
 import 'package:ecommerce_web/presentation/widget/command/processing_command_item.dart';
-import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_header.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/widget/order_table_item.dart';
 import 'package:flutter/widgets.dart';
@@ -145,72 +149,26 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
               children: [
                 Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: TabBar(
-                      onTap: (value) {
-                        setState(() {
-                          tabIndex = value;
-                        });
-                        context
-                            .read<AdminOrderBloc>()
-                            .add(UnselectAllOrdersEvent());
-                      },
-                      padding: EdgeInsets.zero,
-                      labelPadding: EdgeInsets.zero,
-                      indicatorPadding: EdgeInsets.zero,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      controller: _tabController,
-                      tabs: [
-                        const Tab(
-                            child: Text(
-                          "Wszystkie",
-                          style: AppTypography.small2,
-                        )),
-                        Tab(
-                            child: Text(
-                          OrderStatus.created.displayName(),
-                          style: AppTypography.small2,
-                        )),
-                        Tab(
-                            child: Text(
-                          OrderStatus.accepted.displayName(),
-                          style: AppTypography.small2,
-                        )),
-                        Tab(
-                            child: Text(
-                          OrderStatus.inProgress.displayName(),
-                          style: AppTypography.small2,
-                        )),
-                        const Tab(
-                            child: Text(
-                          "Wysyłka",
-                          style: AppTypography.small2,
-                        )),
-                        const Tab(
-                            child: Text(
-                          "Odrzucone",
-                          style: AppTypography.small2,
-                        ))
-                      ],
-                    ),
-                  ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: OrderTableTabBar(
+                        tabController: _tabController,
+                        onTap: (value) {
+                          setState(() {
+                            tabIndex = value;
+                          });
+                        },
+                      )),
                 ),
-                Expanded(
+                const Expanded(
                   child: Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: 15,
                       ),
-                      IconButton(
-                          onPressed: () {
-                            context
-                                .read<AdminOrderBloc>()
-                                .add(RefreshDataEvent());
-                          },
-                          icon: const Icon(Icons.refresh_outlined)),
+                      OrderTableRefreshButton(),
                     ],
                   ),
                 )
@@ -230,19 +188,8 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                 widthFactor: 0.6,
                 child: Row(
                   children: [
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                            hintText: "Wyszukaj",
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: AppColors.main, width: 1.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.darkGrey, width: 1.0),
-                            )),
-                      ),
+                    const Expanded(
+                      child: OrderTableSearchInput(),
                     ),
                     const SizedBox(
                       width: 20,
@@ -261,43 +208,15 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                               case OrderStatus.created:
                                 return Row(
                                   children: [
-                                    GenericButton(
-                                        size: const Size(250, 40),
-                                        onPressed: () {
-                                          if (selectedOrders.length == 1) {
-                                            context.read<AdminOrderBloc>().add(
-                                                AcceptOrderEvent(
-                                                    orderId: selectedOrders
-                                                        .first.id));
-                                          } else {
-                                            context.read<AdminOrderBloc>().add(
-                                                AcceptOrdersBatchEvent(
-                                                    orderIds: selectedOrders
-                                                        .map((e) => e.id)
-                                                        .toList()));
-                                          }
-                                        },
-                                        title: "Zaakceptuj"),
+                                    OrderTableAcceptButton(
+                                      selectedOrders: selectedOrders,
+                                    ),
                                     const SizedBox(
                                       width: 15,
                                     ),
-                                    GenericButton(
-                                        size: const Size(250, 40),
-                                        onPressed: () {
-                                          if (selectedOrders.length == 1) {
-                                            context.read<AdminOrderBloc>().add(
-                                                RejectOrderEvent(
-                                                    orderId: selectedOrders
-                                                        .first.id));
-                                          } else {
-                                            context.read<AdminOrderBloc>().add(
-                                                RejectOrdersBatchEvent(
-                                                    orderIds: selectedOrders
-                                                        .map((e) => e.id)
-                                                        .toList()));
-                                          }
-                                        },
-                                        title: "Odrzuć")
+                                    OrderTableRejectButton(
+                                      selectedOrders: selectedOrders,
+                                    )
                                   ],
                                 );
                               case OrderStatus.accepted:
@@ -306,33 +225,12 @@ class _AdminOrderScreenState extends State<AdminOrderScreen>
                                             orderWrapper.order.payment.status !=
                                             PaymentStatus.paid)
                                         .isNotEmpty
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Row(
                                         children: [
-                                          GenericButton(
-                                              size: const Size(250, 40),
-                                              onPressed: () {
-                                                if (selectedOrders.length ==
-                                                    1) {
-                                                  context
-                                                      .read<AdminOrderBloc>()
-                                                      .add(
-                                                          BeginPackingOrderEvent(
-                                                              orderId:
-                                                                  selectedOrders
-                                                                      .first
-                                                                      .id));
-                                                } else {
-                                                  context.read<AdminOrderBloc>().add(
-                                                      BeginPackingOrdersBatchEvent(
-                                                          orderIds:
-                                                              selectedOrders
-                                                                  .map((e) =>
-                                                                      e.id)
-                                                                  .toList()));
-                                                }
-                                              },
-                                              title: "Rozpocznij pakowanie"),
+                                          OrderTableBeginPackingButton(
+                                            selectedOrders: selectedOrders,
+                                          ),
                                           const Expanded(
                                               child: SizedBox.shrink())
                                         ],
