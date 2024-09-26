@@ -4,6 +4,7 @@ import 'package:ecommerce_web/presentation/screens/admin/widget/button_cell.dart
 import 'package:ecommerce_web/presentation/screens/admin/widget/checkbox_cell.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/default_table_cell.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/ink_well_cell.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:flutter/material.dart';
 
 class CatalogProductTableItem extends TableRow {
@@ -26,7 +27,8 @@ class CatalogProductTableItem extends TableRow {
               Container(
                 height: 160,
                 width: 160,
-                color: AppColors.darkGrey,
+                child: Image.network(
+                    ImageUrlResolver.getUrlForImage(product.imageId)),
               ),
               InkWellCell(
                 onPressed: onPressed,

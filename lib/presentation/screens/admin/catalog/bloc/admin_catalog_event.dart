@@ -13,9 +13,14 @@ class AdminCatalogCreateProductEvent extends AdminCatalogEvent {
   final String title;
   final String description;
   final double price;
-
+  final String fileName;
+  final Uint8List bytes;
   const AdminCatalogCreateProductEvent(
-      {required this.description, required this.title, required this.price});
+      {required this.description,
+      required this.title,
+      required this.price,
+      required this.fileName,
+      required this.bytes});
 }
 
 class AdminCatalogDeleteProductEvent extends AdminCatalogEvent {
@@ -25,5 +30,8 @@ class AdminCatalogDeleteProductEvent extends AdminCatalogEvent {
 
 class AdminCatalogUpdateProductEvent extends AdminCatalogEvent {
   final Product updatedProduct;
-  const AdminCatalogUpdateProductEvent({required this.updatedProduct});
+  final Uint8List? updatedImage;
+  final String? fileName;
+  const AdminCatalogUpdateProductEvent(
+      {required this.updatedProduct, this.updatedImage, this.fileName});
 }

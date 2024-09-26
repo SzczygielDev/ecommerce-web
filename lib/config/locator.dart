@@ -3,6 +3,7 @@ import 'package:ecommerce_web/config/app_consts.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/development/development_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/image/image_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/order/admin_payment_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_repository_abstraction.dart';
@@ -11,6 +12,7 @@ import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart
 import 'package:ecommerce_web/infrastructure/repository/cart/cart_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/delivery/delivery_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/development/development_repository.dart';
+import 'package:ecommerce_web/infrastructure/repository/image/image_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/order/admin_order_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/order/order_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/payment/payment_repository.dart';
@@ -55,5 +57,8 @@ void setupLocator() {
   );
   locator.registerLazySingleton<Logger>(
     () => Logger(),
+  );
+  locator.registerLazySingleton<ImageRepositoryAbstraction>(
+    () => ImageRepository(),
   );
 }

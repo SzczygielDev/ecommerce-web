@@ -128,7 +128,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             title: productForEntry.title,
             subtitle: "Atrybut A / Atrybut B",
             price: productForEntry.price,
-            quantity: e.quantity);
+            quantity: e.quantity,
+            imageId: productForEntry.imageId);
       },
     ).toList();
 

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ecommerce_web/config/locator.dart';
+import 'package:ecommerce_web/domain/image/image_id.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
@@ -43,11 +44,14 @@ class ProductRepository extends RepositoryBase
 
   @override
   Future<Product?> createProduct(
-      String title, String description, double price) async {
+      String title, String description, double price, ImageId imageId) async {
     try {
       final response = await dio.post("/products",
           data: ProductCreateRequest(
-                  title: title, description: description, price: price)
+                  title: title,
+                  description: description,
+                  price: price,
+                  imageId: imageId.value)
               .toJson());
 
       return Product.fromJson(response.data);
@@ -78,7 +82,8 @@ class ProductRepository extends RepositoryBase
           data: ProductUpdateRequest(
                   title: product.title,
                   description: product.description,
-                  price: product.price)
+                  price: product.price,
+                  imageId: product.imageId.value)
               .toJson());
 
       return Product.fromJson(response.data);

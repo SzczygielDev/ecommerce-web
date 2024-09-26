@@ -1,8 +1,11 @@
+import 'package:ecommerce_web/domain/image/image_id.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:flutter/material.dart';
 
 class ProductPhotoSection extends StatelessWidget {
-  const ProductPhotoSection({super.key});
+  final ImageId imageId;
+  const ProductPhotoSection({super.key, required this.imageId});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,7 @@ class ProductPhotoSection extends StatelessWidget {
           Expanded(
             child: Container(
               color: AppColors.shimmerGrey,
+              child: Image.network(ImageUrlResolver.getUrlForImage(imageId)),
             ),
           ),
           const SizedBox(

@@ -8,6 +8,7 @@ import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_cancel_button.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_payment_button.dart';
 import 'package:ecommerce_web/presentation/screens/order/widget/order_refund_button.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:html' as html;
@@ -38,7 +39,7 @@ class OrderItemWidget extends StatelessWidget {
                         "Zamówienie nr. ${order.id.value.substring(0, 8)}",
                         style: AppTypography.medium3,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Builder(
@@ -60,7 +61,7 @@ class OrderItemWidget extends StatelessWidget {
                   ),
                   Text(order.createdAt.toLocal().toString(),
                       style: AppTypography.medium1),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Builder(
@@ -73,7 +74,7 @@ class OrderItemWidget extends StatelessWidget {
                           },
                         );
                       } else {
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       }
                     },
                   ),
@@ -88,16 +89,16 @@ class OrderItemWidget extends StatelessWidget {
                           },
                         );
                       } else {
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       }
                     },
                   ),
                   Builder(
                     builder: (context) {
                       if (order.delivery.status == DeliveryStatus.delivered) {
-                        return OrderRefundButton();
+                        return const OrderRefundButton();
                       } else {
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       }
                     },
                   ),
@@ -109,32 +110,42 @@ class OrderItemWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
+                    ...order.items
+                        .sublist(0, order.items.length.clamp(0, 3))
+                        .map(
+                          (orderItem) => Row(
+                            children: [
+                              SizedBox(
+                                height: 200,
+                                width: 200,
+                                child: Image.network(
+                                    ImageUrlResolver.getUrlForImage(
+                                        orderItem.imageId)),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                    order.items.length > 3
+                        ? Container(
+                            height: 200,
+                            width: 200,
+                            color: AppColors.lightGrey,
+                            child: Center(
+                              child: Text(
+                                "+${order.items.length - 3}",
+                                style: AppTypography.medium1,
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Text(
-                          "SUMA\t${order.payment.amount.toStringAsFixed(2)} ZŁ",
+                          "${order.payment.amount.toStringAsFixed(2)} ZŁ",
                           style: AppTypography.medium3),
-                    ),
-                    Container(
-                      height: 200,
-                      width: 200,
-                      color: AppColors.darkGrey,
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      height: 200,
-                      width: 200,
-                      color: AppColors.darkGrey,
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      height: 200,
-                      width: 200,
-                      color: AppColors.darkGrey,
                     ),
                   ],
                 )

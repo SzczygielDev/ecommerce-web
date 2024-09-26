@@ -13,7 +13,7 @@ class ProductScreen extends StatefulWidget {
   static const route = "/$routeName/:$productIdPathParam";
 
   static String routeForProduct(String productId) {
-    return "/$routeName/:$productId";
+    return "/$routeName/$productId";
   }
 
   const ProductScreen({super.key});
@@ -26,7 +26,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvokedWithResult: (didPop, _) => true,
+      onPopInvoked: (didPop) => true,
       child: ScrollableGenericPage(
           overlay: const AddedToCartOverlay(),
           padding: const EdgeInsets.only(
@@ -38,13 +38,27 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
-                      child: ProductPhotoSection(),
+                      child: BlocBuilder<ProductBloc, ProductState>(
+                        builder: (context, state) {
+                          switch (state.loadingState) {
+                            case ProductLoadingState.loading:
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            case ProductLoadingState.error:
+                              return const SizedBox.shrink();
+                            case ProductLoadingState.loaded:
+                              return ProductPhotoSection(
+                                imageId: state.product!.imageId,
+                              );
+                          }
+                        },
+                      ),
                     ),
-                    Expanded(child: ProductMainSection())
+                    const Expanded(child: ProductMainSection())
                   ],
                 ),
               ),
