@@ -1,6 +1,6 @@
 import 'package:ecommerce_web/domain/order/order_item.dart';
-import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsItem extends StatelessWidget {
@@ -14,9 +14,7 @@ class OrderDetailsItem extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              color: AppColors.darkGrey,
-            ),
+            child: Image.network(ImageUrlResolver.getUrlForImage(item.imageId)),
           ),
           Expanded(
               flex: 3,

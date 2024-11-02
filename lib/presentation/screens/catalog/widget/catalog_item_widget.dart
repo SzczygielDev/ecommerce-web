@@ -1,6 +1,7 @@
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:flutter/material.dart';
 
 class CatalogItemWidget extends StatelessWidget {
@@ -20,15 +21,17 @@ class CatalogItemWidget extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Container(
-                  height: 600,
-                  color: AppColors.grey,
+                Center(
+                  child: SizedBox(
+                      height: 600,
+                      child: Image.network(
+                          ImageUrlResolver.getUrlForImage(product.imageId))),
                 ),
                 Positioned.fill(
                   child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        splashColor: AppColors.lightGrey,
+                        splashColor: AppColors.splashColor,
                         onTap: onTapped,
                       )),
                 ),

@@ -1,12 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 
 class ProductImageSelectorPreview extends StatefulWidget {
-  final Uint8List fileBytes;
+  final Widget image;
   final Function() onRemove;
   const ProductImageSelectorPreview(
-      {super.key, required this.fileBytes, required this.onRemove});
+      {super.key, required this.image, required this.onRemove});
 
   @override
   State<ProductImageSelectorPreview> createState() =>
@@ -20,7 +18,7 @@ class _ProductImageSelectorPreviewState
     return Stack(
       children: [
         Center(
-          child: Image.memory(widget.fileBytes),
+          child: widget.image,
         ),
         Align(
           alignment: Alignment.topRight,

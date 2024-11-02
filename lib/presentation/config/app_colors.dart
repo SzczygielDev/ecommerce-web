@@ -9,4 +9,5 @@ class AppColors {
   static const lightMain = Color(0xff5B9DFF);
   static const green = Color(0xff84DD99);
   static const red = Color(0xffE15858);
+  static const splashColor = Color.fromARGB(31, 158, 158, 158);
 }

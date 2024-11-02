@@ -7,6 +7,7 @@ import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/p
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_name_input.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/widget/dialog/product_price_input.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +37,8 @@ class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
   late TextEditingController descriptionController;
 
   Uint8List? fileBytes;
+  String? fileName;
+  bool showCurrentImage = true;
 
   @override
   void initState() {
@@ -51,25 +54,29 @@ class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
   void _create() {
     final isValid = formKey.currentState?.validate() ?? false;
 
-    if (isValid) {
+    if (isValid && fileName != null && fileBytes != null) {
       context.read<AdminCatalogBloc>().add(AdminCatalogCreateProductEvent(
           title: nameController.text,
           description: descriptionController.text,
-          price: double.parse(priceController.text)));
+          price: double.parse(priceController.text),
+          fileName: fileName!,
+          bytes: fileBytes!));
       Navigator.of(context).pop();
     }
   }
 
   void _save() {
     final isValid = formKey.currentState?.validate() ?? false;
+    final product = widget.product;
 
-    if (isValid) {
+    if (isValid && product != null) {
       context.read<AdminCatalogBloc>().add(AdminCatalogUpdateProductEvent(
-          updatedProduct: Product(
-              id: widget.product!.id,
+          updatedProduct: product.copyWith(
               title: nameController.text,
               description: descriptionController.text,
-              price: double.parse(priceController.text))));
+              price: double.parse(priceController.text)),
+          updatedImage: fileBytes,
+          fileName: fileName));
       Navigator.of(context).pop();
     }
   }
@@ -103,23 +110,41 @@ class _CatalogEditProductDialogState extends State<CatalogEditProductDialog> {
             const SizedBox(
               height: 20,
             ),
-            Expanded(
-                child: fileBytes != null
-                    ? ProductImageSelectorPreview(
-                        fileBytes: fileBytes!,
-                        onRemove: () {
-                          setState(() {
-                            fileBytes = null;
-                          });
-                        },
-                      )
-                    : ProductImageSelector(
-                        onSelected: (bytes) {
-                          setState(() {
-                            fileBytes = bytes;
-                          });
-                        },
-                      )),
+            Expanded(child: Builder(
+              builder: (context) {
+                if (widget.edit && showCurrentImage) {
+                  return ProductImageSelectorPreview(
+                    image: Image.network(ImageUrlResolver.getUrlForImage(
+                        widget.product!.imageId)),
+                    onRemove: () {
+                      setState(() {
+                        showCurrentImage = false;
+                      });
+                    },
+                  );
+                }
+
+                if (fileBytes != null) {
+                  return ProductImageSelectorPreview(
+                    image: Image.memory(fileBytes!),
+                    onRemove: () {
+                      setState(() {
+                        fileBytes = null;
+                      });
+                    },
+                  );
+                } else {
+                  return ProductImageSelector(
+                    onSelected: (bytes, name) {
+                      setState(() {
+                        fileBytes = bytes;
+                        fileName = name;
+                      });
+                    },
+                  );
+                }
+              },
+            )),
             const SizedBox(
               height: 20,
             ),

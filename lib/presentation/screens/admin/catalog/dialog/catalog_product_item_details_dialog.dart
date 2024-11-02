@@ -7,6 +7,7 @@ import 'package:ecommerce_web/presentation/screens/admin/catalog/cubit/product_p
 import 'package:ecommerce_web/presentation/screens/admin/catalog/dialog/product_price_history.dialog.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_side_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/product/product_screen.dart';
+import 'package:ecommerce_web/presentation/util/image/image_url_resolver.dart';
 import 'package:ecommerce_web/presentation/widget/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,8 +97,9 @@ class _CatalogProductItemDetailsDialogState
             height: 20,
           ),
           Expanded(
-            child: Container(
-              color: AppColors.darkGrey,
+            child: Center(
+              child: Image.network(
+                  ImageUrlResolver.getUrlForImage(widget.product.imageId)),
             ),
           ),
           const SizedBox(

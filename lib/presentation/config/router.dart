@@ -2,6 +2,7 @@ import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/development/development_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/image/image_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/order/order_id.dart';
 import 'package:ecommerce_web/domain/order/order_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/payment/payment_id.dart';
@@ -184,8 +185,11 @@ final router = GoRouter(
             state,
             BlocProvider(
               create: (context) => AdminCatalogBloc(
-                productRepository: locator.get<ProductRepositoryAbstraction>(),
-              )..add(AdminCatalogOnLoadEvent()),
+                  logger: locator.get<Logger>(),
+                  productRepository:
+                      locator.get<ProductRepositoryAbstraction>(),
+                  imageRepository: locator.get<ImageRepositoryAbstraction>())
+                ..add(AdminCatalogOnLoadEvent()),
               child: const AdminCatalogScreen(),
             ));
       },

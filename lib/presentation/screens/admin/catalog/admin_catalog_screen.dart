@@ -156,7 +156,7 @@ class _AdminCatalogScreenState extends State<AdminCatalogScreen>
                             product: e,
                           ),
                         ).then((value) {
-                          if (value) {
+                          if (value is bool && value) {
                             showDialog(
                               context: context,
                               builder: (ctx) => BlocProvider.value(
