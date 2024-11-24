@@ -40,6 +40,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartSubmitEvent>(_submitCart);
     on<SelectDeliveryProviderEvent>(_selectDeliveryProvider);
     on<SelectPaymentServiceProviderEvent>(_selectPaymentServiceProvider);
+    on<CartSubmitErrorDialogShowedEvent>(_cartSubmitErrorDialogShowed);
   }
 
   Future<void> _cartOnLoad(CartOnLoadEvent event, Emitter emit) async {
@@ -164,9 +165,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         selectedDeliveryProvider, selectedPaymentServiceProvider);
 
     final order = await orderRepository.getOrderByCartId(state.cartId!);
+
+    if (order == null) {
+      emit(state.copyWith(
+        cartSubmitState: CartSubmitState.error,
+      ));
+      return;
+    }
+
     emit(state.copyWith(
         cartSubmitState: CartSubmitState.redirect,
-        redirectUrl: order!.payment.paymentURL));
+        redirectUrl: order.payment.paymentURL));
   }
 
   Future<void> _selectDeliveryProvider(
@@ -183,5 +192,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       (provider) => provider.key == event.paymentServiceProviderKey,
     );
     emit(state.copyWith(selectedPaymentProvider: foundProvider));
+  }
+
+  Future<void> _cartSubmitErrorDialogShowed(
+      CartSubmitErrorDialogShowedEvent event, Emitter emit) async {
+    emit(state.copyWith(
+      cartSubmitState: CartSubmitState.idle,
+    ));
   }
 }

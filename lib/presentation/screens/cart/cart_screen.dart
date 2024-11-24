@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/cart/dialog/cart_submit_error_dialog.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_client_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_delivery_section.dart';
 import 'package:ecommerce_web/presentation/screens/cart/widget/cart_entry_widget.dart';
@@ -21,12 +22,28 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  bool cartSubmitErrorDialogLock = false;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CartBloc, CartState>(
       listener: (context, state) {
         if (state.cartSubmitState == CartSubmitState.redirect) {
           html.window.open(state.redirectUrl.toString(), '_self');
+        } else if (state.cartSubmitState == CartSubmitState.error) {
+          if (!cartSubmitErrorDialogLock) {
+            setState(() {
+              cartSubmitErrorDialogLock = true;
+            });
+            showDialog(
+                    context: context,
+                    builder: (context) => const CartSubmitErrorDialog())
+                .then((value) {
+              setState(() {
+                cartSubmitErrorDialogLock = false;
+              });
+              context.read<CartBloc>().add(CartSubmitErrorDialogShowedEvent());
+            });
+          }
         }
       },
       builder: (context, state) {
