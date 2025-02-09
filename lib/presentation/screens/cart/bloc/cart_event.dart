@@ -30,3 +30,5 @@ class SelectPaymentServiceProviderEvent extends CartEvent {
   const SelectPaymentServiceProviderEvent(
       {required this.paymentServiceProviderKey});
 }
+
+class CartSubmitErrorDialogShowedEvent extends CartEvent {}

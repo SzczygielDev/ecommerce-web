@@ -12,8 +12,7 @@ class DevelopmentRepository extends RepositoryBase
   @override
   Future<MockPayment?> mockPayment(PaymentId paymentId, double amount) async {
     try {
-      final response = await dio.post(
-          "/development/mockPayment/${paymentId.value}",
+      final response = await dio.post("/external/psp/pay/${paymentId.value}",
           queryParameters: {"amount": amount});
 
       return MockPayment.fromJson(response.data);
@@ -26,8 +25,7 @@ class DevelopmentRepository extends RepositoryBase
   @override
   Future<MockPayment?> getMockPayment(PaymentId paymentId) async {
     try {
-      final response =
-          await dio.get("/development/mockPayment/${paymentId.value}");
+      final response = await dio.get("/external/psp/${paymentId.value}");
 
       return MockPayment.fromJson(response.data);
     } on Exception catch (ex) {

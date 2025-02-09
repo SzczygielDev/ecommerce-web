@@ -2,7 +2,7 @@ part of 'cart_bloc.dart';
 
 enum CartLoadingState { loading, loaded, error }
 
-enum CartSubmitState { idle, inProgress, redirect }
+enum CartSubmitState { idle, inProgress, redirect, error }
 
 class CartState extends Equatable {
   final CartId? cartId;

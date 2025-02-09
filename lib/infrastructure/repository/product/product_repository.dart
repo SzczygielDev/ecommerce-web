@@ -62,16 +62,16 @@ class ProductRepository extends RepositoryBase
   }
 
   @override
-  Future<Product?> deleteProduct(ProductId id) async {
+  Future<bool> deleteProduct(ProductId id) async {
     try {
       final response = await dio.delete(
         "/products/${id.value}",
       );
 
-      return Product.fromJson(response.data);
+      return response.statusCode == 204;
     } on Exception catch (ex) {
       defaultErrorHandler(ex);
-      return null;
+      return false;
     }
   }
 

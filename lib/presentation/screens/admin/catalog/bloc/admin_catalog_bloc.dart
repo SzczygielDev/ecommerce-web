@@ -45,9 +45,9 @@ class AdminCatalogBloc extends Bloc<AdminCatalogEvent, AdminCatalogState> {
     });
 
     on<AdminCatalogDeleteProductEvent>((event, emit) async {
-      final result = await productRepository.deleteProduct(event.productId);
+      final success = await productRepository.deleteProduct(event.productId);
 
-      if (result != null) {
+      if (success) {
         final products = await productRepository.findAll();
         emit(state.copyWith(products: products));
       }
