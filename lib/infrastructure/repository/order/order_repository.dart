@@ -52,15 +52,19 @@ class OrderRepository extends RepositoryBase
 
   @override
   Future<Order?> getOrderByCartId(CartId id) async {
-    try {
-      final response =
-          await dio.get("/orders", queryParameters: {"cartId": id.value});
+    //TODO - retry mechanism should be reusable
+    for (int i = 0; i <= 3; i++) {
+      try {
+        final response =
+            await dio.get("/orders", queryParameters: {"cartId": id.value});
 
-      return Order.fromJson(response.data);
-    } on Exception catch (ex) {
-      defaultErrorHandler(ex);
-      return null;
+        return Order.fromJson(response.data);
+      } on Exception catch (ex) {
+        defaultErrorHandler(ex);
+      }
+      await Future.delayed(const Duration(seconds: 1));
     }
+    return null;
   }
 
   @override
