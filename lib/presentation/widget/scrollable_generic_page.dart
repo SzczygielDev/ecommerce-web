@@ -1,8 +1,11 @@
+import 'package:ecommerce_web/domain/auth/user_info.dart';
+import 'package:ecommerce_web/presentation/bloc/auth/bloc/authentication_bloc.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/widget/global_appbar.dart';
 import 'package:ecommerce_web/presentation/widget/global_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ScrollableGenericPage extends StatelessWidget {
   final Widget child;
@@ -51,51 +54,63 @@ class ScrollableGenericPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: appBar ??
-          GlobalAppBar(
-            context: context,
-          ),
-      body: LayoutBuilder(
-        builder: (context, constraint) {
-          return Stack(
-            children: [
-              SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraint.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: padding ?? const EdgeInsets.only(),
-                          child: Container(
-                            color: AppColors.lightGrey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 30),
-                                    child: child),
-                              ],
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, authState) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: appBar ??
+              PreferredSize(
+                  preferredSize: const Size.fromHeight(kToolbarHeight * 1.4),
+                  child: Builder(builder: (ctx) {
+                    UserInfo? user;
+
+                    if (authState is AuthenticatedState) {
+                      user = authState.user;
+                    }
+
+                    return GlobalAppBar(context: ctx, user: user);
+                  })),
+          body: LayoutBuilder(
+            builder: (context, constraint) {
+              return Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraint.maxHeight,
+                      ),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: padding ?? const EdgeInsets.only(),
+                              child: Container(
+                                color: AppColors.lightGrey,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15, horizontal: 30),
+                                        child: child),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                            const Spacer(),
+                            const GlobalFooter()
+                          ],
                         ),
-                        const Spacer(),
-                        const GlobalFooter()
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-              overlay ?? const SizedBox.shrink()
-            ],
-          );
-        },
-      ),
+                  overlay ?? const SizedBox.shrink()
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

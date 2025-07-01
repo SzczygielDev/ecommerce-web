@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [        
+        {
+            "name": "WEB",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--web-port",  "64427",            
+            ]
+        },
+         
+    ]
+}

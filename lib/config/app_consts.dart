@@ -4,4 +4,12 @@ class AppConsts {
 
   static int paymentWaitingRetries = 5;
   static Duration paymentWaitingDuration = const Duration(seconds: 5);
+
+  static Uri oidcWellKnownUri =
+      Uri.parse('http://localhost:8085/realms/ecommerce/');
+  static String oidcClientId = 'my-web-app';
+  static Uri oidcRedirectUri =
+      Uri.parse('http://localhost:64427/redirect.html');
+  static Uri oidcLogoutRedirectUri =
+      Uri.parse('http://localhost:64427/redirect.html');
 }

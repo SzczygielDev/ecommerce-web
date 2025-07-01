@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ecommerce_web/config/app_consts.dart';
+import 'package:ecommerce_web/domain/auth/authentication_service_abstraction.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/development/development_repository_abstraction.dart';
@@ -18,6 +19,7 @@ import 'package:ecommerce_web/infrastructure/repository/order/order_repository.d
 import 'package:ecommerce_web/infrastructure/repository/payment/payment_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/product/product_admin_repository.dart';
 import 'package:ecommerce_web/infrastructure/repository/product/product_repository.dart';
+import 'package:ecommerce_web/infrastructure/service/auth/authentication_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
@@ -60,5 +62,9 @@ void setupLocator() {
   );
   locator.registerLazySingleton<ImageRepositoryAbstraction>(
     () => ImageRepository(),
+  );
+
+  locator.registerLazySingleton<AuthenticationServiceAbstraction>(
+    () => AuthenticationService(),
   );
 }
