@@ -12,4 +12,7 @@ class AppConsts {
       Uri.parse('http://localhost:64427/redirect.html');
   static Uri oidcLogoutRedirectUri =
       Uri.parse('http://localhost:64427/redirect.html');
+
+  static Uri accountUri =
+      Uri.parse("http://localhost:8085/realms/ecommerce/account");
 }

@@ -19,6 +19,7 @@ import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
+import 'package:ecommerce_web/presentation/screens/client/client_screen.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/mock_payment_screen.dart';
 import 'package:ecommerce_web/presentation/screens/not_found/not_found_screen.dart';
@@ -198,6 +199,12 @@ final router = GoRouter(
       path: AdminUserScreen.route,
       pageBuilder: (context, state) {
         return buildPageWithTransition(context, state, const AdminUserScreen());
+      },
+    ),
+    GoRoute(
+      path: ClientScreen.route,
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(context, state, const ClientScreen());
       },
     )
   ],

@@ -2,6 +2,7 @@ import 'package:ecommerce_web/domain/auth/user_info.dart';
 import 'package:ecommerce_web/presentation/bloc/auth/bloc/authentication_bloc.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
+import 'package:ecommerce_web/presentation/screens/client/client_screen.dart';
 import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +49,11 @@ class GlobalAppBar extends AppBar {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 100,
                           ),
+                          IconButton(
+                              onPressed: () {
+                                context.go(ClientScreen.route);
+                              },
+                              icon: const Icon(Icons.person_outline)),
                           IconButton(
                               onPressed: () async {
                                 context

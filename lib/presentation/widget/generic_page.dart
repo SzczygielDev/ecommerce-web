@@ -22,7 +22,7 @@ class _GenericPageState extends State<GenericPage> {
           backgroundColor: Colors.white,
           appBar: PreferredSize(
               preferredSize: const Size.fromHeight(kToolbarHeight * 1.4),
-              child: BlocBuilder(builder: (ctx, state) {
+              child: Builder(builder: (ctx) {
                 UserInfo? user;
 
                 if (authState is AuthenticatedState) {
