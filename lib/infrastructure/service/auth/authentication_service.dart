@@ -5,19 +5,12 @@ import 'package:ecommerce_web/domain/auth/authentication_service_abstraction.dar
 import 'package:ecommerce_web/domain/auth/user_info.dart';
 import 'package:oidc/oidc.dart';
 import 'package:oidc_default_store/oidc_default_store.dart';
+import 'dart:developer';
 
 class AuthenticationService extends AuthenticationServiceAbstraction {
-  final manager = OidcUserManager.lazy(
-    discoveryDocumentUri:
-        OidcUtils.getOpenIdConfigWellKnownUri(AppConsts.oidcWellKnownUri),
-    clientCredentials: OidcClientAuthentication.none(
-      clientId: AppConsts.oidcClientId,
-    ),
-    store: OidcDefaultStore(),
-    settings: OidcUserManagerSettings(
-        redirectUri: AppConsts.oidcRedirectUri,
-        postLogoutRedirectUri: AppConsts.oidcLogoutRedirectUri),
-  );
+  final OidcUserManager manager;
+
+  AuthenticationService(this.manager);
 
   final StreamController<UserInfo?> _onAuthStateChanged =
       StreamController<UserInfo?>.broadcast();
@@ -32,8 +25,7 @@ class AuthenticationService extends AuthenticationServiceAbstraction {
         return;
       }
 
-      _onAuthStateChanged.add(UserInfo(user.userInfo['given_name'],
-          user.userInfo['family_name'], user.userInfo['email']));
+      _onAuthStateChanged.add(_mapOidcUser(user));
     });
   }
 
@@ -53,5 +45,29 @@ class AuthenticationService extends AuthenticationServiceAbstraction {
   @override
   Future<void> dispose() async {
     await _onAuthStateChanged.close();
+  }
+
+  @override
+  Future<UserInfo?> getCurrentUser() async {
+    final user = manager.currentUser;
+
+    if (user == null) {
+      return null;
+    }
+
+    return _mapOidcUser(user);
+  }
+
+  UserInfo? _mapOidcUser(OidcUser user) {
+    return UserInfo(user.uid ?? "", user.userInfo['email']);
+  }
+
+  @override
+  Future<void> refreshUserData() async {
+    final user = manager.currentUser;
+    if (user == null) {
+      return;
+    }
+    _onAuthStateChanged.add(_mapOidcUser(user));
   }
 }

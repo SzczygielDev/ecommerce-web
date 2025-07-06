@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return BlocProvider(
       create: (context) =>
-          AuthenticationBloc(locator.get<AuthenticationServiceAbstraction>()),
+          locator.get<AuthenticationBloc>(),
       child: MaterialApp.router(
         routerConfig: router,
         theme: ThemeData(

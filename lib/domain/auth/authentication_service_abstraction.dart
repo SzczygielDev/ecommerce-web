@@ -7,4 +7,7 @@ abstract class AuthenticationServiceAbstraction {
   Future<void> signIn();
   Future<void> logout();
   Stream<UserInfo?> get onAuthStateChanged;
+  Future<UserInfo?> getCurrentUser();
+
+  Future<void> refreshUserData();
 }

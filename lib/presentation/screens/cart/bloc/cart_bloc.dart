@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:ecommerce_web/domain/cart/cart.dart';
 import 'package:ecommerce_web/domain/cart/cart_id.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
+import 'package:ecommerce_web/domain/client/client_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_provider_key.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
@@ -12,6 +13,7 @@ import 'package:ecommerce_web/domain/payment/payment_service_provider.dart';
 import 'package:ecommerce_web/domain/payment/payment_service_provider_key.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
 import 'package:ecommerce_web/domain/product/product_repository_abstraction.dart';
+import 'package:ecommerce_web/infrastructure/service/auth/authentication_service.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/cart_item.dart';
 import 'package:ecommerce_web/presentation/screens/cart/model/client_data.dart';
 import 'package:equatable/equatable.dart';
@@ -27,13 +29,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final PaymentRepositoryAbstraction paymentRepository;
   final OrderRepositoryAbstraction orderRepository;
   final Logger logger;
+  final ClientRepositoryAbstraction clientRepository;
   CartBloc(
       {required this.cartRepository,
       required this.productRepository,
       required this.deliveryRepository,
       required this.paymentRepository,
       required this.orderRepository,
-      required this.logger})
+      required this.logger,
+      required this.clientRepository})
       : super(const CartState()) {
     on<CartOnLoadEvent>(_cartOnLoad);
     on<RemoveItemFromCartEvent>(_removeItemFromCart);
@@ -61,15 +65,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       return;
     }
 
+    final client = await clientRepository.getCurrentClient();
+    if (client == null) {
+      logger.e("User must be logged in to load cart");
+      emit(state.copyWith(loadingState: CartLoadingState.error));
+      return;
+    }
     emit(state.copyWith(
         loadingState: CartLoadingState.loaded,
         items: items.nonNulls.toList(),
         paymentProviders: paymentServiceProviders,
         clientData: ClientData(
-            firstName: "Jan",
-            lastName: "Nowak",
-            addressFirstLine: "Wiejska 4",
-            addressSecondLine: "00-902 Warszawa",
+            firstName: client.name,
+            lastName: client.lastName,
+            addressFirstLine: "${client.street} ${client.houseNumber}",
+            addressSecondLine: "${client.zipCode} ${client.city}",
             phoneNumber: "+48 123 123 123"),
         deliveryProviders: deliveryProviders,
         cartId: cart.id,

@@ -4,16 +4,16 @@ sealed class AuthenticationState extends Equatable {
   const AuthenticationState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class UnauthenticatedState extends AuthenticationState {}
 
 final class AuthenticatedState extends AuthenticationState {
   final UserInfo user;
-
-  const AuthenticatedState(this.user);
+  final Client? client;
+  const AuthenticatedState({required this.user, this.client});
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [user, client];
 }
