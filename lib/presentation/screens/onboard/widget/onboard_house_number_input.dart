@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/util/form/validators/not_empty_validator.dart';
 import 'package:flutter/material.dart';
 
 class OnboardHouseNumberInput extends StatefulWidget {
@@ -15,6 +16,7 @@ class _OnboardHouseNumberInputState extends State<OnboardHouseNumberInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      validator: (value) => NotEmptyValidator.validate(value),
       decoration: const InputDecoration(
           hintText: "Numer",
           focusedBorder: OutlineInputBorder(

@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
+import 'package:ecommerce_web/presentation/util/form/validators/not_empty_validator.dart';
 import 'package:flutter/material.dart';
 
 class OnboardNameInput extends StatefulWidget {
@@ -15,6 +16,7 @@ class _OnboardNameInputState extends State<OnboardNameInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      validator: (value) => NotEmptyValidator.validate(value),
       decoration: const InputDecoration(
           hintText: "Imie",
           hintStyle: AppTypography.small1,

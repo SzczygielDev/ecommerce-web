@@ -25,6 +25,7 @@ class OnBoardScreen extends StatefulWidget {
 }
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -45,124 +46,138 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
         }
       },
       builder: (context, state) {
-        return GenericPage(
+        return Form(
+          key: _formKey,
+          child: GenericPage(
+              child: SingleChildScrollView(
             child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: FractionallySizedBox(
-            widthFactor: 0.6,
-            child: Container(
-              color: AppColors.grey,
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: IntrinsicHeight(
                 child: FractionallySizedBox(
-                    widthFactor: 0.8,
-                    child: Builder(
-                      builder: (context) {
-                        switch (state) {
-                          case OnboardLoadingState():
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          case OnboardLoadedState():
-                            return Column(
-                              spacing: 8,
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Uzupełnij dane",
-                                  style: AppTypography.large1,
-                                ),
-                                const Divider(),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Twoje dane",
-                                      style: AppTypography.medium1,
-                                    )),
-                                OnboardNameInput(
-                                  controller: _nameController,
-                                ),
-                                OnboardLastNameInput(
-                                  controller: _lastNameController,
-                                ),
-                                OnboardEmailInput(controller: _emailController),
-                                OnboardPhoneNumberInput(
-                                    controller: _phoneNumberController),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16),
-                                  child: Divider(),
-                                ),
-                                const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Dane adresowe",
-                                      style: AppTypography.medium1,
-                                    )),
-                                Row(
+                  widthFactor: 0.6,
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: Builder(
+                          builder: (context) {
+                            switch (state) {
+                              case OnboardLoadingState():
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              case OnboardLoadedState():
+                                return Column(
+                                  spacing: 8,
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Expanded(
-                                        flex: 3,
-                                        child: OnboardCityInput(
-                                            controller: _cityController)),
+                                    const Text(
+                                      "Uzupełnij dane",
+                                      style: AppTypography.large1,
+                                    ),
+                                    const Divider(),
                                     const SizedBox(
-                                      width: 8,
+                                      height: 16,
                                     ),
-                                    Expanded(
-                                      child: OnboardZipCodeInput(
-                                          controller: _zipCodeController),
+                                    const Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Twoje dane",
+                                          style: AppTypography.medium1,
+                                        )),
+                                    OnboardNameInput(
+                                      controller: _nameController,
                                     ),
+                                    OnboardLastNameInput(
+                                      controller: _lastNameController,
+                                    ),
+                                    OnboardEmailInput(
+                                        controller: _emailController),
+                                    OnboardPhoneNumberInput(
+                                        controller: _phoneNumberController),
+                                    SizedBox(
+                                      height: 32,
+                                    ),
+                                    const Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Dane adresowe",
+                                          style: AppTypography.medium1,
+                                        )),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 3,
+                                            child: OnboardCityInput(
+                                                controller: _cityController)),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          child: OnboardZipCodeInput(
+                                              controller: _zipCodeController),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 3,
+                                          child: OnboardStreetInput(
+                                              controller: _streetController),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                            child: OnboardHouseNumberInput(
+                                                controller:
+                                                    _houseNumberController)),
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    GenericButton(
+                                        onPressed: () {
+                                          final isValid = _formKey.currentState
+                                                  ?.validate() ??
+                                              false;
+                                          if (isValid) {
+                                            context
+                                                .read<OnboardBloc>()
+                                                .add(OnboardFormSubmitEvent(
+                                                  name: _nameController.text,
+                                                  lastName:
+                                                      _lastNameController.text,
+                                                  email: _emailController.text,
+                                                  phone: _phoneNumberController
+                                                      .text,
+                                                  city: _cityController.text,
+                                                  zipCode:
+                                                      _zipCodeController.text,
+                                                  street:
+                                                      _streetController.text,
+                                                  houseNumber:
+                                                      _houseNumberController
+                                                          .text,
+                                                ));
+                                          }
+                                        },
+                                        title: "Zapisz",
+                                        size: const Size.fromHeight(48))
                                   ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: OnboardStreetInput(
-                                          controller: _streetController),
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                        child: OnboardHouseNumberInput(
-                                            controller:
-                                                _houseNumberController)),
-                                  ],
-                                ),
-                                const Spacer(),
-                                GenericButton(
-                                    onPressed: () {
-                                      context
-                                          .read<OnboardBloc>()
-                                          .add(OnboardFormSubmitEvent(
-                                            name: _nameController.text,
-                                            lastName: _lastNameController.text,
-                                            email: _emailController.text,
-                                            phone: _phoneNumberController.text,
-                                            city: _cityController.text,
-                                            zipCode: _zipCodeController.text,
-                                            street: _streetController.text,
-                                            houseNumber:
-                                                _houseNumberController.text,
-                                          ));
-                                    },
-                                    title: "Zapisz",
-                                    size: const Size.fromHeight(48))
-                              ],
-                            );
-                          case OnboardErrorState():
-                            return const Center(
-                                child: Text("Błąd ładowania danych"));
-                        }
-                      },
-                    )),
+                                );
+                              case OnboardErrorState():
+                                return const Center(
+                                    child: Text("Błąd ładowania danych"));
+                            }
+                          },
+                        )),
+                  ),
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+        );
       },
     );
   }

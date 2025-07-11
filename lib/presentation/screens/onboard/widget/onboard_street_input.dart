@@ -1,4 +1,5 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/util/form/validators/not_empty_validator.dart';
 import 'package:flutter/material.dart';
 
 class OnboardStreetInput extends StatefulWidget {
@@ -14,6 +15,7 @@ class _OnboardStreetInputState extends State<OnboardStreetInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      validator: (value) => NotEmptyValidator.validate(value),
       decoration: const InputDecoration(
           hintText: "Ulica",
           focusedBorder: OutlineInputBorder(

@@ -53,6 +53,8 @@ final router = GoRouter(
     final allowedPathsForUnauthenticated = <String>{
       '/',
       ProductScreen.route,
+      MockPaymentScreen.route,
+      PaymentResultScreen.route,
     };
 
     if (isAuthenticated) {
