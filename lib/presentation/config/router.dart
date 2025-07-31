@@ -25,6 +25,7 @@ import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dar
 import 'package:ecommerce_web/presentation/screens/catalog/catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/onboard/bloc/onboard_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/onboard/onboard_screen.dart';
+import 'package:ecommerce_web/presentation/screens/profile/bloc/profile_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/profile/profile_screen.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/bloc/mock_payment_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/mock_payment/mock_payment_screen.dart';
@@ -247,7 +248,16 @@ final router = GoRouter(
     GoRoute(
       path: ProfileScreen.route,
       pageBuilder: (context, state) {
-        return buildPageWithTransition(context, state, const ProfileScreen());
+        return buildPageWithTransition(
+            context,
+            state,
+            BlocProvider(
+              create: (context) => ProfileBloc(
+                  clientRepository: locator.get<ClientRepositoryAbstraction>(),
+                  logger: locator.get<Logger>())
+                ..add(ProfileOnLoadEvent()),
+              child: const ProfileScreen(),
+            ));
       },
     ),
     GoRoute(
