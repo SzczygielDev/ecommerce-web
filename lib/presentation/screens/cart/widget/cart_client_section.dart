@@ -1,8 +1,10 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CartClientSection extends StatelessWidget {
   const CartClientSection({super.key});
@@ -23,10 +25,15 @@ class CartClientSection extends StatelessWidget {
                     "Twoje dane",
                     style: AppTypography.medium2,
                   ),
-                  Text(
-                    "zmień",
-                    style: AppTypography.medium2.merge(
-                        const TextStyle(decoration: TextDecoration.underline)),
+                  InkWell(
+                    onTap: () {
+                      context.go(ProfileScreen.route, extra: true);
+                    },
+                    child: Text(
+                      "zmień",
+                      style: AppTypography.medium2.merge(const TextStyle(
+                          decoration: TextDecoration.underline)),
+                    ),
                   )
                 ],
               ),

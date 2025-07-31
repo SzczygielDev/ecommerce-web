@@ -8,7 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const route = "/profile";
-  const ProfileScreen({super.key});
+
+  final bool showEditFormOnLoad;
+
+  const ProfileScreen({super.key, required this.showEditFormOnLoad});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -16,6 +19,17 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _showEditForm = false;
+
+  @override
+  void initState() {
+    if (widget.showEditFormOnLoad) {
+      setState(() {
+        _showEditForm = true;
+      });
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericPage(

@@ -254,9 +254,12 @@ final router = GoRouter(
             BlocProvider(
               create: (context) => ProfileBloc(
                   clientRepository: locator.get<ClientRepositoryAbstraction>(),
-                  logger: locator.get<Logger>())
+                  logger: locator.get<Logger>(),
+                  orderRepository: locator.get<OrderRepositoryAbstraction>())
                 ..add(ProfileOnLoadEvent()),
-              child: const ProfileScreen(),
+              child: ProfileScreen(
+                showEditFormOnLoad: state.extra == true,
+              ),
             ));
       },
     ),
