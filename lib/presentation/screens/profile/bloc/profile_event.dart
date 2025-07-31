@@ -29,3 +29,5 @@ class ProfileUpdateEvent extends ProfileEvent {
     required this.houseNumber,
   });
 }
+
+class EditProfileFormClosedEvent extends ProfileEvent {}

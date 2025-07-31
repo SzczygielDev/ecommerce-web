@@ -55,5 +55,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             client: updatedClient));
       },
     );
+
+    on<EditProfileFormClosedEvent>(
+      (event, emit) {
+        emit((state as ProfileLoadedState).copyWith(
+          profileUpdatingState: ProfileUpdatingState.idle,
+        ));
+      },
+    );
   }
 }

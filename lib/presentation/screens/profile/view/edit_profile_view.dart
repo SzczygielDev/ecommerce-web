@@ -1,6 +1,8 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/profile/bloc/profile_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/profile/model/profile_updating_state.dart';
+import 'package:ecommerce_web/presentation/screens/profile/widget/edit_profile_form_message.dart';
 import 'package:ecommerce_web/presentation/screens/profile/widget/profile_city_input.dart';
 import 'package:ecommerce_web/presentation/screens/profile/widget/profile_email_input.dart';
 import 'package:ecommerce_web/presentation/screens/profile/widget/profile_house_number_input.dart';
@@ -156,10 +158,26 @@ class _EditProfileViewState extends State<EditProfileView> {
                 builder: (context) {
                   switch (widget.state.profileUpdatingState) {
                     case ProfileUpdatingState.success:
-                      return const Text("Sukces!");
+                      return const Row(
+                        children: [
+                          Expanded(
+                            child: EditProfileFormMessage(
+                                text: "Sukces!", color: AppColors.green),
+                          ),
+                        ],
+                      );
                     case ProfileUpdatingState.error:
-                      return Text(
-                          widget.state.profileUpdatingErrorMessage ?? "");
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: EditProfileFormMessage(
+                                text:
+                                    widget.state.profileUpdatingErrorMessage ??
+                                        "",
+                                color: AppColors.red),
+                          ),
+                        ],
+                      );
 
                     case ProfileUpdatingState.idle:
                     case ProfileUpdatingState.working:

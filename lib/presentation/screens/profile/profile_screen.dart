@@ -61,6 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   setState(() {
                                     _showEditForm = false;
                                   });
+                                  context
+                                      .read<ProfileBloc>()
+                                      .add(EditProfileFormClosedEvent());
                                 },
                               )
                             : ProfileDetailsView(
