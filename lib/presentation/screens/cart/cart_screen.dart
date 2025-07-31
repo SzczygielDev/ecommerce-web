@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/dialog/cart_submit_error_dialog.dart';
@@ -48,94 +49,98 @@ class _CartScreenState extends State<CartScreen> {
       },
       builder: (context, state) {
         return ScrollableGenericPage(
+          color: AppColors.lightGrey,
           padding: const EdgeInsets.only(
             left: 50,
             right: 50,
             top: 50,
           ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              const Row(
-                children: [
-                  Text(
-                    "Twój koszyk",
-                    style: AppTypography.xlarge1,
-                  )
-                ],
-              ),
-              const Divider(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: BlocBuilder<CartBloc, CartState>(
-                      builder: (context, state) {
-                        List<Widget> items = [];
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                const Row(
+                  children: [
+                    Text(
+                      "Twój koszyk",
+                      style: AppTypography.xlarge1,
+                    )
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: BlocBuilder<CartBloc, CartState>(
+                        builder: (context, state) {
+                          List<Widget> items = [];
 
-                        switch (state.loadingState) {
-                          case CartLoadingState.loading:
-                          case CartLoadingState.error:
-                            break;
+                          switch (state.loadingState) {
+                            case CartLoadingState.loading:
+                            case CartLoadingState.error:
+                              break;
 
-                          case CartLoadingState.loaded:
-                            items = state.items!
-                                .map(
-                                  (e) => CartEntryWidget(
-                                    item: e,
-                                  ),
-                                )
-                                .toList();
-                            break;
-                        }
+                            case CartLoadingState.loaded:
+                              items = state.items!
+                                  .map(
+                                    (e) => CartEntryWidget(
+                                      item: e,
+                                    ),
+                                  )
+                                  .toList();
+                              break;
+                          }
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: items,
-                        );
-                      },
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: items,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 14,
-                  ),
-                  const Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CartClientSection(),
-                        SizedBox(
-                          height: 26,
-                        ),
-                        CartDeliverySection(),
-                        SizedBox(
-                          height: 26,
-                        ),
-                        CartPaymentSection(),
-                        SizedBox(
-                          height: 26,
-                        ),
-                        CartSpecialOfferSection(),
-                        SizedBox(
-                          height: 54,
-                        ),
-                        CartSummarySection(),
-                        SizedBox(
-                          height: 26,
-                        ),
-                        SubmitCartButton()
-                      ],
+                    const SizedBox(
+                      width: 14,
                     ),
-                  )
-                ],
-              )
-            ],
+                    const Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CartClientSection(),
+                          SizedBox(
+                            height: 26,
+                          ),
+                          CartDeliverySection(),
+                          SizedBox(
+                            height: 26,
+                          ),
+                          CartPaymentSection(),
+                          SizedBox(
+                            height: 26,
+                          ),
+                          CartSpecialOfferSection(),
+                          SizedBox(
+                            height: 54,
+                          ),
+                          CartSummarySection(),
+                          SizedBox(
+                            height: 26,
+                          ),
+                          SubmitCartButton()
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },

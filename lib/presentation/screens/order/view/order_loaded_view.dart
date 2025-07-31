@@ -1,6 +1,6 @@
 import 'package:ecommerce_web/domain/order/order.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
-import 'package:ecommerce_web/presentation/screens/order/widget/order_item_widget.dart';
+import 'package:ecommerce_web/presentation/screens/profile/widget/order_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

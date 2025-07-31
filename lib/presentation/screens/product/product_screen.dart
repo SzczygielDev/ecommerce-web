@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/product/bloc/product_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/product/view/product_main_section.dart';
@@ -28,73 +29,77 @@ class _ProductScreenState extends State<ProductScreen> {
     return PopScope(
       onPopInvoked: (didPop) => true,
       child: ScrollableGenericPage(
+          color: AppColors.lightGrey,
           overlay: const AddedToCartOverlay(),
           padding: const EdgeInsets.only(
             left: 50,
             right: 50,
             top: 50,
           ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: BlocBuilder<ProductBloc, ProductState>(
-                        builder: (context, state) {
-                          switch (state.loadingState) {
-                            case ProductLoadingState.loading:
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            case ProductLoadingState.error:
-                              return const SizedBox.shrink();
-                            case ProductLoadingState.loaded:
-                              return ProductPhotoSection(
-                                imageId: state.product!.imageId,
-                              );
-                          }
-                        },
-                      ),
-                    ),
-                    const Expanded(child: ProductMainSection())
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 15),
-                child: Divider(),
-              ),
-              FractionallySizedBox(
-                  widthFactor: 0.8,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      BlocBuilder<ProductBloc, ProductState>(
-                        builder: (context, state) {
-                          switch (state.loadingState) {
-                            case ProductLoadingState.loading:
-                            case ProductLoadingState.error:
-                              return const SizedBox.shrink();
-                            case ProductLoadingState.loaded:
-                              return Text(
-                                state.product!.description,
-                                style:
-                                    AppTypography.small2.merge(const TextStyle(
-                                  wordSpacing: 3,
-                                  height: 1.75,
-                                )),
-                              );
-                          }
-                        },
-                      )
+                      Expanded(
+                        child: BlocBuilder<ProductBloc, ProductState>(
+                          builder: (context, state) {
+                            switch (state.loadingState) {
+                              case ProductLoadingState.loading:
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              case ProductLoadingState.error:
+                                return const SizedBox.shrink();
+                              case ProductLoadingState.loaded:
+                                return ProductPhotoSection(
+                                  imageId: state.product!.imageId,
+                                );
+                            }
+                          },
+                        ),
+                      ),
+                      const Expanded(child: ProductMainSection())
                     ],
-                  )),
-              const SizedBox(
-                height: 150,
-              )
-            ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 50, horizontal: 15),
+                  child: Divider(),
+                ),
+                FractionallySizedBox(
+                    widthFactor: 0.8,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<ProductBloc, ProductState>(
+                          builder: (context, state) {
+                            switch (state.loadingState) {
+                              case ProductLoadingState.loading:
+                              case ProductLoadingState.error:
+                                return const SizedBox.shrink();
+                              case ProductLoadingState.loaded:
+                                return Text(
+                                  state.product!.description,
+                                  style: AppTypography.small2
+                                      .merge(const TextStyle(
+                                    wordSpacing: 3,
+                                    height: 1.75,
+                                  )),
+                                );
+                            }
+                          },
+                        )
+                      ],
+                    )),
+                const SizedBox(
+                  height: 150,
+                )
+              ],
+            ),
           )),
     );
   }

@@ -12,6 +12,7 @@ class ScrollableGenericPage extends StatelessWidget {
   final Widget? overlay;
   final EdgeInsetsGeometry? padding;
   final AppBar? appBar;
+  final Color? color;
   const ScrollableGenericPage(
       {super.key,
       required this.child,
@@ -20,7 +21,8 @@ class ScrollableGenericPage extends StatelessWidget {
         left: 50,
         right: 50,
       ),
-      this.appBar});
+      this.appBar,
+      this.color = Colors.white});
 
   ScrollableGenericPage.withSideMenu(
       {super.key,
@@ -34,6 +36,7 @@ class ScrollableGenericPage extends StatelessWidget {
         right: 50,
       ),
       this.appBar,
+      this.color = Colors.white,
       Widget? overlay})
       : child = Row(
             mainAxisSize: MainAxisSize.min,
@@ -85,14 +88,11 @@ class ScrollableGenericPage extends StatelessWidget {
                             Padding(
                               padding: padding ?? const EdgeInsets.only(),
                               child: Container(
-                                color: AppColors.lightGrey,
+                                color: color,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 15, horizontal: 30),
-                                        child: child),
+                                    child,
                                   ],
                                 ),
                               ),

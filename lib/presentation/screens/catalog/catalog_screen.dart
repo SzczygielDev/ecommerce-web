@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/view/catalog_main_section.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/view/catalog_side_section.dart';
@@ -18,6 +19,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return ScrollableGenericPage(
+      color: AppColors.lightGrey,
       padding: const EdgeInsets.only(
         left: 50,
         right: 50,
@@ -25,32 +27,35 @@ class _CatalogScreenState extends State<CatalogScreen> {
       ),
       child: BlocBuilder<CatalogBloc, CatalogState>(
         builder: (context, state) {
-          return const Column(
-            children: [
-              CatalogHeader(),
-              Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: Column(
-                  children: [
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          CatalogSideSection(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 45),
-                            child: VerticalDivider(
-                              color: Colors.black,
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            child: Column(
+              children: [
+                CatalogHeader(),
+                Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Column(
+                    children: [
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            CatalogSideSection(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 45),
+                              child: VerticalDivider(
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          CatalogMainSection()
-                        ],
+                            CatalogMainSection()
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         },
       ),

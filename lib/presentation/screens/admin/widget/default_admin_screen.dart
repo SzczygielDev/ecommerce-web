@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_sidemenu.dart';
 import 'package:ecommerce_web/presentation/screens/admin/widget/admin_sidemenu_expand_button.dart';
@@ -19,6 +20,7 @@ class _DefaultAdminScreenState extends State<DefaultAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return ScrollableGenericPage.withSideMenu(
+        color: AppColors.lightGrey,
         overlay: widget.overlay,
         sideMenuFlex: 3,
         contentFlex: 17,

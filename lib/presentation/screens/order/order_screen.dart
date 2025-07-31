@@ -1,3 +1,4 @@
+import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/order/bloc/order_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/order/view/order_error_view.dart';
@@ -24,35 +25,39 @@ class _OrderScreenState extends State<OrderScreen> {
       },
       builder: (context, state) {
         return ScrollableGenericPage(
+          color: AppColors.lightGrey,
           padding: const EdgeInsets.only(
             left: 150,
             right: 150,
             top: 50,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Twoje zamówienia",
-                style: AppTypography.xlarge1,
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 50,
-              ),
-              Builder(
-                builder: (context) {
-                  switch (state) {
-                    case OrderLoadingState.loading:
-                      return const OrderLoadingView();
-                    case OrderLoadingState.loaded:
-                      return const OrderLoadedView();
-                    case OrderLoadingState.error:
-                      return const OrderErrorView();
-                  }
-                },
-              )
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Twoje zamówienia",
+                  style: AppTypography.xlarge1,
+                ),
+                const Divider(),
+                const SizedBox(
+                  height: 50,
+                ),
+                Builder(
+                  builder: (context) {
+                    switch (state) {
+                      case OrderLoadingState.loading:
+                        return const OrderLoadingView();
+                      case OrderLoadingState.loaded:
+                        return const OrderLoadedView();
+                      case OrderLoadingState.error:
+                        return const OrderErrorView();
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         );
       },
