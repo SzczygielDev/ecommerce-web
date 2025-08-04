@@ -38,17 +38,6 @@ class GlobalAppBar extends AppBar {
                                 context.go(CartScreen.route);
                               },
                               icon: const Icon(Icons.shopping_cart_outlined)),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 100,
-                          ),
-                          InkWell(
-                              onTap: () {
-                                context.go(OrderScreen.route);
-                              },
-                              child: const Text("zamówienia")),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 100,
-                          ),
                           IconButton(
                               onPressed: () {
                                 context.go(ProfileScreen.route);

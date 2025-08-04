@@ -1,6 +1,7 @@
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
 import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
+import 'package:ecommerce_web/presentation/screens/profile/profile_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -38,11 +39,11 @@ class PaymentSuccessView extends StatelessWidget {
           TextSpan(children: [
             const TextSpan(
                 text:
-                    "Paczka już niebawem dotrze do Ciebie. Szczegóły i status zamówienia znajdziesz w zakładce "),
+                    "Paczka już niebawem dotrze do Ciebie. Szczegóły i status zamówienia znajdziesz w sekcji "),
             TextSpan(
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => context.go(OrderScreen.route),
-                text: "moje zamówienia",
+                  ..onTap = () => context.go(ProfileScreen.route),
+                text: "zamówienia",
                 style: const TextStyle(
                     color: AppColors.main,
                     decoration: TextDecoration.underline,
@@ -85,7 +86,7 @@ class PaymentSuccessView extends StatelessWidget {
                     minimumSize: const Size.fromHeight(80),
                   ),
                   onPressed: () {
-                    context.go(OrderScreen.route);
+                    context.go(ProfileScreen.route);
                   },
                   child: Text(
                     "Przejdź do zamówień",

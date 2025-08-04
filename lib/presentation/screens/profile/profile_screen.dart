@@ -2,7 +2,9 @@ import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/profile/bloc/profile_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/profile/view/edit_profile_view.dart';
 import 'package:ecommerce_web/presentation/screens/profile/view/profile_details_view.dart';
-import 'package:ecommerce_web/presentation/widget/generic_page.dart';
+import 'package:ecommerce_web/presentation/screens/profile/widget/order_item_widget.dart';
+
+import 'package:ecommerce_web/presentation/widget/scrollable_generic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,40 +34,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GenericPage(
+    return ScrollableGenericPage(
+      color: Colors.white,
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           switch (state) {
             case ProfileLoadingState():
-              return const Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(child: Center(child: CircularProgressIndicator()))
-                ],
-              );
+              return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: const Center(child: CircularProgressIndicator()));
             case ProfileLoadingErrorState():
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                      child: Center(
-                          child: Text(
+              return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                      child: Text(
                     state.message,
                     style: AppTypography.large1,
-                  )))
-                ],
-              );
+                  )));
             case ProfileLoadedState():
               final client = state.client;
 
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: FractionallySizedBox(
-                  widthFactor: 0.6,
+                  widthFactor: 1,
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
                     child: Column(
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _showEditForm
@@ -96,6 +92,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: AppTypography.large1,
                         ),
                         const Divider(),
+                        Column(
+                          spacing: 8,
+                          children: [
+                            ...state.orders.map(
+                              (order) => OrderItemWidget(order: order),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
