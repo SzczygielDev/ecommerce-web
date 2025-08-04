@@ -29,7 +29,6 @@ class OnboardBloc extends Bloc<OnboardEvent, OnboardState> {
       final success = await _clientRepository.createClient(
           event.name,
           event.lastName,
-          event.email,
           event.phone,
           event.city,
           event.zipCode,

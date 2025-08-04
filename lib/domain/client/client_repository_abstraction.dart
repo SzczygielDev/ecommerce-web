@@ -5,7 +5,6 @@ abstract class ClientRepositoryAbstraction {
   Future<bool> createClient(
     String name,
     String lastName,
-    String email,
     String phone,
     String city,
     String zipCode,

@@ -11,21 +11,13 @@ class ClientRepository extends RepositoryBase
   final dio = locator.get<Dio>();
 
   @override
-  Future<bool> createClient(
-      String name,
-      String lastName,
-      String email,
-      String phone,
-      String city,
-      String zipCode,
-      String street,
-      String houseNumber) async {
+  Future<bool> createClient(String name, String lastName, String phone,
+      String city, String zipCode, String street, String houseNumber) async {
     try {
       final response = await dio.post("/clients",
           data: ClientCreateRequest(
                   name: name,
                   lastName: lastName,
-                  email: email,
                   phone: phone,
                   city: city,
                   zipCode: zipCode,

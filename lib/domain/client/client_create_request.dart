@@ -3,7 +3,6 @@ import 'dart:convert';
 class ClientCreateRequest {
   final String name;
   final String lastName;
-  final String email;
   final String phone;
   final String city;
   final String zipCode;
@@ -13,7 +12,6 @@ class ClientCreateRequest {
   ClientCreateRequest({
     required this.name,
     required this.lastName,
-    required this.email,
     required this.phone,
     required this.city,
     required this.zipCode,
@@ -30,7 +28,6 @@ class ClientCreateRequest {
       ClientCreateRequest(
         name: json["name"],
         lastName: json["lastName"],
-        email: json["email"],
         phone: json["phone"],
         city: json["city"],
         zipCode: json["zipCode"],
@@ -41,7 +38,6 @@ class ClientCreateRequest {
   Map<String, dynamic> toJson() => {
         "name": name,
         "lastName": lastName,
-        "email": email,
         "phone": phone,
         "city": city,
         "zipCode": zipCode,
