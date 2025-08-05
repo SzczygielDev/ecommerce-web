@@ -21,4 +21,7 @@ abstract class ClientRepositoryAbstraction {
     String street,
     String houseNumber,
   );
+
+  Future<Client?> activatePremiumAccount();
+  Future<Client?> deactivatePremiumAccount();
 }

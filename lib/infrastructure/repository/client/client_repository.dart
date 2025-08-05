@@ -67,4 +67,32 @@ class ClientRepository extends RepositoryBase
       return null;
     }
   }
+
+  @override
+  Future<Client?> activatePremiumAccount() async {
+    try {
+      final response = await dio.put(
+        "/clients/premium",
+      );
+
+      return Client.fromJson(response.data);
+    } on Exception catch (e) {
+      defaultErrorHandler(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<Client?> deactivatePremiumAccount() async {
+    try {
+      final response = await dio.delete(
+        "/clients/premium",
+      );
+
+      return Client.fromJson(response.data);
+    } on Exception catch (e) {
+      defaultErrorHandler(e);
+      return null;
+    }
+  }
 }

@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:ecommerce_web/domain/client/account_type.dart';
+
 class Client {
   final String id;
   final String name;
   final String lastName;
   final String email;
   final String phone;
-  final String accountType;
+  final AccountType accountType;
   final String city;
   final String zipCode;
   final String street;
@@ -35,7 +37,10 @@ class Client {
         lastName: json["lastName"],
         email: json["email"],
         phone: json["phone"],
-        accountType: json["accountType"],
+        accountType: AccountType.values.firstWhere(
+          (accountType) =>
+              accountType.name.toUpperCase() == json["accountType"],
+        ),
         city: json["city"],
         zipCode: json["zipCode"],
         street: json["street"],
@@ -48,7 +53,7 @@ class Client {
         "lastName": lastName,
         "email": email,
         "phone": phone,
-        "accountType": accountType,
+        "accountType": accountType.name.toUpperCase(),
         "city": city,
         "zipCode": zipCode,
         "street": street,

@@ -71,5 +71,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ));
       },
     );
+
+    on<ActivatePremiumAccountEvent>(
+      (event, emit) async {
+        final updatedClient = await clientRepository.activatePremiumAccount();
+
+        emit((state as ProfileLoadedState).copyWith(client: updatedClient));
+      },
+    );
+
+    on<DeactivatePremiumAccountEvent>(
+      (event, emit) async {
+        final updatedClient = await clientRepository.deactivatePremiumAccount();
+
+        emit((state as ProfileLoadedState).copyWith(client: updatedClient));
+      },
+    );
   }
 }

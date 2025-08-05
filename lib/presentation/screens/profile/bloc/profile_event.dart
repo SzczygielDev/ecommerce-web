@@ -31,3 +31,7 @@ class ProfileUpdateEvent extends ProfileEvent {
 }
 
 class EditProfileFormClosedEvent extends ProfileEvent {}
+
+class ActivatePremiumAccountEvent extends ProfileEvent {}
+
+class DeactivatePremiumAccountEvent extends ProfileEvent {}
