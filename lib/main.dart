@@ -10,10 +10,7 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 
 Future<void> main() async {
   usePathUrlStrategy();
-  setupLocator();
-
-  final authService = locator.get<AuthenticationServiceAbstraction>();
-  await authService.initialize();
+  await setupLocator();
 
   runApp(const MyApp());
 }
@@ -25,8 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return BlocProvider(
-      create: (context) =>
-          locator.get<AuthenticationBloc>(),
+      create: (context) => locator.get<AuthenticationBloc>(),
       child: MaterialApp.router(
         routerConfig: router,
         theme: ThemeData(

@@ -31,7 +31,12 @@ import 'package:oidc_default_store/oidc_default_store.dart';
 
 final locator = GetIt.instance;
 
-void setupLocator() {
+Future<void> setupLocator() async {
+  final logger = Logger();
+  locator.registerLazySingleton<Logger>(
+    () => logger,
+  );
+
   final oidcManager = OidcUserManager.lazy(
     discoveryDocumentUri:
         OidcUtils.getOpenIdConfigWellKnownUri(AppConsts.oidcWellKnownUri),
@@ -43,7 +48,8 @@ void setupLocator() {
         redirectUri: AppConsts.oidcRedirectUri,
         postLogoutRedirectUri: AppConsts.oidcLogoutRedirectUri),
   );
-  final authenticationService = AuthenticationService(oidcManager);
+  final authenticationService = AuthenticationService(oidcManager, logger);
+  await authenticationService.initialize();
   locator.registerLazySingleton<AuthenticationService>(
     () => authenticationService,
   );
@@ -81,9 +87,6 @@ void setupLocator() {
   locator.registerLazySingleton<AdminOrderRepositoryAbstraction>(
     () => AdminOrderRepository(),
   );
-  locator.registerLazySingleton<Logger>(
-    () => Logger(),
-  );
   locator.registerLazySingleton<ImageRepositoryAbstraction>(
     () => ImageRepository(),
   );
@@ -97,7 +100,10 @@ void setupLocator() {
     () => clientRepository,
   );
 
-  final authBloc = AuthenticationBloc(authenticationService, clientRepository);
+  final user = await authenticationService.getCurrentUser();
+  final client = await clientRepository.getCurrentClient();
+  final authBloc = AuthenticationBloc(authenticationService, clientRepository,
+      user: user, client: client);
   locator.registerLazySingleton<AuthenticationBloc>(
     () => authBloc,
   );

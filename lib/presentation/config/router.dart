@@ -1,5 +1,6 @@
 import 'package:ecommerce_web/config/locator.dart';
 import 'package:ecommerce_web/domain/auth/authentication_service_abstraction.dart';
+import 'package:ecommerce_web/domain/auth/role.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/client/client_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/delivery/delivery_repository_abstraction.dart';
@@ -15,6 +16,7 @@ import 'package:ecommerce_web/infrastructure/service/auth/authentication_service
 import 'package:ecommerce_web/presentation/bloc/auth/bloc/authentication_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
+import 'package:ecommerce_web/presentation/screens/admin/change_account/change_account_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
@@ -57,8 +59,24 @@ final router = GoRouter(
       MockPaymentScreen.route,
       PaymentResultScreen.route,
     };
+    final isPathForUnauthenticated =
+        allowedPathsForUnauthenticated.contains(state.fullPath);
+
+    final isAdminRoute = state.fullPath?.contains("/admin") ?? false;
 
     if (isAuthenticated) {
+      final isAdmin = authState.user.roles.contains(Role.admin);
+
+      if (isAdmin) {
+        if (isAdminRoute) {
+          return null;
+        } else if (isPathForUnauthenticated) {
+          return null;
+        } else {
+          return ChangeAccountScreen.route;
+        }
+      }
+
       final isOnboarded = authState.client != null;
 
       if (isOnboarded) {
@@ -72,7 +90,7 @@ final router = GoRouter(
       }
     }
 
-    if (!allowedPathsForUnauthenticated.contains(state.fullPath)) {
+    if (!isPathForUnauthenticated) {
       return '/';
     }
 
@@ -277,6 +295,13 @@ final router = GoRouter(
                 child: const OnBoardScreen()));
       },
     ),
+    GoRoute(
+      path: ChangeAccountScreen.route,
+      pageBuilder: (context, state) {
+        return buildPageWithTransition(
+            context, state, const ChangeAccountScreen());
+      },
+    )
   ],
 );
 

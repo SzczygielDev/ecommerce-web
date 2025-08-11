@@ -13,8 +13,11 @@ class AuthenticationBloc
   final AuthenticationServiceAbstraction _authenticationService;
   final ClientRepositoryAbstraction _clientRepository;
 
-  AuthenticationBloc(this._authenticationService, this._clientRepository)
-      : super(UnauthenticatedState()) {
+  AuthenticationBloc(this._authenticationService, this._clientRepository,
+      {UserInfo? user, Client? client})
+      : super(user != null
+            ? AuthenticatedState(user: user, client: client)
+            : UnauthenticatedState()) {
     on<SignInEvent>((event, emit) async {
       await _authenticationService.signIn();
     });
