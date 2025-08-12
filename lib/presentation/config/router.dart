@@ -17,10 +17,11 @@ import 'package:ecommerce_web/presentation/bloc/auth/bloc/authentication_bloc.da
 import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/bloc/admin_catalog_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/change_account/change_account_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/clients/bloc/admin_client_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/bloc/admin_order_bloc.dart';
-import 'package:ecommerce_web/presentation/screens/admin/users/admin_user_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/clients/admin_client_screen.dart';
 import 'package:ecommerce_web/presentation/screens/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/catalog/bloc/catalog_bloc.dart';
@@ -135,7 +136,9 @@ final router = GoRouter(
                   cartRepository: locator.get<CartRepositoryAbstraction>(),
                   productRepository:
                       locator.get<ProductRepositoryAbstraction>(),
-                  logger: locator.get<Logger>())
+                  logger: locator.get<Logger>(),
+                  authenticationService:
+                      locator.get<AuthenticationServiceAbstraction>())
                 ..add(ProductOnLoadEvent(ProductId(productId!))),
               child: const ProductScreen(),
             ));
@@ -258,9 +261,17 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: AdminUserScreen.route,
+      path: AdminClientScreen.route,
       pageBuilder: (context, state) {
-        return buildPageWithTransition(context, state, const AdminUserScreen());
+        return buildPageWithTransition(
+            context,
+            state,
+            BlocProvider(
+                create: (context) => AdminClientBloc(
+                    clientRepository:
+                        locator.get<ClientRepositoryAbstraction>())
+                  ..add(AdminClientOnLoadEvent()),
+                child: const AdminClientScreen()));
       },
     ),
     GoRoute(

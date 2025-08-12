@@ -35,7 +35,7 @@ class ClientRepository extends RepositoryBase
   @override
   Future<Client?> getCurrentClient() async {
     try {
-      final response = await dio.get("/clients");
+      final response = await dio.get("/clients/current");
 
       var client = Client.fromJson(response.data);
 
@@ -93,6 +93,22 @@ class ClientRepository extends RepositoryBase
     } on Exception catch (e) {
       defaultErrorHandler(e);
       return null;
+    }
+  }
+
+  @override
+  Future<List<Client>> getAll() async {
+    try {
+      final response = await dio.get("/clients");
+
+      final data = response.data as List;
+
+      var clients = data.map((e) => Client.fromJson(e)).toList();
+
+      return clients;
+    } on Exception catch (e) {
+      defaultErrorHandler(e);
+      return [];
     }
   }
 }

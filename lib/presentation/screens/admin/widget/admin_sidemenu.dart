@@ -3,7 +3,7 @@ import 'package:ecommerce_web/presentation/config/app_typography.dart';
 import 'package:ecommerce_web/presentation/screens/admin/catalog/admin_catalog_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/admin/order/admin_order_screen.dart';
-import 'package:ecommerce_web/presentation/screens/admin/users/admin_user_screen.dart';
+import 'package:ecommerce_web/presentation/screens/admin/clients/admin_client_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -81,11 +81,11 @@ class _AdminSidemenuState extends State<AdminSidemenu> {
           ),
           ListTile(
             onTap: () {
-              context.go(AdminUserScreen.route);
+              context.go(AdminClientScreen.route);
             },
             leading: const Icon(Icons.person),
             title: const Text(
-              "Użytkownicy",
+              "Klienci",
               style: AppTypography.medium3,
             ),
           ),

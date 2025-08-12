@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddToCartWidget extends StatefulWidget {
-  const AddToCartWidget({super.key});
+  final bool enabled;
+  const AddToCartWidget({super.key, required this.enabled});
 
   @override
   State<AddToCartWidget> createState() => _AddToCartWidgetState();
@@ -32,7 +33,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
         Expanded(
             flex: 8,
             child: GenericButton(
-                onPressed: canAddToCart
+                onPressed: canAddToCart && widget.enabled
                     ? () {
                         context.read<ProductBloc>().add(ProductAddToCartEvent(
                             int.parse(productQuantityController.text)));
@@ -45,6 +46,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
         Expanded(
           flex: 2,
           child: TextFormField(
+            enabled: widget.enabled,
             controller: productQuantityController,
             maxLines: null,
             expands: true,

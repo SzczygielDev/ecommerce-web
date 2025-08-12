@@ -24,4 +24,5 @@ abstract class ClientRepositoryAbstraction {
 
   Future<Client?> activatePremiumAccount();
   Future<Client?> deactivatePremiumAccount();
+  Future<List<Client>> getAll();
 }

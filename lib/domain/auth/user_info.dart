@@ -6,4 +6,7 @@ class UserInfo {
   final List<Role> roles;
 
   UserInfo(this.id, this.email, this.roles);
+
+  bool get isAdmin => roles.contains(Role.admin);
+  bool get isClient => roles.contains(Role.client);
 }

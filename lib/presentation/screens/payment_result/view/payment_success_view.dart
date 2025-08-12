@@ -15,6 +15,11 @@ class PaymentSuccessView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const Icon(
+          Icons.done,
+          size: 160,
+          color: AppColors.green,
+        ),
         const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -24,11 +29,6 @@ class PaymentSuccessView extends StatelessWidget {
             ),
             SizedBox(
               width: 20,
-            ),
-            Icon(
-              Icons.done,
-              size: 80,
-              color: AppColors.green,
             ),
           ],
         ),
@@ -48,7 +48,7 @@ class PaymentSuccessView extends StatelessWidget {
                     color: AppColors.main,
                     decoration: TextDecoration.underline,
                     decorationColor: AppColors.main)),
-            const TextSpan(text: ". Dziękujemy za zakupy w naszym sklepie.")
+            const TextSpan(text: ".\nDziękujemy za zakupy w naszym sklepie.\n")
           ]),
           style: AppTypography.xlarge1,
           textAlign: TextAlign.center,

@@ -1,9 +1,9 @@
 import 'package:ecommerce_web/domain/auth/user_info.dart';
 import 'package:ecommerce_web/presentation/bloc/auth/bloc/authentication_bloc.dart';
 import 'package:ecommerce_web/presentation/config/app_colors.dart';
+import 'package:ecommerce_web/presentation/screens/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:ecommerce_web/presentation/screens/cart/cart_screen.dart';
 import 'package:ecommerce_web/presentation/screens/profile/profile_screen.dart';
-import 'package:ecommerce_web/presentation/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -20,15 +20,33 @@ class GlobalAppBar extends AppBar {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: () {
-                    context.go('/');
-                  },
-                  child: Text(
-                    'ECOMMERCE',
-                    style:
-                        GoogleFonts.koulen(fontSize: 62, color: AppColors.main),
-                  ),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        context.go('/');
+                      },
+                      child: Text(
+                        'ECOMMERCE',
+                        style: GoogleFonts.koulen(
+                            fontSize: 62, color: AppColors.main),
+                      ),
+                    ),
+                    (user?.isAdmin ?? false)
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 32.0),
+                            child: InkWell(
+                              onTap: () {
+                                context.go(AdminDashboardScreen.route);
+                              },
+                              child: const Text(
+                                '>> Panel administracyjny <<',
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink()
+                  ],
                 ),
                 user != null
                     ? Row(

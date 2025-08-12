@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce_web/domain/auth/authentication_service_abstraction.dart';
 import 'package:ecommerce_web/domain/cart/cart_repository_abstraction.dart';
 import 'package:ecommerce_web/domain/product/product.dart';
 import 'package:ecommerce_web/domain/product/product_id.dart';
@@ -13,10 +14,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepositoryAbstraction productRepository;
   final CartRepositoryAbstraction cartRepository;
   final Logger logger;
+  final AuthenticationServiceAbstraction authenticationService;
   ProductBloc(
       {required this.productRepository,
       required this.cartRepository,
-      required this.logger})
+      required this.logger,
+      required this.authenticationService})
       : super(const ProductState()) {
     on<ProductOnLoadEvent>((event, emit) async {
       final foundProduct = await productRepository.findById(event.id);
@@ -27,8 +30,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         return;
       }
 
+      final user = await authenticationService.getCurrentUser();
+      if (user == null) {
+        logger.e(
+            "Failed to load product screen for id='${event.id.value}' because failed to fetch current user");
+        emit(state.copyWith(loadingState: ProductLoadingState.error));
+        return;
+      }
+
       emit(state.copyWith(
-          product: foundProduct, loadingState: ProductLoadingState.loaded));
+          product: foundProduct,
+          loadingState: ProductLoadingState.loaded,
+          isUserAdmin: user.isAdmin));
     });
 
     on<ProductAddToCartEvent>((event, emit) async {
